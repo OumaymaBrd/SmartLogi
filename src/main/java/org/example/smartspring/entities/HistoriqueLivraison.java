@@ -1,0 +1,4 @@
+package org.example.smartspring.entities;
+
+public class HistoriqueLivraison {
+}
