@@ -4,6 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.example.smartspring.dto.CllientExpediteur.ClientExpediteurDTO;
+import org.example.smartspring.dto.CllientExpediteur.UpdateClientExpediteurDTO;
+import org.example.smartspring.entities.ClientExpediteur;
 import org.example.smartspring.mapper.ClientExpediteurMapper;
 import org.example.smartspring.repository.ClientExpediteurRepository;
 import org.example.smartspring.services.ClientExpediteurService;
@@ -18,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class ClientExpediteurController {
     private final ClientExpediteurMapper clientExpediteurMapper;
     private final ClientExpediteurService clientExpediteurService;
-
-
 
     @PostMapping
     public ResponseEntity<ClientExpediteurDTO> CreateclientExpediteur
@@ -51,4 +51,14 @@ public class ClientExpediteurController {
                     .body("Client non trouvé avec l'ID : " + id);
         }
     }
+
+    @PutMapping
+    public ResponseEntity<ClientExpediteurDTO> update(@Valid @RequestBody UpdateClientExpediteurDTO dto) {
+
+        ClientExpediteurDTO updated = clientExpediteurService.update(dto);
+
+        return ResponseEntity.ok(updated);
+    }
+
+
 }

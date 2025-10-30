@@ -1,6 +1,7 @@
 package org.example.smartspring.services;
 
 import org.example.smartspring.dto.CllientExpediteur.ClientExpediteurDTO;
+import org.example.smartspring.dto.CllientExpediteur.UpdateClientExpediteurDTO;
 import org.example.smartspring.entities.ClientExpediteur;
 import org.example.smartspring.mapper.ClientExpediteurMapper;
 import org.example.smartspring.repository.ClientExpediteurRepository;
@@ -27,11 +28,24 @@ public class ClientExpediteurService {
     public ClientExpediteurDTO save(ClientExpediteurDTO dto) {
         // Convertir le DTO en entité
         ClientExpediteur entity = clientExpediteurMapper.toEntity(dto);
-
-        // Sauvegarder dans la base
         ClientExpediteur savedEntity = clientExpediteurRepository.save(entity);
-
-        // Retourner le DTO sauvegardé
         return clientExpediteurMapper.toDto(savedEntity);
     }
+
+    public ClientExpediteurDTO update(UpdateClientExpediteurDTO dto) {
+
+        //  Récupérer l'entité existante
+        ClientExpediteur existing = clientExpediteurRepository.findById(dto.getId())
+                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
+
+        //  Mettre à jour les champs de l'entité existante
+        clientExpediteurMapper.updateEntityFromDto(dto, existing);
+
+        //  Sauvegarder
+        ClientExpediteur saved = clientExpediteurRepository.save(existing);
+
+        // Convertir en DTO
+        return clientExpediteurMapper.toDto(saved);
+    }
+
 }
