@@ -64,7 +64,7 @@ public class ClientExpediteurController {
     public ResponseEntity<?> deleteClient(@PathVariable String id) {
         try {
             clientExpediteurService.delete(id);
-            return ResponseEntity.noContent().build(); // 204
+            return ResponseEntity.ok("Votre Suppression Avec Succes");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
