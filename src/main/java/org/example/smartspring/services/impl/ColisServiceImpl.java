@@ -1,7 +1,7 @@
 package org.example.smartspring.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.smartspring.dto.reponse.ColisResponseDTO;
+import org.example.smartspring.dto.response.ColisResponseDTO;
 import org.example.smartspring.dto.request.ColisRequestDTO;
 import org.example.smartspring.entities.Colis;
 import org.example.smartspring.mapper.ColisMapper;
@@ -20,8 +20,8 @@ public class ColisServiceImpl implements ColisService {
     private final ColisMapper colisMapper;
 
     @Override
-    public ColisResponseDTO createColis(ColisRequestDTO colisRequestDTO) {
-        Colis entity = colisMapper.toEntity(colisRequestDTO);
+    public ColisResponseDTO createColis(ColisRequestDTO dto) {
+        Colis entity = colisMapper.toEntity(dto);
         Colis saved = colisRepository.save(entity);
         return colisMapper.toResponseDTO(saved);
     }
