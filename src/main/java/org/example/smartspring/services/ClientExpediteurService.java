@@ -1,7 +1,7 @@
 package org.example.smartspring.services;
 
-import org.example.smartspring.dto.CllientExpediteur.ClientExpediteurDTO;
-import org.example.smartspring.dto.CllientExpediteur.UpdateClientExpediteurDTO;
+import org.example.smartspring.dto.ClientExpediteur.ClientExpediteurDTO;
+import org.example.smartspring.dto.ClientExpediteur.UpdateClientExpediteurDTO;
 import org.example.smartspring.entities.ClientExpediteur;
 import org.example.smartspring.mapper.ClientExpediteurMapper;
 import org.example.smartspring.repository.ClientExpediteurRepository;

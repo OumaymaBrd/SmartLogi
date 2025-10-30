@@ -1,8 +1,8 @@
 package org.example.smartspring.mapper;
 
 
-import org.example.smartspring.dto.CllientExpediteur.ClientExpediteurDTO;
-import org.example.smartspring.dto.CllientExpediteur.UpdateClientExpediteurDTO;
+import org.example.smartspring.dto.ClientExpediteur.ClientExpediteurDTO;
+import org.example.smartspring.dto.ClientExpediteur.UpdateClientExpediteurDTO;
 import org.example.smartspring.entities.ClientExpediteur;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

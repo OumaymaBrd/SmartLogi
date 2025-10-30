@@ -1,4 +1,4 @@
-package org.example.smartspring.dto.CllientExpediteur;
+package org.example.smartspring.dto.ClientExpediteur;
 
 
 import jakarta.validation.constraints.NotBlank;
@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.smartspring.entities.ClientExpediteur;
-import org.mapstruct.Mapper;
 
 @Data @Builder @AllArgsConstructor @NoArgsConstructor
 public class ClientExpediteurDTO {
