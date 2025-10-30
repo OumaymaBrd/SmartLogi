@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ColisService {
     ColisResponseDTO createColis(ColisRequestDTO dto);
-    List<ColisResponseDTO> getAllColis();
+    List<ColisResponseDTO> getAllColis(String description);
     ColisResponseDTO getColisById(String id);
     void deleteColisById(String id);
 }

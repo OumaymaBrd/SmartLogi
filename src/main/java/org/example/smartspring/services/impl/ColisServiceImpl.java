@@ -27,8 +27,14 @@ public class ColisServiceImpl implements ColisService {
     }
 
     @Override
-    public List<ColisResponseDTO> getAllColis() {
-        return colisRepository.findAll()
+    public List<ColisResponseDTO> getAllColis(String description) {
+        List<Colis>colisList;
+        if(description==null && !description.trim().isEmpty()){
+            colisList=colisRepository.findByDescriptionIgnoreCase(description);
+        }else{
+            colisList=colisRepository.findAll();
+        }
+        return colisList
                 .stream()
                 .map(colisMapper::toResponseDTO)
                 .collect(Collectors.toList());

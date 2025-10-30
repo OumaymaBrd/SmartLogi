@@ -33,4 +33,24 @@ public class ColisRequestDTO {
 
     @NotNull(message = "Votre priorite est Null")
     private PrioriteColis priorite;
+
+
+
+//
+//        ClientExpediteur expediteur = clientExpediteurRepository.findById(dto.getIdClientExpediteur())
+//                .orElseThrow(() -> new RuntimeException("ClientExpediteur non trouvé"));
+//
+//        Colis colis = Colis.builder()
+//                .description(dto.getDescription())
+//                .poids(dto.getPoids())
+//                .clientExpediteur(expediteur)
+//                .idDestinataire(dto.getIdDestinataire())
+//                .idZone(dto.getIdZone())
+//                .villeDestination(dto.getVilleDestination())
+//                .priorite(dto.getPriorite())
+//                .build();
+//
+//        return colisRepository.save(colis);
+//
+
 }

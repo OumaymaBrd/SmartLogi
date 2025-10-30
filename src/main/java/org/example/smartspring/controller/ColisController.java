@@ -25,9 +25,12 @@ public class ColisController {
     }
 
 
+
     @GetMapping
-    public ResponseEntity<?> getAllColis() {
-        List<ColisResponseDTO> list = colisService.getAllColis();
+    public ResponseEntity<?> getAllColis(
+            @RequestParam(required = false) String description) {
+
+        List<ColisResponseDTO> list = colisService.getAllColis(description);
 
         if (list == null || list.isEmpty()) {
             Map<String, String> message = new HashMap<>();
@@ -37,6 +40,7 @@ public class ColisController {
 
         return ResponseEntity.ok(list);
     }
+
 
 
     @GetMapping("/{id}")
