@@ -60,5 +60,16 @@ public class ClientExpediteurController {
         return ResponseEntity.ok(updated);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteClient(@PathVariable String id) {
+        try {
+            clientExpediteurService.delete(id);
+            return ResponseEntity.noContent().build(); // 204
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
+    }
+
 
 }

@@ -48,4 +48,9 @@ public class ClientExpediteurService {
         return clientExpediteurMapper.toDto(saved);
     }
 
+    public void delete(String id) {
+        ClientExpediteur existing = clientExpediteurRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Client non trouvé"));
+        clientExpediteurRepository.delete(existing);
+    }
 }
