@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/colis")
@@ -22,11 +24,20 @@ public class ColisController {
         return new ResponseEntity<>(colisService.createColis(dto), HttpStatus.CREATED);
     }
 
+
     @GetMapping
-    public ResponseEntity<List<ColisResponseDTO>> getAllColis() {
+    public ResponseEntity<?> getAllColis() {
         List<ColisResponseDTO> list = colisService.getAllColis();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+
+        if (list == null || list.isEmpty()) {
+            Map<String, String> message = new HashMap<>();
+            message.put("message", "Aucun colis trouvé dans votre stock.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
+        }
+
+        return ResponseEntity.ok(list);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getColisById(@PathVariable String id) {
