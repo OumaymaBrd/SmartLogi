@@ -6,35 +6,38 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "zone")
+@Table(name = "produit")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Zone {
+public class Produit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 150)
     private String nom;
 
-    @Column(name = "code_postal", nullable = false, length = 10)
-    private String codePostal;
+    @Column(length = 100)
+    private String categorie;
 
-    @OneToMany(mappedBy = "zoneAssignee")
-    @Builder.Default
-    private List<Livreur> livreurs = new ArrayList<>();
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal poids;
 
-    @OneToMany(mappedBy = "zone")
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal prix;
+
+    @OneToMany(mappedBy = "produit", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<Colis> colis = new ArrayList<>();
+    private List<ColisProduit> colisProduits = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

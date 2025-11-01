@@ -1,4 +1,4 @@
-package org.example.smartspring.dto.ClientExpediteur;
+package org.example.smartspring.dto.Destinataire;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,26 +12,25 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddClientExpediteurDTO {
+public class AddDestinataireDTO {
 
     @NotBlank(message = "Le nom est obligatoire")
-    @Size(max = 100, message = "Le nom ne doit pas dépasser 100 caractères")
+    @Size(max = 100)
     private String nom;
 
     @NotBlank(message = "Le prénom est obligatoire")
-    @Size(max = 100, message = "Le prénom ne doit pas dépasser 100 caractères")
+    @Size(max = 100)
     private String prenom;
 
-    @NotBlank(message = "L'email est obligatoire")
     @Email(message = "L'email doit être valide")
-    @Size(max = 150, message = "L'email ne doit pas dépasser 150 caractères")
+    @Size(max = 150)
     private String email;
 
     @NotBlank(message = "Le téléphone est obligatoire")
-    @Size(max = 20, message = "Le téléphone ne doit pas dépasser 20 caractères")
+    @Size(max = 20)
     private String telephone;
 
     @NotBlank(message = "L'adresse est obligatoire")
-    @Size(max = 255, message = "L'adresse ne doit pas dépasser 255 caractères")
+    @Size(max = 255)
     private String adresse;
 }

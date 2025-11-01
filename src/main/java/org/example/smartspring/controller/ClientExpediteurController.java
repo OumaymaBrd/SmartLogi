@@ -2,75 +2,57 @@ package org.example.smartspring.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.example.smartspring.dto.ClientExpediteur.AddClientExpediteurDTO;
 import org.example.smartspring.dto.ClientExpediteur.ClientExpediteurDTO;
 import org.example.smartspring.dto.ClientExpediteur.UpdateClientExpediteurDTO;
-import org.example.smartspring.mapper.ClientExpediteurMapper;
-import org.example.smartspring.services.ClientExpediteurService;
+import org.example.smartspring.service.ClientExpediteurService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Slf4j
-@Controller
-@RequestMapping("/api/clientExpe")
+@RestController
+@RequestMapping("/api/clients-expediteurs")
 @RequiredArgsConstructor
 public class ClientExpediteurController {
-    private final ClientExpediteurMapper clientExpediteurMapper;
-    private final ClientExpediteurService clientExpediteurService;
+
+    private final ClientExpediteurService service;
 
     @PostMapping
-    public ResponseEntity<ClientExpediteurDTO> CreateclientExpediteur
-            (@Valid @RequestBody ClientExpediteurDTO dto)
-
-        {
-            ClientExpediteurDTO saved=clientExpediteurService.save(dto);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
-
-        }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getClientExpediteurById(@PathVariable("id") String id) {
-        try {
-            ClientExpediteurDTO dto = clientExpediteurService.get(id);
-
-            if (dto == null) {
-                log.info("ClientExpediteurDTO non trouv<UNK>");
-                return ResponseEntity
-                        .status(HttpStatus.NOT_FOUND)
-                        .body("Client non trouvé avec l'ID : " + id);
-
-            }
-
-            return ResponseEntity.ok(dto);
-
-        } catch (Exception e) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Client non trouvé avec l'ID : " + id);
-        }
+    public ResponseEntity<ClientExpediteurDTO> create(@Valid @RequestBody AddClientExpediteurDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
     }
 
-    @PutMapping
-    public ResponseEntity<ClientExpediteurDTO> update(@Valid @RequestBody UpdateClientExpediteurDTO dto) {
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientExpediteurDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getById(id));
+    }
 
-        ClientExpediteurDTO updated = clientExpediteurService.update(dto);
+    @GetMapping
+    public ResponseEntity<Page<ClientExpediteurDTO>> getAll(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(service.getAll(pageable));
+    }
 
-        return ResponseEntity.ok(updated);
+    @GetMapping("/search")
+    public ResponseEntity<Page<ClientExpediteurDTO>> search(
+            @RequestParam String keyword,
+            @PageableDefault(size = 20) Pageable pageable) {
+        return ResponseEntity.ok(service.search(keyword, pageable));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientExpediteurDTO> update(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateClientExpediteurDTO dto) {
+        return ResponseEntity.ok(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteClient(@PathVariable String id) {
-        try {
-            clientExpediteurService.delete(id);
-            return ResponseEntity.ok("Votre Suppression Avec Succes");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(e.getMessage());
-        }
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
-
-
 }
