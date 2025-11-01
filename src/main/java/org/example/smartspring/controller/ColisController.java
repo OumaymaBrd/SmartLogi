@@ -2,123 +2,87 @@ package org.example.smartspring.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.smartspring.dto.Colis.AddColisDTO;
-import org.example.smartspring.dto.Colis.ColisDTO;
-import org.example.smartspring.dto.Colis.UpdateColisDTO;
+import org.example.smartspring.dto.colis.AddColisDTO;
+import org.example.smartspring.dto.colis.UpdateColisDTO;
+import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.service.ColisService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/colis")
+@RequestMapping("/colis")
 @RequiredArgsConstructor
 public class ColisController {
 
-    private final ColisService service;
+    private final ColisService colisService;
 
     @PostMapping
-    public ResponseEntity<ColisDTO> create(@Valid @RequestBody AddColisDTO dto) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ColisDTO> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
+    public ResponseEntity<ColisDTO> createColis(@Valid @RequestBody AddColisDTO dto) {
+        return new ResponseEntity<>(colisService.createColis(dto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<Page<ColisDTO>> getAll(
-            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
-        return ResponseEntity.ok(service.getAll(pageable));
+    public ResponseEntity<Page<ColisDTO>> getAllColis(Pageable pageable) {
+        return ResponseEntity.ok(colisService.getAllColis(pageable));
     }
 
-    @GetMapping("/statut/{statut}")
-    public ResponseEntity<Page<ColisDTO>> getByStatut(
-            @PathVariable StatutColis statut,
-            @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.getByStatut(statut, pageable));
+    @GetMapping("/{id}")
+    public ResponseEntity<ColisDTO> getColisById(@PathVariable Long id) {
+        return ResponseEntity.ok(colisService.getColisById(id));
     }
 
-    @GetMapping("/priorite/{priorite}")
-    public ResponseEntity<Page<ColisDTO>> getByPriorite(
-            @PathVariable PrioriteColis priorite,
-            @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.getByPriorite(priorite, pageable));
-    }
-
-    @GetMapping("/ville/{ville}")
-    public ResponseEntity<Page<ColisDTO>> getByVille(
-            @PathVariable String ville,
-            @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.getByVille(ville, pageable));
-    }
-
-    @GetMapping("/zone/{zoneId}")
-    public ResponseEntity<Page<ColisDTO>> getByZone(
-            @PathVariable Long zoneId,
-            @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.getByZone(zoneId, pageable));
-    }
-
-    @GetMapping("/livreur/{livreurId}")
-    public ResponseEntity<List<ColisDTO>> getByLivreur(@PathVariable Long livreurId) {
-        return ResponseEntity.ok(service.getByLivreur(livreurId));
-    }
-
-    @GetMapping("/client/{clientId}")
-    public ResponseEntity<List<ColisDTO>> getByClient(@PathVariable Long clientId) {
-        return ResponseEntity.ok(service.getByClientExpediteur(clientId));
-    }
-
-    @GetMapping("/destinataire/{destinataireId}")
-    public ResponseEntity<List<ColisDTO>> getByDestinataire(@PathVariable Long destinataireId) {
-        return ResponseEntity.ok(service.getByDestinataire(destinataireId));
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<Page<ColisDTO>> search(
-            @RequestParam String keyword,
-            @PageableDefault(size = 20) Pageable pageable) {
-        return ResponseEntity.ok(service.search(keyword, pageable));
-    }
-
-    @GetMapping("/livreur/{livreurId}/stats")
-    public ResponseEntity<Map<String, Object>> getLivreurStats(@PathVariable Long livreurId) {
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("nombreColis", service.countByLivreur(livreurId));
-        stats.put("poidsTotal", service.sumPoidsByLivreur(livreurId));
-        return ResponseEntity.ok(stats);
-    }
-
-    @GetMapping("/zone/{zoneId}/stats")
-    public ResponseEntity<Map<String, Object>> getZoneStats(@PathVariable Long zoneId) {
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("nombreColis", service.countByZone(zoneId));
-        stats.put("poidsTotal", service.sumPoidsByZone(zoneId));
-        return ResponseEntity.ok(stats);
+    @GetMapping("/suivi/{numeroSuivi}")
+    public ResponseEntity<ColisDTO> getColisByNumeroSuivi(@PathVariable String numeroSuivi) {
+        return ResponseEntity.ok(colisService.getColisByNumeroSuivi(numeroSuivi));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ColisDTO> update(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdateColisDTO dto) {
-        return ResponseEntity.ok(service.update(id, dto));
+    public ResponseEntity<ColisDTO> updateColis(@PathVariable Long id, @Valid @RequestBody UpdateColisDTO dto) {
+        return ResponseEntity.ok(colisService.updateColis(id, dto));
+    }
+
+    @PatchMapping("/{id}/statut")
+    public ResponseEntity<ColisDTO> updateStatut(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        StatutColis statut = StatutColis.valueOf(body.get("statut"));
+        return ResponseEntity.ok(colisService.updateStatut(id, statut));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+    public ResponseEntity<Void> deleteColis(@PathVariable Long id) {
+        colisService.deleteColis(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<ColisDTO>> searchColis(@RequestParam String keyword, Pageable pageable) {
+        return ResponseEntity.ok(colisService.searchColis(keyword, pageable));
+    }
+
+    @GetMapping("/statut/{statut}")
+    public ResponseEntity<List<ColisDTO>> getColisByStatut(@PathVariable StatutColis statut) {
+        return ResponseEntity.ok(colisService.getColisByStatut(statut));
+    }
+
+    @GetMapping("/priorite/{priorite}")
+    public ResponseEntity<List<ColisDTO>> getColisByPriorite(@PathVariable PrioriteColis priorite) {
+        return ResponseEntity.ok(colisService.getColisByPriorite(priorite));
+    }
+
+    @GetMapping("/livreur/{livreurId}")
+    public ResponseEntity<List<ColisDTO>> getColisByLivreur(@PathVariable Long livreurId) {
+        return ResponseEntity.ok(colisService.getColisByLivreur(livreurId));
+    }
+
+    @GetMapping("/zone/{zoneId}")
+    public ResponseEntity<List<ColisDTO>> getColisByZone(@PathVariable Long zoneId) {
+        return ResponseEntity.ok(colisService.getColisByZone(zoneId));
     }
 }

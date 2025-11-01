@@ -4,116 +4,58 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.example.smartspring.annotation.Loggable;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-
 
 @Aspect
 @Component
 @Slf4j
 public class LoggingAspect {
 
-
-    @Pointcut("within(org.example.smartspring.service..*)")
+    @Pointcut("within(org.example.smartspring.services..*)")
     public void serviceLayer() {}
-
 
     @Pointcut("within(org.example.smartspring.controller..*)")
     public void controllerLayer() {}
 
-
-    @Pointcut("within(org.example.smartspring.repository..*)")
-    public void repositoryLayer() {}
-
-
-    @Pointcut("@annotation(org.example.smartspring.annotation.Loggable)")
-    public void loggableMethod() {}
-
-
-    @Around("serviceLayer() || controllerLayer()")
-    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        long startTime = System.currentTimeMillis();
-
+    @Before("serviceLayer() || controllerLayer()")
+    public void logBefore(JoinPoint joinPoint) {
         String className = joinPoint.getSignature().getDeclaringTypeName();
         String methodName = joinPoint.getSignature().getName();
         Object[] args = joinPoint.getArgs();
 
-        log.debug("→ Entrée dans {}.{}() avec arguments: {}",
-                className, methodName, Arrays.toString(args));
-
-        Object result;
-        try {
-            result = joinPoint.proceed();
-
-            long executionTime = System.currentTimeMillis() - startTime;
-
-            log.debug("← Sortie de {}.{}() avec résultat: {} | Temps d'exécution: {}ms",
-                    className, methodName, result, executionTime);
-
-            return result;
-        } catch (Exception e) {
-            long executionTime = System.currentTimeMillis() - startTime;
-            log.error("✗ Erreur dans {}.{}() après {}ms: {}",
-                    className, methodName, executionTime, e.getMessage());
-            throw e;
-        }
+        log.debug("→ {}.{}({})",
+                className.substring(className.lastIndexOf('.') + 1),
+                methodName,
+                Arrays.toString(args));
     }
 
-
-    @Around("loggableMethod() && @annotation(loggable)")
-    public Object logLoggableMethod(ProceedingJoinPoint joinPoint, Loggable loggable) throws Throwable {
-        long startTime = System.currentTimeMillis();
-
-        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        String className = signature.getDeclaringTypeName();
-        String methodName = signature.getName();
-
-        if (loggable.logParams()) {
-            log.info("→ [{}] Appel de {}.{}() avec paramètres: {}",
-                    loggable.level(), className, methodName, Arrays.toString(joinPoint.getArgs()));
-        } else {
-            log.info("→ [{}] Appel de {}.{}()", loggable.level(), className, methodName);
-        }
-
-        Object result;
-        try {
-            result = joinPoint.proceed();
-
-            long executionTime = System.currentTimeMillis() - startTime;
-
-            if (loggable.logResult()) {
-                log.info("← [{}] Fin de {}.{}() - Résultat: {} | Temps: {}ms",
-                        loggable.level(), className, methodName, result, executionTime);
-            } else if (loggable.logExecutionTime()) {
-                log.info("← [{}] Fin de {}.{}() | Temps: {}ms",
-                        loggable.level(), className, methodName, executionTime);
-            }
-
-            return result;
-        } catch (Exception e) {
-            long executionTime = System.currentTimeMillis() - startTime;
-            log.error("✗ [{}] Erreur dans {}.{}() après {}ms",
-                    loggable.level(), className, methodName, executionTime, e);
-            throw e;
-        }
-    }
-
-
-    @Before("repositoryLayer()")
-    public void logRepositoryCall(JoinPoint joinPoint) {
-        String methodName = joinPoint.getSignature().getName();
+    @AfterReturning(pointcut = "serviceLayer() || controllerLayer()", returning = "result")
+    public void logAfterReturning(JoinPoint joinPoint, Object result) {
         String className = joinPoint.getSignature().getDeclaringTypeName();
-        log.debug("🗄️ Appel repository: {}.{}()", className, methodName);
+        String methodName = joinPoint.getSignature().getName();
+
+        log.debug("← {}.{} returned: {}",
+                className.substring(className.lastIndexOf('.') + 1),
+                methodName,
+                result != null ? result.getClass().getSimpleName() : "null");
     }
 
+    @Around("serviceLayer()")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        long start = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        long executionTime = System.currentTimeMillis() - start;
 
-    @AfterReturning(pointcut = "repositoryLayer()", returning = "result")
-    public void logRepositoryReturn(JoinPoint joinPoint, Object result) {
-        String methodName = joinPoint.getSignature().getName();
-        log.debug("🗄️ Repository {}.{}() retourne: {}",
-                joinPoint.getSignature().getDeclaringTypeName(), methodName, result);
+        if (executionTime > 3000) {
+            log.warn("⚡ SLOW METHOD: {}.{} took {}ms - Consider optimization",
+                    joinPoint.getSignature().getDeclaringTypeName().substring(
+                            joinPoint.getSignature().getDeclaringTypeName().lastIndexOf('.') + 1),
+                    joinPoint.getSignature().getName(),
+                    executionTime);
+        }
+
+        return result;
     }
 }

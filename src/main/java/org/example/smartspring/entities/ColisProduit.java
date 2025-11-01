@@ -6,15 +6,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "colis_produit")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ColisProduit {
 
     @Id
@@ -32,14 +31,9 @@ public class ColisProduit {
     @Column(nullable = false)
     private Integer quantite;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal prix;
+    @Column(nullable = false)
+    private Double prix;
 
-    @Column(name = "date_ajout")
-    private LocalDateTime dateAjout;
-
-    @PrePersist
-    protected void onCreate() {
-        dateAjout = LocalDateTime.now();
-    }
+    @Column(nullable = false)
+    private LocalDate dateAjout;
 }

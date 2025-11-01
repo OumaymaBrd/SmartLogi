@@ -8,43 +8,46 @@ import lombok.NoArgsConstructor;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "colis", indexes = {
-        @Index(name = "idx_colis_statut", columnList = "statut"),
-        @Index(name = "idx_colis_priorite", columnList = "priorite"),
-        @Index(name = "idx_colis_ville", columnList = "ville_destination")
-})
+@Table(name = "colis")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Colis {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 500)
+    @Column(name = "numero_suivi", unique = true, nullable = false, length = 50)
+    private String numeroSuivi;
+
+    @Column(nullable = false, length = 500)
     private String description;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal poids;
+    @Column(nullable = false)
+    private Double poids;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 20)
     private StatutColis statut;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 20)
     private PrioriteColis priorite;
 
-    @Column(name = "ville_destination", nullable = false, length = 100)
+    @Column(length = 100)
     private String villeDestination;
+
+    @Column(name = "date_livraison_reelle")
+    private LocalDateTime dateLivraisonReelle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "livreur_id")
+    private Livreur livreur;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_expediteur_id", nullable = false)
@@ -55,35 +58,6 @@ public class Colis {
     private Destinataire destinataire;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "livreur_id")
-    private Livreur livreur;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "zone_id")
     private Zone zone;
-
-    @OneToMany(mappedBy = "colis", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<ColisProduit> colisProduits = new ArrayList<>();
-
-    @OneToMany(mappedBy = "colis", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<HistoriqueLivraison> historiques = new ArrayList<>();
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
 }

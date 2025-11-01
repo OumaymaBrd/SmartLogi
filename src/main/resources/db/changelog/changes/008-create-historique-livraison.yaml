@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: 008-create-historique-livraison
       author: smartlogi
-      comment: Création de la table historique_livraison pour tracer les changements de statut
       changes:
         - createTable:
             tableName: historique_livraison
@@ -21,24 +20,20 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: statut
-                  type: VARCHAR(50)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: date_changement
                   type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
               - column:
                   name: commentaire
-                  type: TEXT
-
+                  type: VARCHAR(500)
         - addForeignKeyConstraint:
             baseTableName: historique_livraison
             baseColumnNames: colis_id
             referencedTableName: colis
             referencedColumnNames: id
             constraintName: fk_historique_colis
-            onDelete: CASCADE
-      rollback:
-        - dropTable:
-            tableName: historique_livraison

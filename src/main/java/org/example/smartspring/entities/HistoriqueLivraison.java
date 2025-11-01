@@ -10,13 +10,11 @@ import org.example.smartspring.enums.StatutColis;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "historique_livraison", indexes = {
-        @Index(name = "idx_historique_colis", columnList = "colis_id")
-})
+@Table(name = "historique_livraison")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class HistoriqueLivraison {
 
     @Id
@@ -28,19 +26,12 @@ public class HistoriqueLivraison {
     private Colis colis;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 20)
     private StatutColis statut;
 
-    @Column(name = "date_changement")
+    @Column(nullable = false)
     private LocalDateTime dateChangement;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 500)
     private String commentaire;
-
-    @PrePersist
-    protected void onCreate() {
-        if (dateChangement == null) {
-            dateChangement = LocalDateTime.now();
-        }
-    }
 }

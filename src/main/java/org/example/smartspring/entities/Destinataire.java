@@ -6,16 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "destinataire")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Destinataire {
 
     @Id
@@ -34,27 +30,9 @@ public class Destinataire {
     @Column(nullable = false, length = 20)
     private String telephone;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String adresse;
 
-    @OneToMany(mappedBy = "destinataire", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Colis> colis = new ArrayList<>();
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @Column(nullable = false, length = 100)
+    private String ville;
 }

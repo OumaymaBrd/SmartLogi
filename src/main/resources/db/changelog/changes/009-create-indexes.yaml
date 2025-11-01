@@ -2,65 +2,40 @@ databaseChangeLog:
   - changeSet:
       id: 009-create-indexes
       author: smartlogi
-      comment: Création des index pour optimiser les performances des requêtes
       changes:
         - createIndex:
-            tableName: colis
             indexName: idx_colis_statut
+            tableName: colis
             columns:
               - column:
                   name: statut
-
         - createIndex:
-            tableName: colis
             indexName: idx_colis_priorite
+            tableName: colis
             columns:
               - column:
                   name: priorite
-
         - createIndex:
+            indexName: idx_colis_livreur
             tableName: colis
-            indexName: idx_colis_ville
             columns:
               - column:
-                  name: ville_destination
-
+                  name: livreur_id
         - createIndex:
-            tableName: historique_livraison
+            indexName: idx_colis_zone
+            tableName: colis
+            columns:
+              - column:
+                  name: zone_id
+        - createIndex:
             indexName: idx_historique_colis
+            tableName: historique_livraison
             columns:
               - column:
                   name: colis_id
-
         - createIndex:
-            tableName: client_expediteur
-            indexName: idx_client_email
-            columns:
-              - column:
-                  name: email
-
-        - createIndex:
-            tableName: livreur
-            indexName: idx_livreur_zone
-            columns:
-              - column:
-                  name: zone_assignee_id
-      rollback:
-        - dropIndex:
-            tableName: colis
-            indexName: idx_colis_statut
-        - dropIndex:
-            tableName: colis
-            indexName: idx_colis_priorite
-        - dropIndex:
-            tableName: colis
-            indexName: idx_colis_ville
-        - dropIndex:
+            indexName: idx_historique_date
             tableName: historique_livraison
-            indexName: idx_historique_colis
-        - dropIndex:
-            tableName: client_expediteur
-            indexName: idx_client_email
-        - dropIndex:
-            tableName: livreur
-            indexName: idx_livreur_zone
+            columns:
+              - column:
+                  name: date_changement

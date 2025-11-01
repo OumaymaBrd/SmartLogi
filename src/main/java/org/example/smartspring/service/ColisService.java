@@ -2,13 +2,13 @@ package org.example.smartspring.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.smartspring.dto.Colis.AddColisDTO;
-import org.example.smartspring.dto.Colis.ColisDTO;
-import org.example.smartspring.dto.Colis.UpdateColisDTO;
-import org.example.smartspring.entities.Colis;
-import org.example.smartspring.entities.HistoriqueLivraison;
+import org.example.smartspring.dto.colis.AddColisDTO;
+import org.example.smartspring.dto.colis.ColisDTO;
+import org.example.smartspring.dto.colis.UpdateColisDTO;
+import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
+import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.mapper.ColisMapper;
 import org.example.smartspring.repository.*;
 import org.springframework.data.domain.Page;
@@ -16,13 +16,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class ColisService {
 
     private final ColisRepository repository;
@@ -30,82 +31,150 @@ public class ColisService {
     private final DestinataireRepository destinataireRepository;
     private final LivreurRepository livreurRepository;
     private final ZoneRepository zoneRepository;
-    private final HistoriqueLivraisonRepository historiqueRepository;
+    private final HistoriqueLivraisonRepository historiqueLivraisonRepository;
     private final ColisMapper mapper;
 
-    @Transactional
-    public ColisDTO create(AddColisDTO dto) {
-        log.info("Creating new colis for client: {}", dto.getClientExpediteurId());
+    public ColisDTO createColis(AddColisDTO dto) {
+        log.debug("Creating new colis: {}", dto.getNumeroSuivi());
 
-        // Validate references
-        if (!clientExpediteurRepository.existsById(dto.getClientExpediteurId())) {
-            throw new RuntimeException("Client expéditeur non trouvé");
-        }
-        if (!destinataireRepository.existsById(dto.getDestinataireId())) {
-            throw new RuntimeException("Destinataire non trouvé");
-        }
-        if (dto.getLivreurId() != null && !livreurRepository.existsById(dto.getLivreurId())) {
-            throw new RuntimeException("Livreur non trouvé");
-        }
-        if (dto.getZoneId() != null && !zoneRepository.existsById(dto.getZoneId())) {
-            throw new RuntimeException("Zone non trouvée");
-        }
+        ClientExpediteur clientExpediteur = clientExpediteurRepository.findById(dto.getClientExpediteurId())
+                .orElseThrow(() -> new ResourceNotFoundException("ClientExpediteur not found with id: " + dto.getClientExpediteurId()));
+
+        Destinataire destinataire = destinataireRepository.findById(dto.getDestinataireId())
+                .orElseThrow(() -> new ResourceNotFoundException("Destinataire not found with id: " + dto.getDestinataireId()));
+
+        Livreur livreur = livreurRepository.findById(dto.getLivreurId())
+                .orElseThrow(() -> new ResourceNotFoundException("Livreur not found with id: " + dto.getLivreurId()));
+
+        Zone zone = zoneRepository.findById(dto.getZoneId())
+                .orElseThrow(() -> new ResourceNotFoundException("Zone not found with id: " + dto.getZoneId()));
 
         Colis entity = mapper.toEntity(dto);
+        entity.setClientExpediteur(clientExpediteur);
+        entity.setDestinataire(destinataire);
+        entity.setLivreur(livreur);
+        entity.setZone(zone);
+
         Colis saved = repository.save(entity);
 
         // Create initial history entry
-        HistoriqueLivraison historique = HistoriqueLivraison.builder()
-                .colis(saved)
-                .statut(saved.getStatut())
-                .commentaire("Colis créé")
-                .build();
-        historiqueRepository.save(historique);
+        createHistoryEntry(saved, saved.getStatut(), "Colis créé");
 
-        log.info("Colis created with ID: {}", saved.getId());
         return mapper.toDto(saved);
     }
 
     @Transactional(readOnly = true)
-    public ColisDTO getById(Long id) {
-        log.debug("Fetching colis with ID: {}", id);
-        Colis entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Colis non trouvé avec l'ID: " + id));
-        return mapper.toDto(entity);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ColisDTO> getAll(Pageable pageable) {
+    public Page<ColisDTO> getAllColis(Pageable pageable) {
         log.debug("Fetching all colis with pagination");
         return repository.findAll(pageable).map(mapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public Page<ColisDTO> getByStatut(StatutColis statut, Pageable pageable) {
+    public ColisDTO getColisById(Long id) {
+        log.debug("Fetching colis by id: {}", id);
+        Colis entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Colis not found with id: " + id));
+        return mapper.toDto(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public ColisDTO getColisByNumeroSuivi(String numeroSuivi) {
+        log.debug("Fetching colis by numero suivi: {}", numeroSuivi);
+        Colis entity = repository.findByNumeroSuivi(numeroSuivi)
+                .orElseThrow(() -> new ResourceNotFoundException("Colis not found with numero suivi: " + numeroSuivi));
+        return mapper.toDto(entity);
+    }
+
+    public ColisDTO updateColis(Long id, UpdateColisDTO dto) {
+        log.debug("Updating colis with id: {}", id);
+        Colis entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Colis not found with id: " + id));
+
+        StatutColis oldStatut = entity.getStatut();
+
+        if (dto.getClientExpediteurId() != null) {
+            ClientExpediteur clientExpediteur = clientExpediteurRepository.findById(dto.getClientExpediteurId())
+                    .orElseThrow(() -> new ResourceNotFoundException("ClientExpediteur not found"));
+            entity.setClientExpediteur(clientExpediteur);
+        }
+
+        if (dto.getDestinataireId() != null) {
+            Destinataire destinataire = destinataireRepository.findById(dto.getDestinataireId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Destinataire not found"));
+            entity.setDestinataire(destinataire);
+        }
+
+        if (dto.getLivreurId() != null) {
+            Livreur livreur = livreurRepository.findById(dto.getLivreurId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Livreur not found"));
+            entity.setLivreur(livreur);
+        }
+
+        if (dto.getZoneId() != null) {
+            Zone zone = zoneRepository.findById(dto.getZoneId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Zone not found"));
+            entity.setZone(zone);
+        }
+
+        mapper.updateEntityFromDto(dto, entity);
+
+        // If status changed, create history entry
+        if (dto.getStatut() != null && !dto.getStatut().equals(oldStatut)) {
+            createHistoryEntry(entity, dto.getStatut(), "Statut mis à jour");
+        }
+
+        Colis updated = repository.save(entity);
+        return mapper.toDto(updated);
+    }
+
+    public ColisDTO updateColisStatut(Long id, StatutColis newStatut) {
+        log.debug("Updating colis status with id: {} to {}", id, newStatut);
+        Colis entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Colis not found with id: " + id));
+
+        StatutColis oldStatut = entity.getStatut();
+        entity.setStatut(newStatut);
+
+        if (newStatut == StatutColis.LIVRE) {
+            entity.setDateLivraisonReelle(LocalDateTime.now());
+        }
+
+        Colis updated = repository.save(entity);
+
+        // Create history entry
+        createHistoryEntry(updated, newStatut, "Statut changé de " + oldStatut + " à " + newStatut);
+
+        return mapper.toDto(updated);
+    }
+
+    public ColisDTO updateStatut(Long id, StatutColis newStatut) {
+        return updateColisStatut(id, newStatut);
+    }
+
+    public void deleteColis(Long id) {
+        log.debug("Deleting colis with id: {}", id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Colis not found with id: " + id);
+        }
+        repository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ColisDTO> searchColis(String keyword, Pageable pageable) {
+        log.debug("Searching colis with keyword: {}", keyword);
+        return repository.searchByKeyword(keyword, pageable).map(mapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ColisDTO> getColisByStatut(StatutColis statut) {
         log.debug("Fetching colis by statut: {}", statut);
-        return repository.findByStatut(statut, pageable).map(mapper::toDto);
+        return repository.findByStatut(statut).stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public Page<ColisDTO> getByPriorite(PrioriteColis priorite, Pageable pageable) {
-        log.debug("Fetching colis by priorite: {}", priorite);
-        return repository.findByPriorite(priorite, pageable).map(mapper::toDto);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ColisDTO> getByVille(String ville, Pageable pageable) {
-        log.debug("Fetching colis by ville: {}", ville);
-        return repository.findByVilleDestination(ville, pageable).map(mapper::toDto);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<ColisDTO> getByZone(Long zoneId, Pageable pageable) {
-        log.debug("Fetching colis by zone: {}", zoneId);
-        return repository.findByZoneId(zoneId, pageable).map(mapper::toDto);
-    }
-
-    @Transactional(readOnly = true)
-    public List<ColisDTO> getByLivreur(Long livreurId) {
+    public List<ColisDTO> getColisByLivreur(Long livreurId) {
         log.debug("Fetching colis by livreur: {}", livreurId);
         return repository.findByLivreurId(livreurId).stream()
                 .map(mapper::toDto)
@@ -113,91 +182,27 @@ public class ColisService {
     }
 
     @Transactional(readOnly = true)
-    public List<ColisDTO> getByClientExpediteur(Long clientId) {
-        log.debug("Fetching colis by client expediteur: {}", clientId);
-        return repository.findByClientExpediteurId(clientId).stream()
+    public List<ColisDTO> getColisByZone(Long zoneId) {
+        log.debug("Fetching colis by zone: {}", zoneId);
+        return repository.findByZoneId(zoneId).stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<ColisDTO> getByDestinataire(Long destinataireId) {
-        log.debug("Fetching colis by destinataire: {}", destinataireId);
-        return repository.findByDestinataireId(destinataireId).stream()
+    public List<ColisDTO> getColisByPriorite(PrioriteColis priorite) {
+        log.debug("Fetching colis by priorite: {}", priorite);
+        return repository.findByPriorite(priorite).stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    @Transactional(readOnly = true)
-    public Page<ColisDTO> search(String keyword, Pageable pageable) {
-        log.debug("Searching colis with keyword: {}", keyword);
-        return repository.searchByKeyword(keyword, pageable).map(mapper::toDto);
-    }
-
-    @Transactional
-    public ColisDTO update(Long id, UpdateColisDTO dto) {
-        log.info("Updating colis with ID: {}", id);
-
-        Colis entity = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Colis non trouvé avec l'ID: " + id));
-
-        StatutColis oldStatut = entity.getStatut();
-
-        if (dto.getLivreurId() != null && !livreurRepository.existsById(dto.getLivreurId())) {
-            throw new RuntimeException("Livreur non trouvé");
-        }
-        if (dto.getZoneId() != null && !zoneRepository.existsById(dto.getZoneId())) {
-            throw new RuntimeException("Zone non trouvée");
-        }
-
-        mapper.updateEntityFromDto(dto, entity);
-        Colis updated = repository.save(entity);
-
-        // Create history entry if status changed
-        if (dto.getStatut() != null && !dto.getStatut().equals(oldStatut)) {
-            HistoriqueLivraison historique = HistoriqueLivraison.builder()
-                    .colis(updated)
-                    .statut(updated.getStatut())
-                    .commentaire("Statut changé de " + oldStatut + " à " + updated.getStatut())
-                    .build();
-            historiqueRepository.save(historique);
-        }
-
-        log.info("Colis updated with ID: {}", updated.getId());
-        return mapper.toDto(updated);
-    }
-
-    @Transactional
-    public void delete(Long id) {
-        log.info("Deleting colis with ID: {}", id);
-
-        if (!repository.existsById(id)) {
-            throw new RuntimeException("Colis non trouvé avec l'ID: " + id);
-        }
-
-        repository.deleteById(id);
-        log.info("Colis deleted with ID: {}", id);
-    }
-
-    @Transactional(readOnly = true)
-    public Long countByLivreur(Long livreurId) {
-        return repository.countByLivreurId(livreurId);
-    }
-
-    @Transactional(readOnly = true)
-    public BigDecimal sumPoidsByLivreur(Long livreurId) {
-        BigDecimal total = repository.sumPoidsByLivreurId(livreurId);
-        return total != null ? total : BigDecimal.ZERO;
-    }
-
-    @Transactional(readOnly = true)
-    public Long countByZone(Long zoneId) {
-        return repository.countByZoneId(zoneId);
-    }
-
-    @Transactional(readOnly = true)
-    public BigDecimal sumPoidsByZone(Long zoneId) {
-        BigDecimal total = repository.sumPoidsByZoneId(zoneId);
-        return total != null ? total : BigDecimal.ZERO;
+    private void createHistoryEntry(Colis colis, StatutColis statut, String commentaire) {
+        HistoriqueLivraison historique = new HistoriqueLivraison();
+        historique.setColis(colis);
+        historique.setStatut(statut);
+        historique.setDateChangement(LocalDateTime.now());
+        historique.setCommentaire(commentaire);
+        historiqueLivraisonRepository.save(historique);
     }
 }

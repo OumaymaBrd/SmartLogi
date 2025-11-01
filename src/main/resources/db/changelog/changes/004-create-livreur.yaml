@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: 004-create-livreur
       author: smartlogi
-      comment: Création de la table livreur avec relation vers zone
       changes:
         - createTable:
             tableName: livreur
@@ -31,26 +30,13 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: vehicule
-                  type: VARCHAR(100)
+                  type: VARCHAR(50)
               - column:
-                  name: zone_assignee_id
+                  name: zone_id
                   type: BIGINT
-              - column:
-                  name: created_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-              - column:
-                  name: updated_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-
         - addForeignKeyConstraint:
             baseTableName: livreur
-            baseColumnNames: zone_assignee_id
+            baseColumnNames: zone_id
             referencedTableName: zone
             referencedColumnNames: id
             constraintName: fk_livreur_zone
-            onDelete: SET NULL
-      rollback:
-        - dropTable:
-            tableName: livreur

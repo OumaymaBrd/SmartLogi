@@ -6,16 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Table(name = "livreur")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Livreur {
 
     @Id
@@ -31,31 +27,10 @@ public class Livreur {
     @Column(nullable = false, length = 20)
     private String telephone;
 
-    @Column(length = 100)
+    @Column(length = 50)
     private String vehicule;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zone_assignee_id")
-    private Zone zoneAssignee;
-
-    @OneToMany(mappedBy = "livreur")
-    @Builder.Default
-    private List<Colis> colis = new ArrayList<>();
-
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
 }

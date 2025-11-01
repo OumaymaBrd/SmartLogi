@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: 006-create-colis
       author: smartlogi
-      comment: Création de la table colis avec toutes les relations
       changes:
         - createTable:
             tableName: colis
@@ -15,28 +14,40 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
+                  name: numero_suivi
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
                   name: description
                   type: VARCHAR(500)
+                  constraints:
+                    nullable: false
               - column:
                   name: poids
-                  type: DECIMAL(10,2)
+                  type: DOUBLE
                   constraints:
                     nullable: false
               - column:
                   name: statut
-                  type: VARCHAR(50)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: priorite
-                  type: VARCHAR(50)
+                  type: VARCHAR(20)
                   constraints:
                     nullable: false
               - column:
                   name: ville_destination
                   type: VARCHAR(100)
-                  constraints:
-                    nullable: false
+              - column:
+                  name: date_livraison_reelle
+                  type: TIMESTAMP
+              - column:
+                  name: livreur_id
+                  type: BIGINT
               - column:
                   name: client_expediteur_id
                   type: BIGINT
@@ -48,51 +59,29 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: livreur_id
-                  type: BIGINT
-              - column:
                   name: zone_id
                   type: BIGINT
-              - column:
-                  name: created_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-              - column:
-                  name: updated_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-
-        - addForeignKeyConstraint:
-            baseTableName: colis
-            baseColumnNames: client_expediteur_id
-            referencedTableName: client_expediteur
-            referencedColumnNames: id
-            constraintName: fk_colis_client_expediteur
-            onDelete: CASCADE
-
-        - addForeignKeyConstraint:
-            baseTableName: colis
-            baseColumnNames: destinataire_id
-            referencedTableName: destinataire
-            referencedColumnNames: id
-            constraintName: fk_colis_destinataire
-            onDelete: CASCADE
-
         - addForeignKeyConstraint:
             baseTableName: colis
             baseColumnNames: livreur_id
             referencedTableName: livreur
             referencedColumnNames: id
             constraintName: fk_colis_livreur
-            onDelete: SET NULL
-
+        - addForeignKeyConstraint:
+            baseTableName: colis
+            baseColumnNames: client_expediteur_id
+            referencedTableName: client_expediteur
+            referencedColumnNames: id
+            constraintName: fk_colis_client_expediteur
+        - addForeignKeyConstraint:
+            baseTableName: colis
+            baseColumnNames: destinataire_id
+            referencedTableName: destinataire
+            referencedColumnNames: id
+            constraintName: fk_colis_destinataire
         - addForeignKeyConstraint:
             baseTableName: colis
             baseColumnNames: zone_id
             referencedTableName: zone
             referencedColumnNames: id
             constraintName: fk_colis_zone
-            onDelete: SET NULL
-      rollback:
-        - dropTable:
-            tableName: colis

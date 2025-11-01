@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: 003-create-destinataire
       author: smartlogi
-      comment: Création de la table destinataire pour gérer les destinataires des colis
       changes:
         - createTable:
             tableName: destinataire
@@ -38,13 +37,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: created_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP
-              - column:
-                  name: updated_at
-                  type: TIMESTAMP
-                  defaultValueComputed: CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      rollback:
-        - dropTable:
-            tableName: destinataire
+                  name: ville
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false

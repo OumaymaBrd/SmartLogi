@@ -13,11 +13,14 @@ import java.util.List;
 @Repository
 public interface LivreurRepository extends JpaRepository<Livreur, Long> {
 
-    List<Livreur> findByZoneAssigneeId(Long zoneId);
-
-    @Query("SELECT l FROM Livreur l WHERE " +
-            "LOWER(l.nom) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(l.prenom) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(l.telephone) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    @Query("SELECT l FROM Livreur l WHERE LOWER(l.nom) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(l.prenom) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Livreur> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    List<Livreur> findByZoneId(Long zoneId);
+
+    @Query("SELECT COUNT(c) FROM Colis c WHERE c.livreur.id = :livreurId")
+    Long countColisByLivreur(@Param("livreurId") Long livreurId);
+
+    @Query("SELECT SUM(c.poids) FROM Colis c WHERE c.livreur.id = :livreurId")
+    Double sumPoidsByLivreur(@Param("livreurId") Long livreurId);
 }

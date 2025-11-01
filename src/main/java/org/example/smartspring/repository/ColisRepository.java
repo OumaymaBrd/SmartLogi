@@ -10,45 +10,28 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ColisRepository extends JpaRepository<Colis, Long> {
 
-    Page<Colis> findByStatut(StatutColis statut, Pageable pageable);
+    Optional<Colis> findByNumeroSuivi(String numeroSuivi);
 
-    Page<Colis> findByPriorite(PrioriteColis priorite, Pageable pageable);
+    @Query("SELECT c FROM Colis c WHERE LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(c.villeDestination) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+    Page<Colis> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-    Page<Colis> findByVilleDestination(String ville, Pageable pageable);
+    List<Colis> findByStatut(StatutColis statut);
 
-    Page<Colis> findByZoneId(Long zoneId, Pageable pageable);
+    List<Colis> findByPriorite(PrioriteColis priorite);
 
     List<Colis> findByLivreurId(Long livreurId);
 
-    List<Colis> findByClientExpediteurId(Long clientId);
+    List<Colis> findByZoneId(Long zoneId);
 
-    List<Colis> findByDestinataireId(Long destinataireId);
+    @Query("SELECT COUNT(c), SUM(c.poids) FROM Colis c WHERE c.livreur.id = :livreurId")
+    Object[] getStatsByLivreur(@Param("livreurId") Long livreurId);
 
-    @Query("SELECT c FROM Colis c WHERE c.statut = :statut AND c.priorite = :priorite")
-    Page<Colis> findByStatutAndPriorite(@Param("statut") StatutColis statut,
-                                        @Param("priorite") PrioriteColis priorite,
-                                        Pageable pageable);
-
-    @Query("SELECT COUNT(c) FROM Colis c WHERE c.livreur.id = :livreurId")
-    Long countByLivreurId(@Param("livreurId") Long livreurId);
-
-    @Query("SELECT SUM(c.poids) FROM Colis c WHERE c.livreur.id = :livreurId")
-    BigDecimal sumPoidsByLivreurId(@Param("livreurId") Long livreurId);
-
-    @Query("SELECT COUNT(c) FROM Colis c WHERE c.zone.id = :zoneId")
-    Long countByZoneId(@Param("zoneId") Long zoneId);
-
-    @Query("SELECT SUM(c.poids) FROM Colis c WHERE c.zone.id = :zoneId")
-    BigDecimal sumPoidsByZoneId(@Param("zoneId") Long zoneId);
-
-    @Query("SELECT c FROM Colis c WHERE " +
-            "LOWER(c.description) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
-            "LOWER(c.villeDestination) LIKE LOWER(CONCAT('%', :keyword, '%'))")
-    Page<Colis> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
+    @Query("SELECT COUNT(c), SUM(c.poids) FROM Colis c WHERE c.zone.id = :zoneId")
+    Object[] getStatsByZone(@Param("zoneId") Long zoneId);
 }
