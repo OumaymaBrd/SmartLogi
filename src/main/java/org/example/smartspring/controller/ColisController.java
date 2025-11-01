@@ -1,6 +1,7 @@
 package org.example.smartspring.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.smartspring.dto.response.ColisResponseDTO;
 import org.example.smartspring.dto.request.ColisRequestDTO;
 import org.example.smartspring.services.ColisService;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/colis")
 @RequiredArgsConstructor
@@ -35,6 +37,7 @@ public class ColisController {
         if (list == null || list.isEmpty()) {
             Map<String, String> message = new HashMap<>();
             message.put("message", "Aucun colis trouvé dans votre stock.");
+            log.info("Aucun colis trouv<UNK> dans votre stock.");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
         }
 

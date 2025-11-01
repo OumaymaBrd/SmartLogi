@@ -13,9 +13,12 @@ public class ClientExpediteurDTO {
     private String nom;
     private String prenom;
     private String email;
+
     private String adresse;
     @NotBlank(message = "Remplir Le Numero Teliphone")
+
     private String telephone;
+
 
 
 

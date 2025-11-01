@@ -11,8 +11,11 @@ import lombok.*;
 @Builder
 public class Livreur {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-
     private String nom;
+    private String prenom;
+    private String email;
+    private String telephone;
+    private String adresse;
 }

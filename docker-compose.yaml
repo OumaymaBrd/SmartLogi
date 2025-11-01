@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # ----------------------------------------------------
+  # 1. Spring Boot Application
+  # ----------------------------------------------------
+  spring-app:
+    image: spring-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: spring-app
+    ports:
+      - "8080:8080"
+    volumes:
+      # Montage du répertoire logs pour que Promtail puisse le lire
+      - ./logs:/app/logs
+    environment:
+      - JAVA_OPTS=-Dspring.profiles.active=dev
+    depends_on:
+      - loki # Démarrer Loki avant l'application pour la dépendance de la stack
+
+  # ----------------------------------------------------
+  # 2. Loki (Log Aggregation)
+  # ----------------------------------------------------
+  loki:
+    image: grafana/loki:3.5.7
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      # Monter le fichier de configuration Loki
+      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+
+  # ----------------------------------------------------
+  # 3. Promtail (Log Collector)
+  # ----------------------------------------------------
+  promtail:
+    image: grafana/promtail:3.5.7
+    container_name: promtail
+    volumes:
+      # Lire les logs de l'application depuis le volume partagé
+      - ./logs:/logs
+      # Monter le fichier de configuration Promtail
+      - ./promtail/promtail-config.yaml:/etc/promtail/config.yaml:ro
+    command: -config.file=/etc/promtail/config.yaml
+    depends_on:
+      - loki # Dépend de Loki pour l'envoi des logs
+
+  # ----------------------------------------------------
+  # 4. Grafana (Visualization & Dashboards)
+  # ----------------------------------------------------
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SECURITY_ADMIN_USER=admin
+    volumes:
+      # Provisionnement des sources de données (Loki)
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      # Provisionnement des tableaux de bord (Spring Logs)
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+    depends_on:
+      - loki

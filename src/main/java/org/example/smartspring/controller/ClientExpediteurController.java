@@ -2,6 +2,7 @@ package org.example.smartspring.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.example.smartspring.dto.ClientExpediteur.ClientExpediteurDTO;
 import org.example.smartspring.dto.ClientExpediteur.UpdateClientExpediteurDTO;
 import org.example.smartspring.mapper.ClientExpediteurMapper;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Controller
 @RequestMapping("/api/clientExpe")
 @RequiredArgsConstructor
@@ -35,9 +37,11 @@ public class ClientExpediteurController {
             ClientExpediteurDTO dto = clientExpediteurService.get(id);
 
             if (dto == null) {
+                log.info("ClientExpediteurDTO non trouv<UNK>");
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body("Client non trouvé avec l'ID : " + id);
+
             }
 
             return ResponseEntity.ok(dto);
