@@ -17,7 +17,7 @@ import java.util.Arrays;
 public class LoggingAspect {
 
 
-    @Pointcut("within(org.example.smartspring.services..*)")
+    @Pointcut("within(org.example.smartspring.service..*)")
     public void serviceLayer() {}
 
 

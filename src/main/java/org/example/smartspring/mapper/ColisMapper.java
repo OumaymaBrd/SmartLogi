@@ -1,31 +1,34 @@
 package org.example.smartspring.mapper;
 
-import org.example.smartspring.dto.request.ColisRequestDTO;
-import org.example.smartspring.dto.response.ColisResponseDTO;
+import org.example.smartspring.dto.Colis.AddColisDTO;
+import org.example.smartspring.dto.Colis.ColisDTO;
+import org.example.smartspring.dto.Colis.UpdateColisDTO;
 import org.example.smartspring.entities.Colis;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ColisMapper {
 
-    ColisMapper INSTANCE = Mappers.getMapper(ColisMapper.class);
+    @Mapping(target = "clientExpediteur.id", source = "clientExpediteurId")
+    @Mapping(target = "destinataire.id", source = "destinataireId")
+    @Mapping(target = "livreur.id", source = "livreurId")
+    @Mapping(target = "zone.id", source = "zoneId")
+    Colis toEntity(AddColisDTO dto);
 
-    // Mapping du DTO vers l'entité
-    @Mapping(source = "idLivreur", target = "livreur.id")
-    @Mapping(source = "idClientExpediteur", target = "clientExpediteur.id")
-    @Mapping(source = "idDestinataire", target = "destinataire.id")
-    @Mapping(source = "idZone", target = "zone.id")
+    @Mapping(target = "clientExpediteurId", source = "clientExpediteur.id")
+    @Mapping(target = "clientExpediteurNom", expression = "java(entity.getClientExpediteur().getNom() + \" \" + entity.getClientExpediteur().getPrenom())")
+    @Mapping(target = "destinataireId", source = "destinataire.id")
+    @Mapping(target = "destinataireNom", expression = "java(entity.getDestinataire().getNom() + \" \" + entity.getDestinataire().getPrenom())")
+    @Mapping(target = "livreurId", source = "livreur.id")
+    @Mapping(target = "livreurNom", expression = "java(entity.getLivreur() != null ? entity.getLivreur().getNom() + \" \" + entity.getLivreur().getPrenom() : null)")
+    @Mapping(target = "zoneId", source = "zone.id")
+    @Mapping(target = "zoneNom", source = "zone.nom")
+    ColisDTO toDto(Colis entity);
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "statut", ignore = true)
-    Colis toEntity(ColisRequestDTO dto);
-
-
-    @Mapping(target = "livreurNom", expression = "java(entity.getLivreur() != null ? entity.getLivreur().getNom() : null)")
-    @Mapping(target = "clientExpediteurNom", expression = "java(entity.getClientExpediteur() != null ? entity.getClientExpediteur().getNom() : null)")
-    @Mapping(target = "destinataireNom", expression = "java(entity.getDestinataire() != null ? entity.getDestinataire().getNom() : null)")
-    @Mapping(target = "zoneNom", expression = "java(entity.getZone() != null ? entity.getZone().getNom() : null)")
-    ColisResponseDTO toResponseDTO(Colis entity);
+    @Mapping(target = "livreur.id", source = "livreurId")
+    @Mapping(target = "zone.id", source = "zoneId")
+    void updateEntityFromDto(UpdateColisDTO dto, @MappingTarget Colis entity);
 }

@@ -16,7 +16,7 @@ public class PerformanceMonitoringAspect {
     private static final long SLOW_METHOD_THRESHOLD = 1000;
 
 
-    @Pointcut("within(org.example.smartspring.services..*)")
+    @Pointcut("within(org.example.smartspring.service..*)")
     public void serviceLayer() {}
 
 
