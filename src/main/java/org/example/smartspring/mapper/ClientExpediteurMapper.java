@@ -12,4 +12,8 @@ public interface ClientExpediteurMapper {
     ClientExpediteur toEntity(AddClientExpediteurDTO dto);
     ClientExpediteurDTO toDto(ClientExpediteur entity);
     void updateEntityFromDto(UpdateClientExpediteurDTO dto, @MappingTarget ClientExpediteur entity);
+//    DTo ---> Entity
+    ClientExpediteur toEntityThreeParametre(ClientExpediteurDTO dto);
+
+
 }

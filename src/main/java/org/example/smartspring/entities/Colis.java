@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 public class Colis {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "numero_suivi", unique = true, nullable = false, length = 50)
     private String numeroSuivi;

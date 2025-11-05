@@ -19,7 +19,7 @@ public class HistoriqueLivraisonController {
     private final HistoriqueLivraisonService historiqueLivraisonService;
 
     @GetMapping("/colis/{colisId}")
-    public ResponseEntity<List<HistoriqueLivraisonDTO>> getHistoriqueByColisId(@PathVariable Long colisId) {
+    public ResponseEntity<List<HistoriqueLivraisonDTO>> getHistoriqueByColisId(@PathVariable String colisId) {
         return ResponseEntity.ok(historiqueLivraisonService.getHistoriqueByColisId(colisId));
     }
 

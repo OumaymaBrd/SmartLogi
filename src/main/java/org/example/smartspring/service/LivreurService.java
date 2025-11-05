@@ -45,20 +45,24 @@ public class LivreurService {
     }
 
     @Transactional(readOnly = true)
-    public Page<LivreurDTO> getAllLivreurs(Pageable pageable) {
+
+    public List<LivreurDTO> getAllLivreurs() {
         log.debug("Fetching all livreurs with pagination");
-        return repository.findAll(pageable).map(mapper::toDto);
+        return repository.findAll()
+                        .stream()
+                        .map(mapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public LivreurDTO getLivreurById(Long id) {
+    public LivreurDTO getLivreurById(String id) {
         log.debug("Fetching livreur by id: {}", id);
         Livreur entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Livreur not found with id: " + id));
         return mapper.toDto(entity);
     }
 
-    public LivreurDTO updateLivreur(Long id, UpdateLivreurDTO dto) {
+    public LivreurDTO updateLivreur(String id, UpdateLivreurDTO dto) {
         log.debug("Updating livreur with id: {}", id);
         Livreur entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Livreur not found with id: " + id));
@@ -74,7 +78,7 @@ public class LivreurService {
         return mapper.toDto(updated);
     }
 
-    public void deleteLivreur(Long id) {
+    public void deleteLivreur(String id) {
         log.debug("Deleting livreur with id: {}", id);
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Livreur not found with id: " + id);
@@ -89,7 +93,7 @@ public class LivreurService {
     }
 
     @Transactional(readOnly = true)
-    public List<LivreurDTO> getLivreursByZone(Long zoneId) {
+    public List<LivreurDTO> getLivreursByZone(String zoneId) {
         log.debug("Fetching livreurs by zone: {}", zoneId);
         return repository.findByZoneId(zoneId).stream()
                 .map(mapper::toDto)
@@ -97,7 +101,7 @@ public class LivreurService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getLivreurStatistics(Long livreurId) {
+    public Map<String, Object> getLivreurStatistics(String livreurId) {
         log.debug("Fetching statistics for livreur: {}", livreurId);
         if (!repository.existsById(livreurId)) {
             throw new ResourceNotFoundException("Livreur not found with id: " + livreurId);
@@ -115,7 +119,7 @@ public class LivreurService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getLivreurStats(Long livreurId) {
+    public Map<String, Object> getLivreurStats(String livreurId) {
         return getLivreurStatistics(livreurId);
     }
 }

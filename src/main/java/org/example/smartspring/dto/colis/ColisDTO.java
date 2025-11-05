@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ColisDTO {
 
-    private Long id;
+    private String id;
     private String numeroSuivi;
     private BigDecimal poids;
     private BigDecimal valeurDeclaree;

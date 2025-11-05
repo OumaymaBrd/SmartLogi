@@ -22,7 +22,7 @@ public class HistoriqueLivraisonService {
     private final HistoriqueLivraisonRepository repository;
     private final HistoriqueLivraisonMapper mapper;
 
-    public List<HistoriqueLivraisonDTO> getHistoriqueByColisId(Long colisId) {
+    public List<HistoriqueLivraisonDTO> getHistoriqueByColisId(String colisId) {
         log.debug("Fetching historique for colis: {}", colisId);
         return repository.findByColisIdOrderByDateChangementDesc(colisId).stream()
                 .map(mapper::toDto)

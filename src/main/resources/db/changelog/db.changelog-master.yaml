@@ -17,3 +17,23 @@ databaseChangeLog:
       file: db/changelog/changes/008-create-historique-livraison.yaml
   - include:
       file: db/changelog/changes/009-create-indexes.yaml
+  - include:
+      file: db/changelog/changes/010-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/011-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/012-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/013-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/014-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/015-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/017-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/016-modify-id-type.yaml
+  - include:
+      file: db/changelog/changes/018-add-email-attribut.yaml
+  - include:
+      file: db/changelog/changes/019-modify-id-type.yaml

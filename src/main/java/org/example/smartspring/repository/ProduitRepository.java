@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProduitRepository extends JpaRepository<Produit, Long> {
+public interface ProduitRepository extends JpaRepository<Produit, String> {
 
     @Query("SELECT p FROM Produit p WHERE LOWER(p.nom) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(p.categorie) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Produit> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);

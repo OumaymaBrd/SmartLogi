@@ -40,14 +40,14 @@ public class ZoneService {
     }
 
     @Transactional(readOnly = true)
-    public ZoneDTO getZoneById(Long id) {
+    public ZoneDTO getZoneById(String id) {
         log.debug("Fetching zone by id: {}", id);
         Zone entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found with id: " + id));
         return mapper.toDto(entity);
     }
 
-    public ZoneDTO updateZone(Long id, UpdateZoneDTO dto) {
+    public ZoneDTO updateZone(String id, UpdateZoneDTO dto) {
         log.debug("Updating zone with id: {}", id);
         Zone entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Zone not found with id: " + id));
@@ -57,7 +57,7 @@ public class ZoneService {
         return mapper.toDto(updated);
     }
 
-    public void deleteZone(Long id) {
+    public void deleteZone(String id) {
         log.debug("Deleting zone with id: {}", id);
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Zone not found with id: " + id);
@@ -72,7 +72,7 @@ public class ZoneService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getZoneStatistics(Long zoneId) {
+    public Map<String, Object> getZoneStatistics(String zoneId) {
         log.debug("Fetching statistics for zone: {}", zoneId);
         if (!repository.existsById(zoneId)) {
             throw new ResourceNotFoundException("Zone not found with id: " + zoneId);
@@ -90,7 +90,7 @@ public class ZoneService {
     }
 
     @Transactional(readOnly = true)
-    public Map<String, Object> getZoneStats(Long zoneId) {
+    public Map<String, Object> getZoneStats(String zoneId) {
         return getZoneStatistics(zoneId);
     }
 }

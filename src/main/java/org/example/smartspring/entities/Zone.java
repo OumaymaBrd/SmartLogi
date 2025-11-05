@@ -15,11 +15,14 @@ import lombok.NoArgsConstructor;
 public class Zone {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, unique = true, length = 100)
     private String nom;
+
+    @Column(length = 500)
+    private String description;
 
     @Column(length = 10)
     private String codePostal;

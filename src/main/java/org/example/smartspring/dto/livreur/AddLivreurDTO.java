@@ -1,5 +1,6 @@
 package org.example.smartspring.dto.livreur;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,5 +29,8 @@ public class AddLivreurDTO {
     private String email;
 
     @NotNull(message = "L'ID de la zone est obligatoire")
-    private Long zoneId;
+    private String zoneId;
+
+    @Column(length = 50)
+    private String vehicule;
 }

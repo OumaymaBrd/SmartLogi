@@ -32,13 +32,13 @@ public class AddColisDTO {
     private PrioriteColis priorite;
 
     @NotNull(message = "L'ID du client expéditeur est obligatoire")
-    private Long clientExpediteurId;
+    private String clientExpediteurId;
 
     @NotNull(message = "L'ID du destinataire est obligatoire")
-    private Long destinataireId;
+    private String destinataireId;
 
-    private Long livreurId;
+    private String livreurId;
 
     @NotNull(message = "L'ID de la zone est obligatoire")
-    private Long zoneId;
+    private String zoneId;
 }

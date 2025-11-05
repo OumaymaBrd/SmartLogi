@@ -13,6 +13,7 @@ import org.example.smartspring.mapper.ColisMapper;
 import org.example.smartspring.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,14 +64,56 @@ public class ColisService {
         return mapper.toDto(saved);
     }
 
-    @Transactional(readOnly = true)
-    public Page<ColisDTO> getAllColis(Pageable pageable) {
-        log.debug("Fetching all colis with pagination");
-        return repository.findAll(pageable).map(mapper::toDto);
-    }
 
     @Transactional(readOnly = true)
-    public ColisDTO getColisById(Long id) {
+    public Page<ColisDTO> getAllColis(
+            Pageable pageable,
+            String statut,
+            String zone,
+            String ville,
+            String priorite,
+            LocalDateTime dateDebut,
+            LocalDateTime dateFin
+    ) {
+        Specification<Colis> spec = Specification.where(null);
+
+        if (statut != null && !statut.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("statut"), StatutColis.valueOf(statut)));
+        }
+
+        if (priorite != null && !priorite.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("priorite"), PrioriteColis.valueOf(priorite)));
+        }
+
+        if (zone != null && !zone.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("zone").get("nom"), zone));
+        }
+
+        if (ville != null && !ville.isEmpty()) {
+            spec = spec.and((root, query, cb) ->
+                    cb.equal(root.get("villeDestination"), ville));
+        }
+
+        if (dateDebut != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.greaterThanOrEqualTo(root.get("dateLivraisonReelle"), dateDebut));
+        }
+
+        if (dateFin != null) {
+            spec = spec.and((root, query, cb) ->
+                    cb.lessThanOrEqualTo(root.get("dateLivraisonReelle"), dateFin));
+        }
+
+        return repository.findAll(spec, pageable)
+                .map(mapper::toDto);
+    }
+
+
+    @Transactional(readOnly = true)
+    public ColisDTO getColisById(String id) {
         log.debug("Fetching colis by id: {}", id);
         Colis entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Colis not found with id: " + id));
@@ -85,7 +128,7 @@ public class ColisService {
         return mapper.toDto(entity);
     }
 
-    public ColisDTO updateColis(Long id, UpdateColisDTO dto) {
+    public ColisDTO updateColis(String id, UpdateColisDTO dto) {
         log.debug("Updating colis with id: {}", id);
         Colis entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Colis not found with id: " + id));
@@ -127,7 +170,7 @@ public class ColisService {
         return mapper.toDto(updated);
     }
 
-    public ColisDTO updateColisStatut(Long id, StatutColis newStatut) {
+    public ColisDTO updateColisStatut(String id, StatutColis newStatut) {
         log.debug("Updating colis status with id: {} to {}", id, newStatut);
         Colis entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Colis not found with id: " + id));
@@ -147,11 +190,13 @@ public class ColisService {
         return mapper.toDto(updated);
     }
 
-    public ColisDTO updateStatut(Long id, StatutColis newStatut) {
+    public ColisDTO updateStatut(String id, StatutColis newStatut){
+
         return updateColisStatut(id, newStatut);
+
     }
 
-    public void deleteColis(Long id) {
+    public void deleteColis(String id) {
         log.debug("Deleting colis with id: {}", id);
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Colis not found with id: " + id);
@@ -174,7 +219,7 @@ public class ColisService {
     }
 
     @Transactional(readOnly = true)
-    public List<ColisDTO> getColisByLivreur(Long livreurId) {
+    public List<ColisDTO> getColisByLivreur(String livreurId) {
         log.debug("Fetching colis by livreur: {}", livreurId);
         return repository.findByLivreurId(livreurId).stream()
                 .map(mapper::toDto)
@@ -182,7 +227,7 @@ public class ColisService {
     }
 
     @Transactional(readOnly = true)
-    public List<ColisDTO> getColisByZone(Long zoneId) {
+    public List<ColisDTO> getColisByZone(String zoneId) {
         log.debug("Fetching colis by zone: {}", zoneId);
         return repository.findByZoneId(zoneId).stream()
                 .map(mapper::toDto)

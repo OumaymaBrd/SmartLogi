@@ -30,17 +30,17 @@ public class ProduitController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProduitDTO> getProduitById(@PathVariable Long id) {
+    public ResponseEntity<ProduitDTO> getProduitById(@PathVariable String id) {
         return ResponseEntity.ok(produitService.getProduitById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProduitDTO> updateProduit(@PathVariable Long id, @Valid @RequestBody UpdateProduitDTO dto) {
+    public ResponseEntity<ProduitDTO> updateProduit(@PathVariable String id, @Valid @RequestBody UpdateProduitDTO dto) {
         return ResponseEntity.ok(produitService.updateProduit(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduit(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProduit(@PathVariable String id) {
         produitService.deleteProduit(id);
         return ResponseEntity.noContent().build();
     }

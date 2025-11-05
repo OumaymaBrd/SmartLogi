@@ -28,11 +28,11 @@ public class UpdateColisDTO {
 
     private PrioriteColis priorite;
 
-    private Long livreurId;
+    private String livreurId;
 
-    private Long zoneId;
+    private String zoneId;
 
-    private Long clientExpediteurId;
+    private String clientExpediteurId;
 
-    private Long destinataireId;
+    private String destinataireId;
 }

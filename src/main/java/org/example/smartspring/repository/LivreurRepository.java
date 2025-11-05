@@ -11,16 +11,16 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface LivreurRepository extends JpaRepository<Livreur, Long> {
+public interface LivreurRepository extends JpaRepository<Livreur, String> {
 
     @Query("SELECT l FROM Livreur l WHERE LOWER(l.nom) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(l.prenom) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Livreur> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-    List<Livreur> findByZoneId(Long zoneId);
+    List<Livreur> findByZoneId(String zoneId);
 
     @Query("SELECT COUNT(c) FROM Colis c WHERE c.livreur.id = :livreurId")
-    Long countColisByLivreur(@Param("livreurId") Long livreurId);
+    Long countColisByLivreur(@Param("livreurId") String livreurId);
 
     @Query("SELECT SUM(c.poids) FROM Colis c WHERE c.livreur.id = :livreurId")
-    Double sumPoidsByLivreur(@Param("livreurId") Long livreurId);
+    Double sumPoidsByLivreur(@Param("livreurId") String livreurId);
 }

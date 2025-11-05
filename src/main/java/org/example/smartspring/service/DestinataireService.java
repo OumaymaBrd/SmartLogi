@@ -40,14 +40,14 @@ public class DestinataireService {
     }
 
     @Transactional(readOnly = true)
-    public DestinataireDTO getDestinataireById(Long id) {
+    public DestinataireDTO getDestinataireById(String id) {
         log.debug("Fetching destinataire by id: {}", id);
         Destinataire entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Destinataire not found with id: " + id));
         return mapper.toDto(entity);
     }
 
-    public DestinataireDTO updateDestinataire(Long id, UpdateDestinataireDTO dto) {
+    public DestinataireDTO updateDestinataire(String id, UpdateDestinataireDTO dto) {
         log.debug("Updating destinataire with id: {}", id);
         Destinataire entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Destinataire not found with id: " + id));
@@ -57,7 +57,7 @@ public class DestinataireService {
         return mapper.toDto(updated);
     }
 
-    public void deleteDestinataire(Long id) {
+    public void deleteDestinataire(String id) {
         log.debug("Deleting destinataire with id: {}", id);
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Destinataire not found with id: " + id);

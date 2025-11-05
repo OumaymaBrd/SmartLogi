@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DestinataireDTO {
 
-    private Long id;
+    private String id;
     private String nom;
     private String prenom;
     private String adresse;

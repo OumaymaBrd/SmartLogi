@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 public class Destinataire {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, length = 100)
     private String nom;

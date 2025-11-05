@@ -1,5 +1,6 @@
 package org.example.smartspring.dto.zone;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,4 +19,7 @@ public class AddZoneDTO {
     private String nom;
 
     private String description;
+
+    @Column(length = 10)
+    private String codePostal;
 }

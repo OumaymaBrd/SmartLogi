@@ -37,14 +37,14 @@ public class ProduitService {
     }
 
     @Transactional(readOnly = true)
-    public ProduitDTO getProduitById(Long id) {
+    public ProduitDTO getProduitById(String id) {
         log.debug("Fetching produit by id: {}", id);
         Produit entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit not found with id: " + id));
         return mapper.toDto(entity);
     }
 
-    public ProduitDTO updateProduit(Long id, UpdateProduitDTO dto) {
+    public ProduitDTO updateProduit(String id, UpdateProduitDTO dto) {
         log.debug("Updating produit with id: {}", id);
         Produit entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit not found with id: " + id));
@@ -54,7 +54,7 @@ public class ProduitService {
         return mapper.toDto(updated);
     }
 
-    public void deleteProduit(Long id) {
+    public void deleteProduit(String id) {
         log.debug("Deleting produit with id: {}", id);
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Produit not found with id: " + id);

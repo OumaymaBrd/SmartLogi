@@ -29,4 +29,8 @@ public class AddDestinataireDTO {
 
     @Email(message = "Format d'email invalide")
     private String email;
+
+    @NotBlank(message = "La ville est obligatoire")
+    @Size(max = 100, message = "La ville ne peut pas dépasser 100 caractères")
+    private String ville;
 }

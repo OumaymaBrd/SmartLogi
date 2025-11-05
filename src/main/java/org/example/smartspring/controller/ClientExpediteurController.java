@@ -24,23 +24,30 @@ public class ClientExpediteurController {
         return new ResponseEntity<>(clientExpediteurService.createClientExpediteur(dto), HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/clients-expediteurs")
     public ResponseEntity<Page<ClientExpediteurDTO>> getAllClientsExpediteurs(Pageable pageable) {
-        return ResponseEntity.ok(clientExpediteurService.getAllClientsExpediteurs(pageable));
+        Page<ClientExpediteurDTO> page = clientExpediteurService.getAllClientsExpediteurs(pageable);
+
+        if (page.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(page);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<ClientExpediteurDTO> getClientExpediteurById(@PathVariable Long id) {
+    public ResponseEntity<ClientExpediteurDTO> getClientExpediteurById(@PathVariable String id) {
         return ResponseEntity.ok(clientExpediteurService.getClientExpediteurById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientExpediteurDTO> updateClientExpediteur(@PathVariable Long id, @Valid @RequestBody UpdateClientExpediteurDTO dto) {
+    public ResponseEntity<ClientExpediteurDTO> updateClientExpediteur(@PathVariable String id, @Valid @RequestBody UpdateClientExpediteurDTO dto) {
         return ResponseEntity.ok(clientExpediteurService.updateClientExpediteur(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClientExpediteur(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteClientExpediteur(@PathVariable String id) {
         clientExpediteurService.deleteClientExpediteur(id);
         return ResponseEntity.noContent().build();
     }

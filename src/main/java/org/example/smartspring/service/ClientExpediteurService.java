@@ -30,21 +30,23 @@ public class ClientExpediteurService {
         return mapper.toDto(saved);
     }
 
+
     @Transactional(readOnly = true)
     public Page<ClientExpediteurDTO> getAllClientsExpediteurs(Pageable pageable) {
         log.debug("Fetching all clients expediteurs with pagination");
         return repository.findAll(pageable).map(mapper::toDto);
     }
 
+
     @Transactional(readOnly = true)
-    public ClientExpediteurDTO getClientExpediteurById(Long id) {
+    public ClientExpediteurDTO getClientExpediteurById(String id) {
         log.debug("Fetching client expediteur by id: {}", id);
         ClientExpediteur entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ClientExpediteur not found with id: " + id));
         return mapper.toDto(entity);
     }
 
-    public ClientExpediteurDTO updateClientExpediteur(Long id, UpdateClientExpediteurDTO dto) {
+    public ClientExpediteurDTO updateClientExpediteur(String id, UpdateClientExpediteurDTO dto) {
         log.debug("Updating client expediteur with id: {}", id);
         ClientExpediteur entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("ClientExpediteur not found with id: " + id));
@@ -54,7 +56,7 @@ public class ClientExpediteurService {
         return mapper.toDto(updated);
     }
 
-    public void deleteClientExpediteur(Long id) {
+    public void deleteClientExpediteur(String id) {
         log.debug("Deleting client expediteur with id: {}", id);
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("ClientExpediteur not found with id: " + id);

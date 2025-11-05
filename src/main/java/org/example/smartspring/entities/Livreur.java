@@ -1,6 +1,7 @@
 package org.example.smartspring.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,8 +16,8 @@ import lombok.NoArgsConstructor;
 public class Livreur {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(nullable = false, length = 100)
     private String nom;
@@ -30,7 +31,10 @@ public class Livreur {
     @Column(length = 50)
     private String vehicule;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "zone_id")
     private Zone zone;
+
+    @Email
+    private String email;
 }

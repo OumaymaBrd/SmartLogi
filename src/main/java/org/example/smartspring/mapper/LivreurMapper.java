@@ -14,6 +14,7 @@ public interface LivreurMapper {
     @Mapping(target = "zone", ignore = true)
     Livreur toEntity(AddLivreurDTO dto);
 
+    @Mapping(target = "zone", source = "zone")
     LivreurDTO toDto(Livreur entity);
 
     @Mapping(target = "zone", ignore = true)

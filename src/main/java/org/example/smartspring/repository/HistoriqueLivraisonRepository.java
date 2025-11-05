@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface HistoriqueLivraisonRepository extends JpaRepository<HistoriqueLivraison, Long> {
+public interface HistoriqueLivraisonRepository extends JpaRepository<HistoriqueLivraison, String> {
 
-    List<HistoriqueLivraison> findByColisIdOrderByDateChangementDesc(Long colisId);
+    List<HistoriqueLivraison> findByColisIdOrderByDateChangementDesc(String colisId);
 
     List<HistoriqueLivraison> findByStatut(StatutColis statut);
 

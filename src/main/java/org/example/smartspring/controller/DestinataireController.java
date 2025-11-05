@@ -32,17 +32,17 @@ public class DestinataireController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DestinataireDTO> getDestinataireById(@PathVariable Long id) {
+    public ResponseEntity<DestinataireDTO> getDestinataireById(@PathVariable String id) {
         return ResponseEntity.ok(destinataireService.getDestinataireById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DestinataireDTO> updateDestinataire(@PathVariable Long id, @Valid @RequestBody UpdateDestinataireDTO dto) {
+    public ResponseEntity<DestinataireDTO> updateDestinataire(@PathVariable String id, @Valid @RequestBody UpdateDestinataireDTO dto) {
         return ResponseEntity.ok(destinataireService.updateDestinataire(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDestinataire(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteDestinataire(@PathVariable String id) {
         destinataireService.deleteDestinataire(id);
         return ResponseEntity.noContent().build();
     }

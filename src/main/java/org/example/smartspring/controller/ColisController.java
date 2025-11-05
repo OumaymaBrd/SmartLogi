@@ -9,11 +9,15 @@ import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.service.ColisService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -30,12 +34,36 @@ public class ColisController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ColisDTO>> getAllColis(Pageable pageable) {
-        return ResponseEntity.ok(colisService.getAllColis(pageable));
+    public ResponseEntity<?> getAllColis(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir,
+            @RequestParam(required = false) String statut,
+            @RequestParam(required = false) String zone,
+            @RequestParam(required = false) String ville,
+            @RequestParam(required = false) String priorite,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateDebut,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateFin
+    ) {
+        Sort sort = sortDir.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<ColisDTO> colis = colisService.getAllColis(pageable, statut, zone, ville, priorite, dateDebut, dateFin);
+
+        if (colis.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Aucun colis trouvé pour ces critères.");
+        }
+
+        return ResponseEntity.ok(colis);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<ColisDTO> getColisById(@PathVariable Long id) {
+    public ResponseEntity<ColisDTO> getColisById(@PathVariable String id) {
         return ResponseEntity.ok(colisService.getColisById(id));
     }
 
@@ -45,18 +73,18 @@ public class ColisController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ColisDTO> updateColis(@PathVariable Long id, @Valid @RequestBody UpdateColisDTO dto) {
+    public ResponseEntity<ColisDTO> updateColis(@PathVariable String id, @Valid @RequestBody UpdateColisDTO dto) {
         return ResponseEntity.ok(colisService.updateColis(id, dto));
     }
 
     @PatchMapping("/{id}/statut")
-    public ResponseEntity<ColisDTO> updateStatut(@PathVariable Long id, @RequestBody Map<String, String> body) {
+    public ResponseEntity<ColisDTO> updateStatut(@PathVariable String id, @RequestBody Map<String, String> body) {
         StatutColis statut = StatutColis.valueOf(body.get("statut"));
         return ResponseEntity.ok(colisService.updateStatut(id, statut));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteColis(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteColis(@PathVariable String id) {
         colisService.deleteColis(id);
         return ResponseEntity.noContent().build();
     }
@@ -77,12 +105,12 @@ public class ColisController {
     }
 
     @GetMapping("/livreur/{livreurId}")
-    public ResponseEntity<List<ColisDTO>> getColisByLivreur(@PathVariable Long livreurId) {
+    public ResponseEntity<List<ColisDTO>> getColisByLivreur(@PathVariable String livreurId) {
         return ResponseEntity.ok(colisService.getColisByLivreur(livreurId));
     }
 
     @GetMapping("/zone/{zoneId}")
-    public ResponseEntity<List<ColisDTO>> getColisByZone(@PathVariable Long zoneId) {
+    public ResponseEntity<List<ColisDTO>> getColisByZone(@PathVariable String zoneId) {
         return ResponseEntity.ok(colisService.getColisByZone(zoneId));
     }
 }

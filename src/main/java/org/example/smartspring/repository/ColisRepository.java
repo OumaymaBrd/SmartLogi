@@ -6,6 +6,7 @@ import org.example.smartspring.enums.StatutColis;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ColisRepository extends JpaRepository<Colis, Long> {
+public interface ColisRepository extends JpaRepository<Colis, String> , JpaSpecificationExecutor<Colis> {
 
     Optional<Colis> findByNumeroSuivi(String numeroSuivi);
 
@@ -25,13 +26,13 @@ public interface ColisRepository extends JpaRepository<Colis, Long> {
 
     List<Colis> findByPriorite(PrioriteColis priorite);
 
-    List<Colis> findByLivreurId(Long livreurId);
+    List<Colis> findByLivreurId(String livreurId);
 
-    List<Colis> findByZoneId(Long zoneId);
+    List<Colis> findByZoneId(String zoneId);
 
     @Query("SELECT COUNT(c), SUM(c.poids) FROM Colis c WHERE c.livreur.id = :livreurId")
-    Object[] getStatsByLivreur(@Param("livreurId") Long livreurId);
+    Object[] getStatsByLivreur(@Param("livreurId") String livreurId);
 
     @Query("SELECT COUNT(c), SUM(c.poids) FROM Colis c WHERE c.zone.id = :zoneId")
-    Object[] getStatsByZone(@Param("zoneId") Long zoneId);
+    Object[] getStatsByZone(@Param("zoneId") String zoneId);
 }

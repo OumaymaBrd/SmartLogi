@@ -26,5 +26,5 @@ public class UpdateLivreurDTO {
 
     private Boolean disponible;
 
-    private Long zoneId;
+    private String zoneId;
 }

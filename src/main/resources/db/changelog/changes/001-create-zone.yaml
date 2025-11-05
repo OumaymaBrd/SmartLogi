@@ -20,5 +20,8 @@ databaseChangeLog:
                     nullable: false
                     unique: true
               - column:
+                  name: description
+                  type: VARCHAR(500)
+              - column:
                   name: code_postal
                   type: VARCHAR(10)

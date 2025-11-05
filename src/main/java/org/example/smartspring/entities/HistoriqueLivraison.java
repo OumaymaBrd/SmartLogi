@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 public class HistoriqueLivraison {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "colis_id", nullable = false)

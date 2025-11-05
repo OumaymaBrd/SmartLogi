@@ -12,11 +12,13 @@ import org.example.smartspring.dto.zone.ZoneDTO;
 @AllArgsConstructor
 public class LivreurDTO {
 
-    private Long id;
+    private String id;
     private String nom;
     private String prenom;
     private String telephone;
     private String email;
     private Boolean disponible;
     private ZoneDTO zone;
+    private String vehicule;
+
 }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DestinataireRepository extends JpaRepository<Destinataire, Long> {
+public interface DestinataireRepository extends JpaRepository<Destinataire, String> {
 
     @Query("SELECT d FROM Destinataire d WHERE LOWER(d.nom) LIKE LOWER(CONCAT('%', :keyword, '%')) OR LOWER(d.prenom) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     Page<Destinataire> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class HistoriqueLivraisonDTO {
 
-    private Long id;
+    private String id;
     private Long colisId;
     private StatutColis ancienStatut;
     private StatutColis nouveauStatut;

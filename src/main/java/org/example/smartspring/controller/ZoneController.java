@@ -7,11 +7,13 @@ import org.example.smartspring.dto.zone.UpdateZoneDTO;
 import org.example.smartspring.dto.zone.ZoneDTO;
 import org.example.smartspring.service.ZoneService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -27,22 +29,33 @@ public class ZoneController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ZoneDTO>> getAllZones(Pageable pageable) {
+    public ResponseEntity<?> getAllZones(
+         @RequestParam(defaultValue = "0")   int page,
+         @RequestParam(defaultValue = "5")   int size
+    ) {
+       PageRequest pageable = PageRequest.of(page, size);
+
+        Page<ZoneDTO> pagesZones =zoneService.getAllZones(pageable);
+        if (pagesZones.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Votre Page est Vide ! Aucune Resultat pour ca ");
+        }
         return ResponseEntity.ok(zoneService.getAllZones(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ZoneDTO> getZoneById(@PathVariable Long id) {
+    public ResponseEntity<ZoneDTO> getZoneById(@PathVariable String id) {
         return ResponseEntity.ok(zoneService.getZoneById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ZoneDTO> updateZone(@PathVariable Long id, @Valid @RequestBody UpdateZoneDTO dto) {
+    public ResponseEntity<ZoneDTO> updateZone(@PathVariable String id, @Valid @RequestBody UpdateZoneDTO dto) {
         return ResponseEntity.ok(zoneService.updateZone(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteZone(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteZone(@PathVariable String id) {
         zoneService.deleteZone(id);
         return ResponseEntity.noContent().build();
     }
@@ -53,7 +66,7 @@ public class ZoneController {
     }
 
     @GetMapping("/{id}/stats")
-    public ResponseEntity<Map<String, Object>> getZoneStats(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getZoneStats(@PathVariable String id) {
         return ResponseEntity.ok(zoneService.getZoneStats(id));
     }
 }

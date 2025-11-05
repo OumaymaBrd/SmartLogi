@@ -28,22 +28,29 @@ public class LivreurController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<LivreurDTO>> getAllLivreurs(Pageable pageable) {
-        return ResponseEntity.ok(livreurService.getAllLivreurs(pageable));
+    public ResponseEntity<?> getAllLivreurs() {
+        List<LivreurDTO> liste=livreurService.getAllLivreurs();
+        if (liste.isEmpty()){
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Liste Livreur est Vide !!");
+        }
+        return ResponseEntity.ok(liste);
+
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LivreurDTO> getLivreurById(@PathVariable Long id) {
+    public ResponseEntity<LivreurDTO> getLivreurById(@PathVariable String id) {
         return ResponseEntity.ok(livreurService.getLivreurById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LivreurDTO> updateLivreur(@PathVariable Long id, @Valid @RequestBody UpdateLivreurDTO dto) {
+    public ResponseEntity<LivreurDTO> updateLivreur(@PathVariable String id, @Valid @RequestBody UpdateLivreurDTO dto) {
         return ResponseEntity.ok(livreurService.updateLivreur(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteLivreur(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteLivreur(@PathVariable String id) {
         livreurService.deleteLivreur(id);
         return ResponseEntity.noContent().build();
     }
@@ -54,12 +61,12 @@ public class LivreurController {
     }
 
     @GetMapping("/zone/{zoneId}")
-    public ResponseEntity<List<LivreurDTO>> getLivreursByZone(@PathVariable Long zoneId) {
+    public ResponseEntity<List<LivreurDTO>> getLivreursByZone(@PathVariable String zoneId) {
         return ResponseEntity.ok(livreurService.getLivreursByZone(zoneId));
     }
 
     @GetMapping("/{id}/stats")
-    public ResponseEntity<Map<String, Object>> getLivreurStats(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> getLivreurStats(@PathVariable String id) {
         return ResponseEntity.ok(livreurService.getLivreurStats(id));
     }
 }
