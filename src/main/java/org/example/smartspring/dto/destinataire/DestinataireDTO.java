@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DestinataireDTO {
 
-    private String id;
     private String nom;
     private String prenom;
-    private String adresse;
-    private String telephone;
     private String email;
+    private String telephone;
+    private String adresse;
+    private String ville;
 }

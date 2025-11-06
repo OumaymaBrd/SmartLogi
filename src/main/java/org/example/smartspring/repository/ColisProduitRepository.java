@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface ColisProduitRepository extends JpaRepository<ColisProduit, String> {
 
-    List<ColisProduit> findByColisId(String colisId);
-
-    List<ColisProduit> findByProduitId(String produitId);
+//    List<ColisProduit> findByColisId(String colisId);
+//
+//    List<ColisProduit> findByProduitId(String produitId);
 }

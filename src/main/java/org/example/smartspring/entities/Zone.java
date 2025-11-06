@@ -18,12 +18,12 @@ public class Zone {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false)
     private String nom;
 
-    @Column(length = 500)
     private String description;
 
-    @Column(length = 10)
+    @Column(name = "code_postal")
     private String codePostal;
+
 }

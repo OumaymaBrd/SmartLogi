@@ -17,36 +17,36 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class ProduitController {
 
-    private final ProduitService produitService;
-
-    @PostMapping
-    public ResponseEntity<ProduitDTO> createProduit(@Valid @RequestBody AddProduitDTO dto) {
-        return new ResponseEntity<>(produitService.createProduit(dto), HttpStatus.CREATED);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<ProduitDTO>> getAllProduits(Pageable pageable) {
-        return ResponseEntity.ok(produitService.getAllProduits(pageable));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProduitDTO> getProduitById(@PathVariable String id) {
-        return ResponseEntity.ok(produitService.getProduitById(id));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<ProduitDTO> updateProduit(@PathVariable String id, @Valid @RequestBody UpdateProduitDTO dto) {
-        return ResponseEntity.ok(produitService.updateProduit(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduit(@PathVariable String id) {
-        produitService.deleteProduit(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<Page<ProduitDTO>> searchProduits(@RequestParam String keyword, Pageable pageable) {
-        return ResponseEntity.ok(produitService.searchProduits(keyword, pageable));
-    }
+//    private final ProduitService produitService;
+//
+//    @PostMapping
+//    public ResponseEntity<ProduitDTO> createProduit(@Valid @RequestBody AddProduitDTO dto) {
+//        return new ResponseEntity<>(produitService.createProduit(dto), HttpStatus.CREATED);
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<Page<ProduitDTO>> getAllProduits(Pageable pageable) {
+//        return ResponseEntity.ok(produitService.getAllProduits(pageable));
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<ProduitDTO> getProduitById(@PathVariable String id) {
+//        return ResponseEntity.ok(produitService.getProduitById(id));
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<ProduitDTO> updateProduit(@PathVariable String id, @Valid @RequestBody UpdateProduitDTO dto) {
+//        return ResponseEntity.ok(produitService.updateProduit(id, dto));
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteProduit(@PathVariable String id) {
+//        produitService.deleteProduit(id);
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    @GetMapping("/search")
+//    public ResponseEntity<Page<ProduitDTO>> searchProduits(@RequestParam String keyword, Pageable pageable) {
+//        return ResponseEntity.ok(produitService.searchProduits(keyword, pageable));
+//    }
 }

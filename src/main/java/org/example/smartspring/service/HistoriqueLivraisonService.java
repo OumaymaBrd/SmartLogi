@@ -19,27 +19,27 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class HistoriqueLivraisonService {
 
-    private final HistoriqueLivraisonRepository repository;
-    private final HistoriqueLivraisonMapper mapper;
-
-    public List<HistoriqueLivraisonDTO> getHistoriqueByColisId(String colisId) {
-        log.debug("Fetching historique for colis: {}", colisId);
-        return repository.findByColisIdOrderByDateChangementDesc(colisId).stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<HistoriqueLivraisonDTO> getHistoriqueByStatut(StatutColis statut) {
-        log.debug("Fetching historique by statut: {}", statut);
-        return repository.findByStatut(statut).stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    public List<HistoriqueLivraisonDTO> getHistoriqueByPeriode(LocalDateTime dateDebut, LocalDateTime dateFin) {
-        log.debug("Fetching historique between {} and {}", dateDebut, dateFin);
-        return repository.findByDateChangementBetween(dateDebut, dateFin).stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-    }
+//    private final HistoriqueLivraisonRepository repository;
+//    private final HistoriqueLivraisonMapper mapper;
+//
+//    public List<HistoriqueLivraisonDTO> getHistoriqueByColisId(String colisId) {
+//        log.debug("Fetching historique for colis: {}", colisId);
+//        return repository.findByColisIdOrderByDateChangementDesc(colisId).stream()
+//                .map(mapper::toDto)
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<HistoriqueLivraisonDTO> getHistoriqueByStatut(StatutColis statut) {
+//        log.debug("Fetching historique by statut: {}", statut);
+//        return repository.findByStatut(statut).stream()
+//                .map(mapper::toDto)
+//                .collect(Collectors.toList());
+//    }
+//
+//    public List<HistoriqueLivraisonDTO> getHistoriqueByPeriode(LocalDateTime dateDebut, LocalDateTime dateFin) {
+//        log.debug("Fetching historique between {} and {}", dateDebut, dateFin);
+//        return repository.findByDateChangementBetween(dateDebut, dateFin).stream()
+//                .map(mapper::toDto)
+//                .collect(Collectors.toList());
+//    }
 }

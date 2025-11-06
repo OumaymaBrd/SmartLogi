@@ -13,13 +13,13 @@ import java.util.List;
 @Repository
 public interface HistoriqueLivraisonRepository extends JpaRepository<HistoriqueLivraison, String> {
 
-    List<HistoriqueLivraison> findByColisIdOrderByDateChangementDesc(String colisId);
+//    List<HistoriqueLivraison> findByColisIdOrderByDateChangementDesc(String colisId);
 
-    List<HistoriqueLivraison> findByStatut(StatutColis statut);
-
-    @Query("SELECT h FROM HistoriqueLivraison h WHERE h.dateChangement BETWEEN :dateDebut AND :dateFin ORDER BY h.dateChangement DESC")
-    List<HistoriqueLivraison> findByDateChangementBetween(@Param("dateDebut") LocalDateTime dateDebut, @Param("dateFin") LocalDateTime dateFin);
-
-    @Query("SELECT h FROM HistoriqueLivraison h WHERE h.dateChangement BETWEEN :dateDebut AND :dateFin ORDER BY h.dateChangement DESC")
-    List<HistoriqueLivraison> findByPeriode(@Param("dateDebut") LocalDateTime dateDebut, @Param("dateFin") LocalDateTime dateFin);
+//    List<HistoriqueLivraison> findByStatut(StatutColis statut);
+//
+//    @Query("SELECT h FROM HistoriqueLivraison h WHERE h.dateChangement BETWEEN :dateDebut AND :dateFin ORDER BY h.dateChangement DESC")
+//    List<HistoriqueLivraison> findByDateChangementBetween(@Param("dateDebut") LocalDateTime dateDebut, @Param("dateFin") LocalDateTime dateFin);
+//
+//    @Query("SELECT h FROM HistoriqueLivraison h WHERE h.dateChangement BETWEEN :dateDebut AND :dateFin ORDER BY h.dateChangement DESC")
+//    List<HistoriqueLivraison> findByPeriode(@Param("dateDebut") LocalDateTime dateDebut, @Param("dateFin") LocalDateTime dateFin);
 }

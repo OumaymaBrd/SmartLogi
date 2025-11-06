@@ -1,10 +1,14 @@
 package org.example.smartspring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "client_expediteur")
@@ -18,18 +22,24 @@ public class ClientExpediteur {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String nom;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String prenom;
 
-    @Column(nullable = false, unique = true, length = 150)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String telephone;
 
-    @Column(length = 255)
+    @Column(nullable = false)
     private String adresse;
+
+    @Column(nullable = false)
+    private String ville;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "clientExpediteur", cascade = CascadeType.ALL)
+    private List<Colis> colis = new ArrayList<>();
 }

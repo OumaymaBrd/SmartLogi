@@ -1,5 +1,6 @@
 package org.example.smartspring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,15 +19,16 @@ public class Produit {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, length = 200)
+    @Column(nullable = false)
     private String nom;
 
-    @Column(length = 100)
-    private String categorie;
+    private String description;
 
     @Column(nullable = false)
-    private Double poids;
+    private int quantite;
 
-    @Column(nullable = false)
-    private Double prix;
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "colis_id", nullable = false)
+    private Colis colis;
 }

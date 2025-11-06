@@ -9,6 +9,8 @@ import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "colis")
@@ -22,42 +24,47 @@ public class Colis {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "numero_suivi", unique = true, nullable = false, length = 50)
-    private String numeroSuivi;
-
-    @Column(nullable = false, length = 500)
-    private String description;
+    @Column(nullable = false, unique = true)
+    private String numeroColis;
 
     @Column(nullable = false)
-    private Double poids;
+    private String numeroSuivi;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private StatutColis statut;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private PrioriteColis priorite;
+    @Column(nullable = false)
+    @Builder.Default
+    private PrioriteColis priorite = PrioriteColis.NORMALE;
 
-    @Column(length = 100)
-    private String villeDestination;
+    @ManyToOne
+    @JoinColumn(name = "client_expediteur_id", nullable = false)
+    private ClientExpediteur clientExpediteur;
+
+    @ManyToOne
+    @JoinColumn(name = "destinataire_id", nullable = false)
+    private Destinataire destinataire;
+
+    @ManyToOne
+    @JoinColumn(name = "zone_id", nullable = false)
+    private Zone zone;
+
+    @OneToMany(mappedBy = "colis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Produit> produits = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "livreur_id")
+    private Livreur livreur;
+
+    @Column(nullable = false)
+    private LocalDateTime dateCreation;
 
     @Column(name = "date_livraison_reelle")
     private LocalDateTime dateLivraisonReelle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "livreur_id")
-    private Livreur livreur;
+    @Column(name = "ville_destination", length = 100)
+    private String villeDestination;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_expediteur_id", nullable = false)
-    private ClientExpediteur clientExpediteur;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "destinataire_id", nullable = false)
-    private Destinataire destinataire;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "zone_id")
-    private Zone zone;
 }

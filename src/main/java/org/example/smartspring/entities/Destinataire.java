@@ -18,21 +18,21 @@ public class Destinataire {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String nom;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String prenom;
 
-    @Column(length = 150)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String telephone;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String adresse;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String ville;
+
 }

@@ -1,4 +1,4 @@
-package org.example.smartspring.dto.zone;
+package org.example.smartspring.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ZoneDTO {
+public class ColisCreationResponseDTO {
 
-    private String nom;
-    private String description;
-    private String codePostale;
+    private String message;
+    private String numeroSuivi;
 }
