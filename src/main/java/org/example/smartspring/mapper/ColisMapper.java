@@ -1,5 +1,6 @@
 package org.example.smartspring.mapper;
 
+import org.example.smartspring.dto.clientexpediteur.ClientExpediteurDTO;
 import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.dto.destinataire.DestinataireDTO;
 import org.example.smartspring.dto.produit.ProduitDTO;
@@ -9,7 +10,6 @@ import org.example.smartspring.enums.StatutColis;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.mapstruct.Context;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,20 +23,37 @@ public interface ColisMapper {
     @Mapping(target = "colisProduits", ignore = true)
     @Mapping(target = "zone", ignore = true)
     @Mapping(target = "destinataire", ignore = true)
-    Colis toEntity(ColisDTO dto, @Context ClientExpediteur client);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "numeroSuivi", ignore = true)
+    @Mapping(target = "livreur", ignore = true)
+    @Mapping(target = "dateCreation", ignore = true)
+    @Mapping(target = "dateLivraisonReelle", ignore = true)
+    @Mapping(target = "villeDestination", ignore = true)
+    Colis toEntity(ColisDTO dto);
 
+    @Mapping(target = "expediteur", ignore = true)
+    @Mapping(target = "produits", ignore = true)
+    @Mapping(target = "description", ignore = true)
+    @Mapping(target = "poids", ignore = true)
     ColisDTO toDTO(Colis colis);
 
-    Produit toProduitEntity(ProduitDTO dto);
+    @Mapping(target = "id", ignore = true)
+    ClientExpediteur toClientExpediteur(ClientExpediteurDTO dto);
 
-    Zone toZoneEntity(ZoneDTO dto);
+    @Mapping(target = "id", ignore = true)
+    Destinataire toDestinataire(DestinataireDTO dto);
 
-    Destinataire toDestinataireEntity(DestinataireDTO dto);
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "codePostal", source = "codePostale")
+    Zone toZone(ZoneDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    Produit toProduit(ProduitDTO dto);
 
     default List<Produit> toProduitList(List<ProduitDTO> dtos) {
         if (dtos == null) return null;
         return dtos.stream()
-                .map(this::toProduitEntity)
+                .map(this::toProduit)
                 .collect(Collectors.toList());
     }
 

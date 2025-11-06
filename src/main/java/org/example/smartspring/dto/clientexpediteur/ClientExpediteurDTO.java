@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.smartspring.dto.zone.ZoneDTO;
 
 @Data
 @Builder
-
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClientExpediteurDTO {
 
     private String nom;
@@ -17,7 +17,4 @@ public class ClientExpediteurDTO {
     private String telephone;
     private String adresse;
     private String ville;
-    private ZoneDTO zone;
-
-
 }

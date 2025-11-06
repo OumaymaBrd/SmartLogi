@@ -22788,3 +22788,302 @@ Caused by: java.sql.SQLException: Data truncated for column 'colis_id' at row 1
 2025-11-06 19:55:15 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-11-06 19:55:15 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-11-06 19:55:15 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-11-06 19:55:48 [background-preinit] INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2025-11-06 19:55:48 [restartedMain] INFO  o.e.s.SmartSpringApplication - Starting SmartSpringApplication using Java 17.0.16 with PID 22812 (C:\Users\youco\Desktop\Briiiefs\Spring-Boot\smart-spring\target\classes started by youco in C:\Users\youco\Desktop\Briiiefs\Spring-Boot\smart-spring)
+2025-11-06 19:55:48 [restartedMain] DEBUG o.e.s.SmartSpringApplication - Running with Spring Boot v3.2.1, Spring v6.1.2
+2025-11-06 19:55:48 [restartedMain] INFO  o.e.s.SmartSpringApplication - No active profile set, falling back to 1 default profile: "default"
+2025-11-06 19:55:48 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-11-06 19:55:48 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-11-06 19:55:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-11-06 19:55:50 [restartedMain] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 101 ms. Found 8 JPA repository interfaces.
+2025-11-06 19:55:51 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-11-06 19:55:51 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+2025-11-06 19:55:51 [restartedMain] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-11-06 19:55:51 [restartedMain] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.17]
+2025-11-06 19:55:51 [restartedMain] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring embedded WebApplicationContext
+2025-11-06 19:55:51 [restartedMain] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2628 ms
+2025-11-06 19:55:51 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-11-06 19:55:51 [restartedMain] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@782990c5
+2025-11-06 19:55:51 [restartedMain] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-11-06 19:55:52 [restartedMain] INFO  liquibase.lockservice - Successfully acquired change log lock
+2025-11-06 19:55:52 [restartedMain] INFO  liquibase.command - Dropping Database Objects in schema: smartSpring.smartSpring
+2025-11-06 19:55:52 [restartedMain] INFO  liquibase.database - Successfully deleted all supported object types in schema smartSpring.smartSpring.
+2025-11-06 19:55:52 [restartedMain] WARN  liquibase.lockservice - Failed to release change log lock
+2025-11-06 19:55:52 [restartedMain] INFO  liquibase.command - Command execution complete
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Creating database history table with name: smartSpring.databasechangelog
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Reading from smartSpring.databasechangelog
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.executor - Integer display width is deprecated and will be removed in a future release.
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.changelog - Due to mysql SQL limitations, modifyDataType will lose primary key/autoincrement/not null/comment settings explicitly redefined in the change. Use <sql> or <modifySql> to re-specify all configuration if this is the case
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.changelog - Due to mysql SQL limitations, addDefaultValue will lose primary key/autoincrement/not null/comment settings explicitly redefined in the change. Use <sql> or <modifySql> to re-specify all configuration if this is the case
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.changelog - Due to mysql SQL limitations, setNullable will lose primary key/autoincrement/not null/comment settings explicitly redefined in the change. Use <sql> or <modifySql> to re-specify all configuration if this is the case
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.changelog - Due to mysql SQL limitations, modifyDataType will lose primary key/autoincrement/not null/comment settings explicitly redefined in the change. Use <sql> or <modifySql> to re-specify all configuration if this is the case
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.changelog - Due to mysql SQL limitations, addDefaultValue will lose primary key/autoincrement/not null/comment settings explicitly redefined in the change. Use <sql> or <modifySql> to re-specify all configuration if this is the case
+2025-11-06 19:55:54 [restartedMain] WARN  liquibase.changelog - Due to mysql SQL limitations, setNullable will lose primary key/autoincrement/not null/comment settings explicitly redefined in the change. Use <sql> or <modifySql> to re-specify all configuration if this is the case
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.lockservice - Successfully acquired change log lock
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.command - Using deploymentId: 2455354305
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Reading from smartSpring.databasechangelog
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table zone created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/001-create-zone.yaml::001-create-zone::smartlogi ran successfully in 21ms
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table client_expediteur created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/002-create-client-expediteur.yaml::002-create-client-expediteur::smartlogi ran successfully in 18ms
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table destinataire created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/003-create-destinataire.yaml::003-create-destinataire::smartlogi ran successfully in 17ms
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table livreur created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to livreur (zone_id)
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/004-create-livreur.yaml::004-create-livreur::smartlogi ran successfully in 63ms
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table produit created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/005-create-produit.yaml::005-create-produit::smartlogi ran successfully in 16ms
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table colis created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (livreur_id)
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (client_expediteur_id)
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (destinataire_id)
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (zone_id)
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/006-create-colis.yaml::006-create-colis::smartlogi ran successfully in 241ms
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Table colis_produit created
+2025-11-06 19:55:54 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis_produit (colis_id)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis_produit (produit_id)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/007-create-colis-produit.yaml::007-create-colis-produit::smartlogi ran successfully in 128ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Table historique_livraison created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to historique_livraison (colis_id)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/008-create-historique-livraison.yaml::008-create-historique-livraison::smartlogi ran successfully in 63ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Index idx_colis_statut created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Index idx_colis_priorite created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Index idx_colis_livreur created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Index idx_colis_zone created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Index idx_historique_colis created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - Index idx_historique_date created
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/009-create-indexes.yaml::009-create-indexes::smartlogi ran successfully in 316ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - zone.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/010-modify-id-type.yaml::010-modify-id-type::oumaymabrd ran successfully in 85ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - client_expediteur.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/011-modify-id-type.yaml::011-modify-id-type::oumaymabrd ran successfully in 92ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - destinataire.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/012-modify-id-type.yaml::012-modify-id-type::oumaymabrd ran successfully in 58ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - livreur.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/013-modify-id-type.yaml::013-modify-id-type::oumaymabrd ran successfully in 58ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - produit.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/014-modify-id-type.yaml::012-modify-id-type::oumaymabrd ran successfully in 48ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - colis.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/015-modify-id-type.yaml::015-modify-id-type::oumaymabrd ran successfully in 47ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - historique_livraison.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/017-modify-id-type.yaml::015-modify-id-type::oumaymabrd ran successfully in 39ms
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - colis_produit.id datatype was changed to char(36)
+2025-11-06 19:55:55 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/016-modify-id-type.yaml::015-modify-id-type::oumaymabrd ran successfully in 54ms
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Columns email(varchar(50)) added to livreur
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/018-add-email-attribut.yaml::018-add-email-attribut::oumaymabrd ran successfully in 52ms
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - livreur.zone_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - colis.zone_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - colis.livreur_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - colis.client_expediteur_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - colis.destinataire_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/019-modify-id-type.yaml::020-update-uuid-columns::oumaymabrd ran successfully in 291ms
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Columns client_expediteur_id(char(36)),colis_id(char(36)) added to destinataire
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Columns client_expediteur_id(char(36)),colis_id(char(36)) added to produit
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Columns client_expediteur_id(char(36)),colis_id(char(36)) added to zone
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - client_expediteur.id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - colis.id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - colis.client_expediteur_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - destinataire.id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - destinataire.client_expediteur_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - destinataire.colis_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - produit.id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - produit.client_expediteur_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - produit.colis_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - zone.id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - zone.client_expediteur_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - zone.colis_id datatype was changed to CHAR(36)
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/020-modify-bdd-type-attributs.yaml::020-modify-bdd-type-attributs::oumaymabrd ran successfully in 435ms
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Default value added to client_expediteur.id
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Default value added to colis.id
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Default value added to destinataire.id
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Default value added to produit.id
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Default value added to zone.id
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/020-modify-bdd-type-attributs.yaml::101-add-uuid-default-values::oumaymabrd ran successfully in 142ms
+2025-11-06 19:55:56 [restartedMain] ERROR liquibase.changelog - ChangeSet db/changelog/changes/021-addColumn-destinataire.yaml::021-addColumn-destinataire::oumaymabrd encountered an exception.
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Changeset db/changelog/changes/021-addColumn-destinataire.yaml::021-addColumn-destinataire::oumaymabrd failed, but failOnError was false.  Error: Migration failed for changeset db/changelog/changes/021-addColumn-destinataire.yaml::021-addColumn-destinataire::oumaymabrd:
+     Reason: 
+          db/changelog/db.changelog-master.yaml : Not precondition failed
+
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - Columns ville(varchar(255)) added to client_expediteur
+2025-11-06 19:55:56 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/022-add-ville-client-expediteur.yaml::022-add-ville-client-expediteur::oumaymabrd ran successfully in 52ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Columns numero_colis(varchar(50)) added to colis
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/023-alter-colis-add-columns.yaml::024-alter-colis-add-columns::oumaymabrd ran successfully in 59ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Columns date_creation(datetime) added to colis
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/023-alter-colis-add-columns.yaml::024b-add-date-creation::oumaymabrd ran successfully in 59ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Continuing past: db/changelog/changes/023-alter-colis-add-columns.yaml::024c-add-livreur-zone::oumaymabrd despite precondition failure due to onFail='CONTINUE': 
+          db/changelog/db.changelog-master.yaml : Not precondition failed
+
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Continuing past: db/changelog/changes/024-alter-colis-add-columns.yaml::024-alter-colis-add-columns::oumaymabrd despite precondition failure due to onFail='CONTINUE': 
+          db/changelog/db.changelog-master.yaml : Not precondition failed
+
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column destinataire.colis_id dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column destinataire.client_expediteur_id dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/025-update-colis-structure.yaml::025-update-colis-structure::oumaymaBrd ran successfully in 91ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column zone.colis_id dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column zone.client_expediteur_id dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/025-update-colis-structure.yaml::2-drop-unnecessary-columns-zone::system ran successfully in 97ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Columns description(varchar(500)),quantite(int) added to produit
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column produit.client_expediteur_id dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/025-update-colis-structure.yaml::3-update-produit-table::system ran successfully in 112ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (destinataire_id)
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (zone_id)
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis (client_expediteur_id)
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to produit (colis_id)
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/025-update-colis-structure.yaml::4-add-foreign-key-constraints::system ran successfully in 213ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Index idx_produit_colis created
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Index idx_destinataire_telephone created
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Index idx_zone_code_postal created
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/025-update-colis-structure.yaml::5-add-indexes::system ran successfully in 151ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column produit.categorie dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/026-remove-produit-extra-columns.yaml::remove-produit-categorie-column::system ran successfully in 49ms
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - Column produit.poids dropped
+2025-11-06 19:55:57 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/026-remove-produit-extra-columns.yaml::remove-produit-poids-column::system ran successfully in 56ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Column produit.prix dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/026-remove-produit-extra-columns.yaml::remove-produit-prix-column::system ran successfully in 113ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Marking ChangeSet: "db/changelog/changes/026-remove-produit-extra-columns.yaml::remove-produit-client-expediteur-fk::system" as ran despite precondition failure due to onFail='MARK_RAN': 
+          db/changelog/db.changelog-master.yaml : Foreign Key fk_produit_client_expediteur does not exist
+
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Marking ChangeSet: "db/changelog/changes/026-remove-produit-extra-columns.yaml::remove-produit-client-expediteur-id-column::system" as ran despite precondition failure due to onFail='MARK_RAN': 
+          db/changelog/db.changelog-master.yaml : Column smartSpring.produit.client_expediteur_id does not exist
+
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Null constraint dropped from colis.description
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Null constraint dropped from colis.poids
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/027-changelog-fix-colis-nullable-columns.yaml::fix-colis-nullable-columns-1::system ran successfully in 122ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Column colis.description dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Column colis.poids dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/027-changelog-fix-colis-nullable-columns.yaml::fix-colis-nullable-columns-2::system ran successfully in 105ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Foreign key fk_produit_colis dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Column produit.colis_id dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/028-changelog-create-pivot-table.yaml::028-changelog-create-pivot-table::oumaymabrd ran successfully in 105ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Column produit.quantite dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/028-changelog-create-pivot-table.yaml::2-remove-quantite-from-produit::system ran successfully in 41ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Columns prix_unitaire(decimal(10,2)) added to produit
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/028-changelog-create-pivot-table.yaml::3-add-prix-unitaire-to-produit::system ran successfully in 40ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Marking ChangeSet: "db/changelog/changes/028-changelog-create-pivot-table.yaml::4-create-colis-produit-table::system" as ran despite precondition failure due to onFail='MARK_RAN': 
+          db/changelog/db.changelog-master.yaml : Not precondition failed
+
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - colis_produit.colis_id datatype was changed to char(36)
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - colis_produit.produit_id datatype was changed to char(36)
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - colis_produit.id datatype was changed to char(36)
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/029-changelog-fix-colis-produit-types.yaml::029-changelog-fix-colis-produit-types::system ran successfully in 124ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Foreign key fk_colis_produit_colis dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Foreign key fk_colis_produit_produit dropped
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis_produit (colis_id)
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - Foreign key constraint added to colis_produit (produit_id)
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.changelog - ChangeSet db/changelog/changes/029-changelog-fix-colis-produit-types.yaml::2-recreate-foreign-keys::system ran successfully in 205ms
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - UPDATE SUMMARY
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - Run:                         45
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - Previously run:               0
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - Filtered out:                 0
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - -------------------------------
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - Total change sets:           45
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.util - Update summary generated
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.command - Update command completed successfully.
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.lockservice - Successfully released change log lock
+2025-11-06 19:55:58 [restartedMain] INFO  liquibase.command - Command execution complete
+2025-11-06 19:55:59 [restartedMain] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-11-06 19:55:59 [restartedMain] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.4.1.Final
+2025-11-06 19:55:59 [restartedMain] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-11-06 19:55:59 [restartedMain] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-11-06 19:55:59 [restartedMain] WARN  org.hibernate.orm.deprecation - HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-11-06 19:56:00 [restartedMain] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-11-06 19:56:00 [restartedMain] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-11-06 19:56:01 [restartedMain] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-11-06 19:56:02 [restartedMain] INFO  o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2025-11-06 19:56:02 [restartedMain] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+2025-11-06 19:56:02 [restartedMain] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/api'
+2025-11-06 19:56:02 [restartedMain] INFO  o.e.s.SmartSpringApplication - Started SmartSpringApplication in 14.933 seconds (process running for 16.015)
+2025-11-06 19:56:14 [http-nio-8080-exec-2] INFO  o.a.c.c.C.[.[localhost].[/api] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-11-06 19:56:14 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-11-06 19:56:14 [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG o.e.smartspring.aspect.LoggingAspect - → ColisController.creerColisPourNouveauClient([ColisDTO(statut=null, expediteur=ClientExpediteurDTO(nom=Dupont, prenom=Jean, email=jean.dupont@example.com, telephone=+33612345678, adresse=15 Rue de la Paix, ville=Paris, zone=null), destinataire=DestinataireDTO(nom=Martin, prenom=Sophie, email=sophie.martin@example.com, telephone=+33698765432, adresse=42 Avenue des Champs, ville=Lyon), produits=[ProduitDTO(nom=Ordinateur portable, description=Dell XPS 15 pouces, quantite=1), ProduitDTO(nom=Souris sans fil, description=Logitech MX Master 3, quantite=2)], zone=ZoneDTO(nom=Zone Sud-Est, description=Région Auvergne-Rhône-Alpes, codePostale=69000), description=null, poids=null)])
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG o.e.s.a.TransactionLoggingAspect - 🗄️ Transaction started for: creerColisPourNouveauClient
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        z1_0.id,
+        z1_0.code_postal,
+        z1_0.description,
+        z1_0.nom 
+    from
+        zone z1_0 
+    where
+        z1_0.nom=?
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        p1_0.id,
+        p1_0.description,
+        p1_0.nom,
+        p1_0.prix_unitaire 
+    from
+        produit p1_0 
+    where
+        p1_0.nom=?
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        client_expediteur
+        (adresse, email, nom, prenom, telephone, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        destinataire
+        (adresse, email, nom, prenom, telephone, ville, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        zone
+        (code_postal, description, nom, id) 
+    values
+        (?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        colis
+        (client_expediteur_id, date_creation, date_livraison_reelle, destinataire_id, livreur_id, numero_colis, numero_suivi, priorite, statut, ville_destination, zone_id, id) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        produit
+        (description, nom, prix_unitaire, id) 
+    values
+        (?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        colis_produit
+        (colis_id, date_ajout, prix, produit_id, quantite, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    select
+        p1_0.id,
+        p1_0.description,
+        p1_0.nom,
+        p1_0.prix_unitaire 
+    from
+        produit p1_0 
+    where
+        p1_0.nom=?
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG o.e.s.a.TransactionLoggingAspect - 🗄️ Transaction completed for: creerColisPourNouveauClient
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        produit
+        (description, nom, prix_unitaire, id) 
+    values
+        (?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG org.hibernate.SQL - 
+    insert 
+    into
+        colis_produit
+        (colis_id, date_ajout, prix, produit_id, quantite, id) 
+    values
+        (?, ?, ?, ?, ?, ?)
+2025-11-06 19:56:15 [http-nio-8080-exec-2] DEBUG o.e.smartspring.aspect.LoggingAspect - ← ColisController.creerColisPourNouveauClient returned: ResponseEntity
+2025-11-06 20:09:15 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'

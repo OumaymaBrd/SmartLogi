@@ -32,35 +32,21 @@ public class ColisService {
 
     @Transactional
     public Colis creerColisPourNouveauClient(ColisDTO dto) {
-        ClientExpediteur client = ClientExpediteur.builder()
-                .nom(dto.getExpediteur().getNom())
-                .prenom(dto.getExpediteur().getPrenom())
-                .email(dto.getExpediteur().getEmail())
-                .telephone(dto.getExpediteur().getTelephone())
-                .adresse(dto.getExpediteur().getAdresse())
-                .ville(dto.getExpediteur().getVille())
-                .build();
+        ClientExpediteur client = mapper.toClientExpediteur(dto.getExpediteur());
         client = clientRepo.save(client);
 
-        Destinataire destinataire = Destinataire.builder()
-                .nom(dto.getDestinataire().getNom())
-                .prenom(dto.getDestinataire().getPrenom())
-                .email(dto.getDestinataire().getEmail())
-                .telephone(dto.getDestinataire().getTelephone())
-                .adresse(dto.getDestinataire().getAdresse())
-                .ville(dto.getDestinataire().getVille())
-                .build();
+        Destinataire destinataire = mapper.toDestinataire(dto.getDestinataire());
         destinataire = destinataireRepo.save(destinataire);
 
         Zone zone = zoneRepo.findByNom(dto.getZone().getNom())
                 .orElseGet(() -> {
-                    Zone newZone = Zone.builder()
-                            .nom(dto.getZone().getNom())
-                            .description(dto.getZone().getDescription())
-                            .codePostal(dto.getZone().getCodePostale())
-                            .build();
+                    Zone newZone = mapper.toZone(dto.getZone());
                     return zoneRepo.save(newZone);
                 });
+
+        PrioriteColis priorite = (dto.getPriorite() != null && !dto.getPriorite().isEmpty())
+                ? PrioriteColis.valueOf(dto.getPriorite().toUpperCase())
+                : PrioriteColis.NORMALE;
 
         Colis colis = Colis.builder()
                 .clientExpediteur(client)
@@ -69,7 +55,7 @@ public class ColisService {
                 .numeroColis(genererNumeroColis())
                 .numeroSuivi(genererNumeroSuivi())
                 .statut(StatutColis.CREE)
-                .priorite(PrioriteColis.NORMALE)
+                .priorite(priorite)
                 .dateCreation(LocalDateTime.now())
                 .dateLivraisonReelle(null)
                 .livreur(null)
@@ -83,11 +69,8 @@ public class ColisService {
             for (var produitDTO : dto.getProduits()) {
                 Produit produit = produitRepo.findByNom(produitDTO.getNom())
                         .orElseGet(() -> {
-                            Produit newProduit = Produit.builder()
-                                    .nom(produitDTO.getNom())
-                                    .description(produitDTO.getDescription())
-                                    .prixUnitaire(BigDecimal.valueOf(30.00))
-                                    .build();
+                            Produit newProduit = mapper.toProduit(produitDTO);
+                            newProduit.setPrixUnitaire(BigDecimal.valueOf(30.00));
                             return produitRepo.save(newProduit);
                         });
 
@@ -114,25 +97,18 @@ public class ColisService {
         ClientExpediteur client = clientRepo.findById(clientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Client non trouvé"));
 
-        Destinataire destinataire = Destinataire.builder()
-                .nom(dto.getDestinataire().getNom())
-                .prenom(dto.getDestinataire().getPrenom())
-                .email(dto.getDestinataire().getEmail())
-                .telephone(dto.getDestinataire().getTelephone())
-                .adresse(dto.getDestinataire().getAdresse())
-                .ville(dto.getDestinataire().getVille())
-                .build();
+        Destinataire destinataire = mapper.toDestinataire(dto.getDestinataire());
         destinataire = destinataireRepo.save(destinataire);
 
         Zone zone = zoneRepo.findByNom(dto.getZone().getNom())
                 .orElseGet(() -> {
-                    Zone newZone = Zone.builder()
-                            .nom(dto.getZone().getNom())
-                            .description(dto.getZone().getDescription())
-                            .codePostal(dto.getZone().getCodePostale())
-                            .build();
+                    Zone newZone = mapper.toZone(dto.getZone());
                     return zoneRepo.save(newZone);
                 });
+
+        PrioriteColis priorite = (dto.getPriorite() != null && !dto.getPriorite().isEmpty())
+                ? PrioriteColis.valueOf(dto.getPriorite().toUpperCase())
+                : PrioriteColis.NORMALE;
 
         Colis colis = Colis.builder()
                 .clientExpediteur(client)
@@ -141,7 +117,7 @@ public class ColisService {
                 .numeroColis(genererNumeroColis())
                 .numeroSuivi(genererNumeroSuivi())
                 .statut(StatutColis.CREE)
-                .priorite(PrioriteColis.NORMALE)
+                .priorite(priorite)
                 .dateCreation(LocalDateTime.now())
                 .dateLivraisonReelle(null)
                 .livreur(null)
@@ -155,11 +131,8 @@ public class ColisService {
             for (var produitDTO : dto.getProduits()) {
                 Produit produit = produitRepo.findByNom(produitDTO.getNom())
                         .orElseGet(() -> {
-                            Produit newProduit = Produit.builder()
-                                    .nom(produitDTO.getNom())
-                                    .description(produitDTO.getDescription())
-                                    .prixUnitaire(BigDecimal.valueOf(30.00))
-                                    .build();
+                            Produit newProduit = mapper.toProduit(produitDTO);
+                            newProduit.setPrixUnitaire(BigDecimal.valueOf(30.00));
                             return produitRepo.save(newProduit);
                         });
 
