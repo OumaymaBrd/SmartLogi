@@ -54,4 +54,8 @@ databaseChangeLog:
       file: db/changelog/changes/026-remove-produit-extra-columns.yaml
   - include:
       file: db/changelog/changes/027-changelog-fix-colis-nullable-columns.yaml
+  - include:
+      file: db/changelog/changes/028-changelog-create-pivot-table.yaml
+  - include:
+      file: db/changelog/changes/029-changelog-fix-colis-produit-types.yaml
 

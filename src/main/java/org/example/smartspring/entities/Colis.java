@@ -52,7 +52,8 @@ public class Colis {
     private Zone zone;
 
     @OneToMany(mappedBy = "colis", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Produit> produits = new ArrayList<>();
+    @Builder.Default
+    private List<ColisProduit> colisProduits = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "livreur_id")

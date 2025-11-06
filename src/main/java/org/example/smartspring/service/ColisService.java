@@ -7,13 +7,11 @@ import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.mapper.ColisMapper;
-import org.example.smartspring.repository.ClientExpediteurRepository;
-import org.example.smartspring.repository.ColisRepository;
-import org.example.smartspring.repository.DestinataireRepository;
-import org.example.smartspring.repository.ZoneRepository;
+import org.example.smartspring.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +26,8 @@ public class ColisService {
     private final ColisRepository colisRepo;
     private final DestinataireRepository destinataireRepo;
     private final ZoneRepository zoneRepo;
+    private final ProduitRepository produitRepo;
+    private final ColisProduitRepository colisProduitRepo;
     private final ColisMapper mapper;
 
     @Transactional
@@ -74,19 +74,36 @@ public class ColisService {
                 .dateLivraisonReelle(null)
                 .livreur(null)
                 .villeDestination(dto.getDestinataire().getVille())
-                .produits(new ArrayList<>())
+                .colisProduits(new ArrayList<>())
                 .build();
 
+        colis = colisRepo.save(colis);
+
         if (dto.getProduits() != null && !dto.getProduits().isEmpty()) {
-            List<Produit> produits = dto.getProduits().stream()
-                    .map(produitDTO -> Produit.builder()
-                            .nom(produitDTO.getNom())
-                            .description(produitDTO.getDescription())
-                            .quantite(produitDTO.getQuantite())
-                            .colis(colis)
-                            .build())
-                    .toList();
-            colis.setProduits(produits);
+            for (var produitDTO : dto.getProduits()) {
+                Produit produit = produitRepo.findByNom(produitDTO.getNom())
+                        .orElseGet(() -> {
+                            Produit newProduit = Produit.builder()
+                                    .nom(produitDTO.getNom())
+                                    .description(produitDTO.getDescription())
+                                    .prixUnitaire(BigDecimal.valueOf(30.00))
+                                    .build();
+                            return produitRepo.save(newProduit);
+                        });
+
+                BigDecimal prixTotal = produit.getPrixUnitaire()
+                        .multiply(BigDecimal.valueOf(produitDTO.getQuantite()));
+
+                ColisProduit colisProduit = ColisProduit.builder()
+                        .colis(colis)
+                        .produit(produit)
+                        .quantite(produitDTO.getQuantite())
+                        .prix(prixTotal)
+                        .dateAjout(LocalDateTime.now())
+                        .build();
+
+                colis.getColisProduits().add(colisProduit);
+            }
         }
 
         return colisRepo.save(colis);
@@ -129,19 +146,36 @@ public class ColisService {
                 .dateLivraisonReelle(null)
                 .livreur(null)
                 .villeDestination(dto.getDestinataire().getVille())
-                .produits(new ArrayList<>())
+                .colisProduits(new ArrayList<>())
                 .build();
 
+        colis = colisRepo.save(colis);
+
         if (dto.getProduits() != null && !dto.getProduits().isEmpty()) {
-            List<Produit> produits = dto.getProduits().stream()
-                    .map(produitDTO -> Produit.builder()
-                            .nom(produitDTO.getNom())
-                            .description(produitDTO.getDescription())
-                            .quantite(produitDTO.getQuantite())
-                            .colis(colis)
-                            .build())
-                    .toList();
-            colis.setProduits(produits);
+            for (var produitDTO : dto.getProduits()) {
+                Produit produit = produitRepo.findByNom(produitDTO.getNom())
+                        .orElseGet(() -> {
+                            Produit newProduit = Produit.builder()
+                                    .nom(produitDTO.getNom())
+                                    .description(produitDTO.getDescription())
+                                    .prixUnitaire(BigDecimal.valueOf(30.00))
+                                    .build();
+                            return produitRepo.save(newProduit);
+                        });
+
+                BigDecimal prixTotal = produit.getPrixUnitaire()
+                        .multiply(BigDecimal.valueOf(produitDTO.getQuantite()));
+
+                ColisProduit colisProduit = ColisProduit.builder()
+                        .colis(colis)
+                        .produit(produit)
+                        .quantite(produitDTO.getQuantite())
+                        .prix(prixTotal)
+                        .dateAjout(LocalDateTime.now())
+                        .build();
+
+                colis.getColisProduits().add(colisProduit);
+            }
         }
 
         return colisRepo.save(colis);

@@ -1,11 +1,12 @@
 package org.example.smartspring.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "produit")
@@ -24,11 +25,8 @@ public class Produit {
 
     private String description;
 
-    @Column(nullable = false)
-    private int quantite;
+    @Column(name = "prix_unitaire", nullable = false, precision = 10, scale = 2)
+    @Builder.Default
+    private BigDecimal prixUnitaire = new BigDecimal("30.00");
 
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "colis_id", nullable = false)
-    private Colis colis;
 }
