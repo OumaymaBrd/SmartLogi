@@ -36,5 +36,4 @@ public class LivreurController {
                 .body("Colis Avec Succes avec Statut Collecte ");
     }
 
-
 }

@@ -65,12 +65,14 @@ public class ColisController {
 
 
     @PutMapping("/{colisId}")
-    public ResponseEntity<Colis> updateColis(
+    public ResponseEntity<?> updateColis(
             @PathVariable String colisId,
             @RequestBody ColisDTO dto
     ) {
         Colis updatedColis = colisService.updateColis(colisId, dto);
-        return ResponseEntity.ok(updatedColis);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Update Statut Avec Succes!");
     }
 
 
