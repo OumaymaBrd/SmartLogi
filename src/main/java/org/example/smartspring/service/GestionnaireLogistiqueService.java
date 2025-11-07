@@ -3,6 +3,7 @@ package org.example.smartspring.service;
 import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.dto.gestionnairelogistique.AddGestionnaireLogistqueDTO;
+import org.example.smartspring.dto.gestionnairelogistique.AddLivreurLivreeDTO;
 import org.example.smartspring.dto.gestionnairelogistique.GestionnaireLogistiqueDTO;
 import org.example.smartspring.entities.Colis;
 import org.example.smartspring.entities.GestionnaireLogistique;
@@ -35,37 +36,78 @@ public class GestionnaireLogistiqueService {
         return mapper.toDto(saved);
     }
 
-    public GestionnaireLogistiqueDTO affecterLivreur(String numeroColis,
-                                                     String idGestionnaire,
-                                                     String idLivreur) {
+    public String affecterLivreur(
+            String numeroColis,
+            String idGestionnaire,
+            String livreurId,         // correspond à la colonne livreur_id en BDD
+            String livreurIdLivree    // correspond à la colonne livreur_id_livree en BDD
+    ) {
 
+        // 1. Vérifier le gestionnaire
         GestionnaireLogistique gestionnaire = repository.findById(idGestionnaire)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Aucun gestionnaire trouvé avec l'id : " + idGestionnaire
+                        HttpStatus.NOT_FOUND,
+                        "Aucun gestionnaire trouvé avec l'id : " + idGestionnaire
                 ));
 
+        // 2. Vérifier le colis
         Colis colis = colisRepository.findByNumeroColis(numeroColis)
                 .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Aucun colis trouvé avec Numero Colis : " + numeroColis
+                        HttpStatus.NOT_FOUND,
+                        "Aucun colis trouvé avec numéro : " + numeroColis
                 ));
 
-        Livreur livreur = LivreurRepository.findById(idLivreur)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Aucun livreur trouvé avec l'id : " + idLivreur
-                ));
+        // 3. Déterminer quel livreur utiliser
+        String livreurIdFinal = livreurId != null ? livreurId : livreurIdLivree;
+        boolean isLivree = livreurId == null;
 
-        String livreurExistantId = colisRepository.findLivreurIdByNumeroColis(numeroColis);
-        if (livreurExistantId == null) {
-            colis.setLivreur(livreur);
-            colis.setStatut(StatutColis.TRAITER);
-            colisRepository.save(colis);
-            return mapper.toDto(gestionnaire);
-        } else {
+        if (livreurIdFinal == null) {
             throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Le livreur est déjà affecté à ce colis"
+                    HttpStatus.BAD_REQUEST,
+                    "Vous devez fournir soit livreur_id soit livreur_id_livree"
             );
         }
+
+        // 4. Vérifier le livreur
+        Livreur livreur = LivreurRepository.findById(livreurIdFinal)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Aucun livreur trouvé avec l'id : " + livreurIdFinal
+                ));
+
+        // 5. Vérifier si le livreur est déjà affecté
+        if (!isLivree && colis.getLivreur() != null) {  // livreur_id
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Le livreur collecteur est déjà affecté à ce colis"
+            );
+        }
+
+        if (isLivree && colis.getLivreurLivree() != null) {  // livreur_id_livree
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Le livreur livré est déjà affecté à ce colis"
+            );
+        }
+
+        // 6. Affecter le livreur
+        if (isLivree) {
+            colis.setLivreurLivree(livreur);  // colonne livreur_id_livree
+        } else {
+            colis.setLivreur(livreur);        // colonne livreur_id
+        }
+
+        colis.setStatut(StatutColis.TRAITER);
+        colisRepository.save(colis);
+
+        // 7. Retourner message selon le type
+        return isLivree
+                ? "Le colis avec le numéro " + numeroColis + " a été affecté au livreur livré : " + livreurIdFinal
+                : "Le colis avec le numéro " + numeroColis + " a été affecté au livreur collecteur : " + livreurIdFinal;
     }
+
+
+
 
 
 

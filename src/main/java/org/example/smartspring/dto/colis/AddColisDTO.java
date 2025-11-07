@@ -41,4 +41,6 @@ public class AddColisDTO {
 
     @NotNull(message = "L'ID de la zone est obligatoire")
     private String zoneId;
+
+    private String livreur_id_livree;
 }

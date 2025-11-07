@@ -68,4 +68,9 @@ public class Colis {
     @Column(name = "ville_destination", length = 100)
     private String villeDestination;
 
+    @ManyToOne
+    @JoinColumn(name = "livreur_id_livree")
+    private Livreur livreurLivree;
+
+
 }

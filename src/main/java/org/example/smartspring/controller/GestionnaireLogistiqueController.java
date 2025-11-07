@@ -36,17 +36,21 @@ public class GestionnaireLogistiqueController {
     public ResponseEntity<?> affecterLivreur(
             @RequestParam String numero_colis,
             @RequestParam String idGestionnaire,
-            @RequestParam String idLivreur) {
+            @RequestParam(required = false, name = "livreur_id") String livreurId,           // correspond à livreur_id en BDD
+            @RequestParam(required = false, name = "livreur_id_livree") String livreurIdLivree // correspond à livreur_id_livree en BDD
+    ) {
 
-        GestionnaireLogistiqueDTO result = service.affecterLivreur(numero_colis, idGestionnaire, idLivreur);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body("Le colis avec le numéro " +
-                        numero_colis +
-                        " a été affecté avec succès au livreur ayant l'ID "
-                        + idLivreur);
+        if (livreurId == null && livreurIdLivree == null) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Vous devez fournir soit livreur_id soit livreur_id_livree");
+        }
 
+        String message = service.affecterLivreur(numero_colis, idGestionnaire, livreurId, livreurIdLivree);
+
+        return ResponseEntity.status(HttpStatus.OK).body(message);
     }
+
 
 
 }

@@ -30,6 +30,8 @@ public class UpdateColisDTO {
 
     private String livreurId;
 
+    private String livreur_id_livree;
+
     private String zoneId;
 
     private String clientExpediteurId;
