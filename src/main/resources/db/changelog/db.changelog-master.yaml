@@ -58,4 +58,8 @@ databaseChangeLog:
       file: db/changelog/changes/028-changelog-create-pivot-table.yaml
   - include:
       file: db/changelog/changes/029-changelog-fix-colis-produit-types.yaml
+  - include:
+      file: db/changelog/changes/030-changelog-create-gestionnaire-logistique.yaml
+  - include:
+      file: db/changelog/changes/031-changelog-add-livreur-to-historique.yaml
 

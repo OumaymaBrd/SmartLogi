@@ -1,4 +1,4 @@
-package org.example.smartspring.dto.zone;
+package org.example.smartspring.dto.gestionnaire;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ZoneDTO {
-    private String id;
+public class GestionnaireLogistiqueDTO {
     private String nom;
-    private String description;
-    private String codePostal;
+    private String prenom;
+    private String email;
+    private String telephone;
 }

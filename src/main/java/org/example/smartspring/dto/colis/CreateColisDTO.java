@@ -1,5 +1,9 @@
 package org.example.smartspring.dto.colis;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,14 +19,29 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ColisDTO {
+public class CreateColisDTO {
 
     private String statut;
+
     private String priorite;
+
+    @NotNull(message = "L'expéditeur est obligatoire")
+    @Valid
     private ClientExpediteurDTO expediteur;
+
+    @NotNull(message = "Le destinataire est obligatoire")
+    @Valid
     private DestinataireDTO destinataire;
+
+    @NotNull(message = "La zone est obligatoire")
+    @Valid
     private ZoneDTO zone;
+
+    @NotEmpty(message = "Au moins un produit est obligatoire")
+    @Valid
     private List<ProduitDTO> produits;
+
     private String description;
+
     private Double poids;
 }

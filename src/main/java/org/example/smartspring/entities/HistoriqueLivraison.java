@@ -25,6 +25,14 @@ public class HistoriqueLivraison {
     @JoinColumn(name = "colis_id", nullable = false)
     private Colis colis;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "gestionnaire_id")
+    private GestionnaireLogistique gestionnaire;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "livreur_id")
+    private Livreur livreur;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
     private StatutColis statut;
@@ -34,4 +42,7 @@ public class HistoriqueLivraison {
 
     @Column(length = 500)
     private String commentaire;
+
+    @Column(length = 100)
+    private String action;
 }

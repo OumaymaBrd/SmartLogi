@@ -1,4 +1,4 @@
-package org.example.smartspring.dto.livreur;
+package org.example.smartspring.dto.gestionnaire;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LivreurDTO {
+public class GestionnaireResponseDTO {
     private String id;
     private String nom;
     private String prenom;
-    private String telephone;
     private String email;
-    private String numeroPermis;
-    private LocalDateTime dateEmbauche;
+    private String telephone;
+    private LocalDateTime dateCreation;
     private Boolean actif;
 }

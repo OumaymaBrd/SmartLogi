@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-livreur-to-historique-livraison
+      author: oumaymaBrd
+      changes:
+        - addColumn:
+            tableName: historique_livraison
+            columns:
+              - column:
+                  name: livreur_id
+                  type: CHAR(36)
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            baseTableName: historique_livraison
+            baseColumnNames: livreur_id
+            constraintName: fk_historique_livreur
+            referencedTableName: livreur
+            referencedColumnNames: id
+            onDelete: SET NULL

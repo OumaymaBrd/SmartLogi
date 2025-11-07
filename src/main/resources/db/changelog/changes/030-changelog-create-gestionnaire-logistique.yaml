@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 030-changelog-create-gestionnaire-logistique
+      author: oumaymaBrd
+      changes:
+        - createTable:
+            tableName: gestionnaire_logistique
+            columns:
+              - column:
+                  name: id
+                  type: CHAR(36)
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: PK_GESTIONNAIRE_LOGISTIQUE
+                    nullable: false
+              - column:
+                  name: nom
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: prenom
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(191)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: telephone
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_creation
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: actif
+                  type: TINYINT(1)
+                  defaultValueNumeric: 1
+                  constraints:
+                    nullable: false
