@@ -2,6 +2,7 @@ package org.example.smartspring.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.ColisDTO;
+import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
 import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -195,4 +197,12 @@ public class ColisService {
     private String genererNumeroSuivi() {
         return "SUIVI_" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
     }
+
+    public List<ConsulterColisAffecterDTO> getColisByLivreurId(String livreurId) {
+        List<Colis> colisList = colisRepo.findByLivreur_Id(livreurId);
+        return colisList.stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

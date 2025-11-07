@@ -54,6 +54,7 @@ public class LivreurService {
 //                .collect(Collectors.toList());
 //    }
 //
+//
 //    @Transactional(readOnly = true)
 //    public LivreurDTO getLivreurById(String id) {
 //        log.debug("Fetching livreur by id: {}", id);

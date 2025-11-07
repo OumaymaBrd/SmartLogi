@@ -3,6 +3,7 @@ package org.example.smartspring.mapper;
 import org.example.smartspring.dto.clientexpediteur.ClientExpediteurDTO;
 import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.dto.destinataire.DestinataireDTO;
+import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
 import org.example.smartspring.dto.produit.ProduitDTO;
 import org.example.smartspring.dto.zone.ZoneDTO;
 import org.example.smartspring.entities.*;
@@ -62,4 +63,10 @@ public interface ColisMapper {
         if (statut == null) return StatutColis.CREE;
         return StatutColis.valueOf(statut);
     }
+
+    @Mapping(target = "numero_colis", source = "numeroColis")
+    @Mapping(target = "priorite", source = "priorite")
+    @Mapping(target = "client_expediteur_id", source = "clientExpediteur.id")
+    @Mapping(target = "zone", source = "zone.nom")
+    ConsulterColisAffecterDTO toDto(Colis colis);
 }

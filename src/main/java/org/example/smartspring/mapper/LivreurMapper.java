@@ -1,6 +1,7 @@
 package org.example.smartspring.mapper;
 
 import org.example.smartspring.dto.livreur.AddLivreurDTO;
+import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
 import org.example.smartspring.dto.livreur.LivreurDTO;
 import org.example.smartspring.dto.livreur.UpdateLivreurDTO;
 import org.example.smartspring.entities.Livreur;
@@ -19,4 +20,5 @@ public interface LivreurMapper {
 
     @Mapping(target = "zone", ignore = true)
     void updateEntityFromDto(UpdateLivreurDTO dto, @MappingTarget Livreur entity);
+
 }
