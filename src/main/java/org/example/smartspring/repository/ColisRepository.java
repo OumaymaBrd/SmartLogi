@@ -27,7 +27,8 @@ public interface ColisRepository extends JpaRepository<Colis, String> {
 
     List<Colis> findByDestinataire_Id(String destinataireId);
 
-    List<Colis> findByLivreur_Id(String livreurId);
+    List<Colis> findByLivreur_IdOrLivreurLivree_Id(String livreurId1, String livreurId2);
+
 
     @Query("SELECT c.livreur.id FROM Colis c WHERE c.numeroColis = :numeroColis")
     String findLivreurIdByNumeroColis(@Param("numeroColis") String numeroColis);

@@ -2,6 +2,7 @@ package org.example.smartspring.mapper;
 
 import org.example.smartspring.dto.clientexpediteur.ClientExpediteurDTO;
 import org.example.smartspring.dto.colis.ColisDTO;
+import org.example.smartspring.dto.colis.UpdateColisDTO;
 import org.example.smartspring.dto.destinataire.DestinataireDTO;
 import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
 import org.example.smartspring.dto.livreur.UpdateColisStatutDTO;
@@ -9,6 +10,7 @@ import org.example.smartspring.dto.produit.ProduitDTO;
 import org.example.smartspring.dto.zone.ZoneDTO;
 import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.StatutColis;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -72,5 +74,12 @@ public interface ColisMapper {
     @Mapping(target = "zone", source = "zone.nom")
     ConsulterColisAffecterDTO toDto(Colis colis);
 
+    @Mapping(target = "statut", source = "statut", qualifiedByName = "mapStatut")
     void updateColisFromDto(UpdateColisStatutDTO dto, @MappingTarget Colis colis);
+
+    @Mapping(target = "statut", source = "statut", qualifiedByName = "mapStatut")
+    void updateStatutFromDto(UpdateColisStatutDTO dto, @MappingTarget Colis colis);
+
+
+
 }

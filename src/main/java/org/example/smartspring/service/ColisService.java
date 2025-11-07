@@ -2,6 +2,7 @@ package org.example.smartspring.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.ColisDTO;
+import org.example.smartspring.dto.colis.UpdateColisDTO;
 import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
 import org.example.smartspring.dto.livreur.UpdateColisStatutDTO;
 import org.example.smartspring.entities.*;
@@ -10,8 +11,10 @@ import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.mapper.ColisMapper;
 import org.example.smartspring.repository.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,6 +35,7 @@ public class ColisService {
     private final ProduitRepository produitRepo;
     private final ColisProduitRepository colisProduitRepo;
     private final ColisMapper mapper;
+    private final LivreurRepository livreurRepo;
 
     @Transactional
     public Colis creerColisPourNouveauClient(ColisDTO dto) {
@@ -200,20 +204,58 @@ public class ColisService {
     }
 
     public List<ConsulterColisAffecterDTO> getColisByLivreurId(String livreurId) {
-        List<Colis> colisList = colisRepo.findByLivreur_Id(livreurId);
+
+        List<Colis> colisList = colisRepo.findByLivreur_IdOrLivreurLivree_Id(livreurId, livreurId);
+
         return colisList.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
     }
 
 
-    public Colis updateStatutColis(String colisId, UpdateColisStatutDTO dto) {
+    @Transactional
+    public Colis updateColis(String colisId, UpdateColisDTO dto) {
         Colis colis = colisRepo.findById(colisId)
-                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("Colis non trouvé"));
 
-        mapper.updateColisFromDto(dto, colis);
+        // Mettre à jour le statut si fourni
+        if (dto.getStatut() != null) {
+            colis.setStatut(dto.getStatut());
+
+            // Si le colis est livré, mettre à jour la date réelle de livraison
+            if (dto.getStatut() == StatutColis.LIVRE) {
+                colis.setDateLivraisonReelle(LocalDateTime.now());
+            }
+        }
+
+        // Affecter le livreur collecteur si fourni
+        if (dto.getLivreurId() != null) {
+            if (colis.getLivreur() != null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Le livreur collecteur est déjà affecté à ce colis");
+            }
+            Livreur livreur = livreurRepo.findById(dto.getLivreurId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "Aucun livreur trouvé avec l'id : " + dto.getLivreurId()));
+            colis.setLivreur(livreur);
+        }
+
+        // Affecter le livreur livré si fourni
+        if (dto.getLivreur_id_livree() != null) {
+            if (colis.getLivreurLivree() != null) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "Le livreur livré est déjà affecté à ce colis");
+            }
+            Livreur livreurLivree = livreurRepo.findById(dto.getLivreur_id_livree())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "Aucun livreur trouvé avec l'id : " + dto.getLivreur_id_livree()));
+            colis.setLivreurLivree(livreurLivree);
+        }
 
         return colisRepo.save(colis);
     }
+
+
+
 
 }
