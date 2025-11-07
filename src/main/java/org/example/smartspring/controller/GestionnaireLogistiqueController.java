@@ -10,10 +10,7 @@ import org.example.smartspring.dto.gestionnairelogistique.GestionnaireLogistique
 import org.example.smartspring.service.GestionnaireLogistiqueService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +31,22 @@ public class GestionnaireLogistiqueController {
                 .status(HttpStatus.CREATED)
                 .body(" Creation Gestionnaire Logistique Avec Succes");
     }
+
+    @PutMapping("/affecter-livreur")
+    public ResponseEntity<?> affecterLivreur(
+            @RequestParam String numero_colis,
+            @RequestParam String idGestionnaire,
+            @RequestParam String idLivreur) {
+
+        GestionnaireLogistiqueDTO result = service.affecterLivreur(numero_colis, idGestionnaire, idLivreur);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Le colis avec le numéro " +
+                        numero_colis +
+                        " a été affecté avec succès au livreur ayant l'ID "
+                        + idLivreur);
+
+    }
+
 
 }
