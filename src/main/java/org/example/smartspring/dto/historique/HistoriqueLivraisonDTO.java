@@ -1,4 +1,4 @@
-package org.example.smartspring.dto.colis;
+package org.example.smartspring.dto.historique;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,14 +12,12 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HistoriqueColisDTO {
+public class HistoriqueLivraisonDTO {
+
     private String id;
-    private String colisId;
-    private String gestionnaireId;
-    private String gestionnaireNom;
-    private String gestionnairePrenom;
-    private String action;
-    private StatutColis statut;
-    private String commentaire;
+    private Long colisId;
+    private StatutColis ancienStatut;
+    private StatutColis nouveauStatut;
     private LocalDateTime dateChangement;
+    private String commentaire;
 }

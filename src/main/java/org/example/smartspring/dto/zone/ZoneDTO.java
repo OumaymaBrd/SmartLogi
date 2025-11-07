@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ZoneDTO {
-    private String id;
+
     private String nom;
     private String description;
-    private String codePostal;
+    private String codePostale;
 }

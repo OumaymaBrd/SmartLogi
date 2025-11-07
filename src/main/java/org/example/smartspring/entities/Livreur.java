@@ -1,15 +1,11 @@
 package org.example.smartspring.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "livreur")
@@ -23,36 +19,22 @@ public class Livreur {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String nom;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String prenom;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, length = 20)
     private String telephone;
 
+    @Column(length = 50)
+    private String vehicule;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "zone_id")
+    private Zone zone;
+
+    @Email
     private String email;
-
-    @Column(name = "numero_permis")
-    private String numeroPermis;
-
-    @Column(name = "date_embauche")
-    private LocalDateTime dateEmbauche;
-
-    @Column(nullable = false)
-    @Builder.Default
-    private Boolean actif = true;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "livreur", cascade = CascadeType.ALL)
-    @Builder.Default
-    private List<Colis> colis = new ArrayList<>();
-
-    @PrePersist
-    protected void onCreate() {
-        if (dateEmbauche == null) {
-            dateEmbauche = LocalDateTime.now();
-        }
-    }
 }

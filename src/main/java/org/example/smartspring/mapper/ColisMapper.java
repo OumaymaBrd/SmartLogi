@@ -44,7 +44,7 @@ public interface ColisMapper {
     Destinataire toDestinataire(DestinataireDTO dto);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "codePostal", source = "codePostal")
+    @Mapping(target = "codePostal", source = "codePostale")
     Zone toZone(ZoneDTO dto);
 
     @Mapping(target = "id", ignore = true)

@@ -1,8 +1,13 @@
 package org.example.smartspring.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.smartspring.dto.destinataire.AddDestinataireDTO;
+import org.example.smartspring.dto.destinataire.UpdateDestinataireDTO;
 import org.example.smartspring.dto.destinataire.DestinataireDTO;
 import org.example.smartspring.service.DestinataireService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,48 +15,45 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/destinataires")
+@RequestMapping("/destinataires")
 @RequiredArgsConstructor
 public class DestinataireController {
 
     private final DestinataireService destinataireService;
 
     @PostMapping
-    public ResponseEntity<DestinataireDTO> creerDestinataire(@RequestBody DestinataireDTO dto) {
-        DestinataireDTO destinataire = destinataireService.creerDestinataire(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(destinataire);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DestinataireDTO> obtenirDestinataire(@PathVariable String id) {
-        return destinataireService.obtenirDestinataireParId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<DestinataireDTO> createDestinataire(@Valid @RequestBody AddDestinataireDTO dto) {
+        return new ResponseEntity<>(destinataireService.createDestinataire(dto), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public ResponseEntity<List<DestinataireDTO>> obtenirTousLesDestinataires() {
-        List<DestinataireDTO> destinataires = destinataireService.obtenirTousLesDestinataires();
-        return ResponseEntity.ok(destinataires);
+    public ResponseEntity<Page<DestinataireDTO>> getAllDestinataires(Pageable pageable) {
+        return ResponseEntity.ok(destinataireService.getAllDestinataires(pageable));
     }
 
-    @GetMapping("/ville/{ville}")
-    public ResponseEntity<List<DestinataireDTO>> obtenirDestinatairesParVille(@PathVariable String ville) {
-        List<DestinataireDTO> destinataires = destinataireService.obtenirDestinatairesParVille(ville);
-        return ResponseEntity.ok(destinataires);
+    @GetMapping("/{id}")
+    public ResponseEntity<DestinataireDTO> getDestinataireById(@PathVariable String id) {
+        return ResponseEntity.ok(destinataireService.getDestinataireById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DestinataireDTO> modifierDestinataire(
-            @PathVariable String id,
-            @RequestBody DestinataireDTO dto) {
-        DestinataireDTO destinataire = destinataireService.modifierDestinataire(id, dto);
-        return ResponseEntity.ok(destinataire);
+    public ResponseEntity<DestinataireDTO> updateDestinataire(@PathVariable String id, @Valid @RequestBody UpdateDestinataireDTO dto) {
+        return ResponseEntity.ok(destinataireService.updateDestinataire(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimerDestinataire(@PathVariable String id) {
-        destinataireService.supprimerDestinataire(id);
+    public ResponseEntity<Void> deleteDestinataire(@PathVariable String id) {
+        destinataireService.deleteDestinataire(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<DestinataireDTO>> searchDestinataires(@RequestParam String keyword, Pageable pageable) {
+        return ResponseEntity.ok(destinataireService.searchDestinataires(keyword, pageable));
+    }
+
+    @GetMapping("/ville/{ville}")
+    public ResponseEntity<List<DestinataireDTO>> getDestinatairesByVille(@PathVariable String ville) {
+        return ResponseEntity.ok(destinataireService.getDestinatairesByVille(ville));
     }
 }

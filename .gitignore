@@ -35,3 +35,8 @@ build/
 .env
 .env
 smart-spring-clean/
+
+## Logs ###
+logs/
+logs;C/
+loki/

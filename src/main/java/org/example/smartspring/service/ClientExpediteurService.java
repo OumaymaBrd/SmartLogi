@@ -1,91 +1,72 @@
 package org.example.smartspring.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.smartspring.dto.clientexpediteur.AddClientExpediteurDTO;
 import org.example.smartspring.dto.clientexpediteur.ClientExpediteurDTO;
+import org.example.smartspring.dto.clientexpediteur.UpdateClientExpediteurDTO;
 import org.example.smartspring.entities.ClientExpediteur;
+import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.mapper.ClientExpediteurMapper;
 import org.example.smartspring.repository.ClientExpediteurRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class ClientExpediteurService {
 
-    private final ClientExpediteurRepository clientRepository;
-    private final ClientExpediteurMapper clientMapper;
+    private final ClientExpediteurRepository repository;
+    private final ClientExpediteurMapper mapper;
 
-    @Transactional
-    public ClientExpediteurDTO creerClient(ClientExpediteurDTO dto) {
-        ClientExpediteur client = clientMapper.toEntity(dto);
-        ClientExpediteur saved = clientRepository.save(client);
-        return clientMapper.toDTO(saved);
+    public ClientExpediteurDTO createClientExpediteur(AddClientExpediteurDTO dto) {
+        log.debug("Creating new client expediteur: {}", dto.getEmail());
+        ClientExpediteur entity = mapper.toEntity(dto);
+        ClientExpediteur saved = repository.save(entity);
+        return mapper.toDto(saved);
     }
+
 
     @Transactional(readOnly = true)
-    public ClientExpediteurDTO obtenirClient(String id) {
-        ClientExpediteur client = clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client non trouvé avec l'ID: " + id));
-        return clientMapper.toDTO(client);
+    public Page<ClientExpediteurDTO> getAllClientsExpediteurs(Pageable pageable) {
+        log.debug("Fetching all clients expediteurs with pagination");
+        return repository.findAll(pageable).map(mapper::toDto);
     }
+
 
     @Transactional(readOnly = true)
-    public Optional<ClientExpediteurDTO> obtenirClientParId(String id) {
-        return clientRepository.findById(id)
-                .map(clientMapper::toDTO);
+    public ClientExpediteurDTO getClientExpediteurById(String id) {
+        log.debug("Fetching client expediteur by id: {}", id);
+        ClientExpediteur entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ClientExpediteur not found with id: " + id));
+        return mapper.toDto(entity);
     }
 
-    @Transactional(readOnly = true)
-    public List<ClientExpediteurDTO> obtenirTousLesClients() {
-        return clientMapper.toDTOList(clientRepository.findAll());
+    public ClientExpediteurDTO updateClientExpediteur(String id, UpdateClientExpediteurDTO dto) {
+        log.debug("Updating client expediteur with id: {}", id);
+        ClientExpediteur entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("ClientExpediteur not found with id: " + id));
+
+        mapper.updateEntityFromDto(dto, entity);
+        ClientExpediteur updated = repository.save(entity);
+        return mapper.toDto(updated);
     }
 
-    @Transactional(readOnly = true)
-    public List<ClientExpediteurDTO> rechercherClients(String keyword) {
-        return clientMapper.toDTOList(clientRepository.rechercherClients(keyword));
-    }
-
-    @Transactional(readOnly = true)
-    public List<ClientExpediteurDTO> obtenirClientsParVille(String ville) {
-        return clientMapper.toDTOList(clientRepository.findByVille(ville));
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<ClientExpediteurDTO> obtenirClientParEmail(String email) {
-        return clientRepository.findByEmail(email)
-                .map(clientMapper::toDTO);
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<ClientExpediteurDTO> obtenirClientParTelephone(String telephone) {
-        return clientRepository.findByTelephone(telephone)
-                .map(clientMapper::toDTO);
-    }
-
-    @Transactional
-    public ClientExpediteurDTO modifierClient(String id, ClientExpediteurDTO dto) {
-        ClientExpediteur client = clientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client non trouvé avec l'ID: " + id));
-
-        client.setNom(dto.getNom());
-        client.setPrenom(dto.getPrenom());
-        client.setEmail(dto.getEmail());
-        client.setTelephone(dto.getTelephone());
-        client.setAdresse(dto.getAdresse());
-        client.setVille(dto.getVille());
-
-        ClientExpediteur updated = clientRepository.save(client);
-        return clientMapper.toDTO(updated);
-    }
-
-    @Transactional
-    public void supprimerClient(String id) {
-        if (!clientRepository.existsById(id)) {
-            throw new RuntimeException("Client non trouvé avec l'ID: " + id);
+    public void deleteClientExpediteur(String id) {
+        log.debug("Deleting client expediteur with id: {}", id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("ClientExpediteur not found with id: " + id);
         }
-        clientRepository.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ClientExpediteurDTO> searchClientsExpediteurs(String keyword, Pageable pageable) {
+        log.debug("Searching clients expediteurs with keyword: {}", keyword);
+        return repository.searchByKeyword(keyword, pageable).map(mapper::toDto);
     }
 }

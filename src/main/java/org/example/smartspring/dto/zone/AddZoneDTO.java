@@ -1,6 +1,8 @@
 package org.example.smartspring.dto.zone;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,16 +12,14 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateZoneDTO {
+public class AddZoneDTO {
 
-    @NotBlank(message = "Le nom de la zone est obligatoire")
+    @NotBlank(message = "Le nom est obligatoire")
+    @Size(min = 2, max = 100, message = "Le nom doit contenir entre 2 et 100 caractères")
     private String nom;
 
-    @NotBlank(message = "La ville est obligatoire")
-    private String ville;
-
-    @NotBlank(message = "Le code postal est obligatoire")
-    private String codePostale;
-
     private String description;
+
+    @Column(length = 10)
+    private String codePostal;
 }

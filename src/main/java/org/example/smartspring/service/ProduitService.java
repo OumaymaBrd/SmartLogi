@@ -1,77 +1,70 @@
 package org.example.smartspring.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.example.smartspring.dto.produit.AddProduitDTO;
 import org.example.smartspring.dto.produit.ProduitDTO;
+import org.example.smartspring.dto.produit.UpdateProduitDTO;
 import org.example.smartspring.entities.Produit;
+import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.mapper.ProduitMapper;
 import org.example.smartspring.repository.ProduitRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional
 public class ProduitService {
 
-    private final ProduitRepository produitRepository;
-    private final ProduitMapper produitMapper;
+    private final ProduitRepository repository;
+    private final ProduitMapper mapper;
 
-    @Transactional
-    public ProduitDTO creerProduit(ProduitDTO dto) {
-        Produit produit = produitMapper.toEntity(dto);
-        Produit saved = produitRepository.save(produit);
-        return produitMapper.toDTO(saved);
+    public ProduitDTO createProduit(AddProduitDTO dto) {
+        log.debug("Creating new produit: {}", dto.getNom());
+        Produit entity = mapper.toEntity(dto);
+        Produit saved = repository.save(entity);
+        return mapper.toDto(saved);
     }
 
     @Transactional(readOnly = true)
-    public ProduitDTO obtenirProduit(String id) {
-        Produit produit = produitRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID: " + id));
-        return produitMapper.toDTO(produit);
+    public Page<ProduitDTO> getAllProduits(Pageable pageable) {
+        log.debug("Fetching all produits with pagination");
+        return repository.findAll(pageable).map(mapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public Optional<ProduitDTO> obtenirProduitParId(String id) {
-        return produitRepository.findById(id)
-                .map(produitMapper::toDTO);
+    public ProduitDTO getProduitById(String id) {
+        log.debug("Fetching produit by id: {}", id);
+        Produit entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit not found with id: " + id));
+        return mapper.toDto(entity);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<ProduitDTO> obtenirProduitParNom(String nom) {
-        return produitRepository.findByNom(nom)
-                .map(produitMapper::toDTO);
+    public ProduitDTO updateProduit(String id, UpdateProduitDTO dto) {
+        log.debug("Updating produit with id: {}", id);
+        Produit entity = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Produit not found with id: " + id));
+
+        mapper.updateEntityFromDto(dto, entity);
+        Produit updated = repository.save(entity);
+        return mapper.toDto(updated);
     }
 
-    @Transactional(readOnly = true)
-    public List<ProduitDTO> obtenirTousLesProduits() {
-        return produitMapper.toDTOList(produitRepository.findAll());
-    }
-
-    @Transactional(readOnly = true)
-    public List<ProduitDTO> rechercherProduits(String keyword) {
-        return produitMapper.toDTOList(produitRepository.rechercherProduits(keyword));
-    }
-
-    @Transactional
-    public ProduitDTO modifierProduit(String id, ProduitDTO dto) {
-        Produit produit = produitRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produit non trouvé avec l'ID: " + id));
-
-        produit.setNom(dto.getNom());
-        produit.setDescription(dto.getDescription());
-        produit.setPrixUnitaire(dto.getPrixUnitaire());
-
-        Produit updated = produitRepository.save(produit);
-        return produitMapper.toDTO(updated);
-    }
-
-    @Transactional
-    public void supprimerProduit(String id) {
-        if (!produitRepository.existsById(id)) {
-            throw new RuntimeException("Produit non trouvé avec l'ID: " + id);
+    public void deleteProduit(String id) {
+        log.debug("Deleting produit with id: {}", id);
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Produit not found with id: " + id);
         }
-        produitRepository.deleteById(id);
+        repository.deleteById(id);
     }
+
+//    @Transactional(readOnly = true)
+//    public Page<ProduitDTO> searchProduits(String keyword, Pageable pageable) {
+//        log.debug("Searching produits with keyword: {}", keyword);
+//        return repository.searchByKeyword(keyword, pageable).map(mapper::toDto);
+//    }
 }

@@ -1,63 +1,72 @@
 package org.example.smartspring.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.smartspring.dto.livreur.AddLivreurDTO;
+import org.example.smartspring.dto.livreur.UpdateLivreurDTO;
 import org.example.smartspring.dto.livreur.LivreurDTO;
 import org.example.smartspring.service.LivreurService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/livreurs")
+@RequestMapping("/livreurs")
 @RequiredArgsConstructor
 public class LivreurController {
 
-    private final LivreurService livreurService;
-
-    @PostMapping
-    public ResponseEntity<LivreurDTO> creerLivreur(@RequestBody LivreurDTO dto) {
-        LivreurDTO livreur = livreurService.creerLivreur(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(livreur);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<LivreurDTO> obtenirLivreur(@PathVariable String id) {
-        return livreurService.obtenirLivreurParId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @GetMapping
-    public ResponseEntity<List<LivreurDTO>> obtenirTousLesLivreurs() {
-        List<LivreurDTO> livreurs = livreurService.obtenirTousLesLivreurs();
-        return ResponseEntity.ok(livreurs);
-    }
-
-    @GetMapping("/zone/{zoneNom}")
-    public ResponseEntity<List<LivreurDTO>> obtenirLivreursParZone(@PathVariable String zoneNom) {
-        List<LivreurDTO> livreurs = livreurService.obtenirLivreursParZone(zoneNom);
-        return ResponseEntity.ok(livreurs);
-    }
-
-    @GetMapping("/disponibles")
-    public ResponseEntity<List<LivreurDTO>> obtenirLivreursDisponibles() {
-        List<LivreurDTO> livreurs = livreurService.obtenirLivreursDisponibles();
-        return ResponseEntity.ok(livreurs);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<LivreurDTO> modifierLivreur(
-            @PathVariable String id,
-            @RequestBody LivreurDTO dto) {
-        LivreurDTO livreur = livreurService.modifierLivreur(id, dto);
-        return ResponseEntity.ok(livreur);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> supprimerLivreur(@PathVariable String id) {
-        livreurService.supprimerLivreur(id);
-        return ResponseEntity.noContent().build();
-    }
+//    private final LivreurService livreurService;
+//
+//    @PostMapping
+//    public ResponseEntity<LivreurDTO> createLivreur(@Valid @RequestBody AddLivreurDTO dto) {
+//        return new ResponseEntity<>(livreurService.createLivreur(dto), HttpStatus.CREATED);
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity<?> getAllLivreurs() {
+//        List<LivreurDTO> liste=livreurService.getAllLivreurs();
+//        if (liste.isEmpty()){
+//            return ResponseEntity
+//                    .status(HttpStatus.NOT_FOUND)
+//                    .body("Liste Livreur est Vide !!");
+//        }
+//        return ResponseEntity.ok(liste);
+//
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ResponseEntity<LivreurDTO> getLivreurById(@PathVariable String id) {
+//        return ResponseEntity.ok(livreurService.getLivreurById(id));
+//    }
+//
+//    @PutMapping("/{id}")
+//    public ResponseEntity<LivreurDTO> updateLivreur(@PathVariable String id, @Valid @RequestBody UpdateLivreurDTO dto) {
+//        return ResponseEntity.ok(livreurService.updateLivreur(id, dto));
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteLivreur(@PathVariable String id) {
+//        livreurService.deleteLivreur(id);
+//        return ResponseEntity.noContent().build();
+//    }
+//
+//    @GetMapping("/search")
+//    public ResponseEntity<Page<LivreurDTO>> searchLivreurs(@RequestParam String keyword, Pageable pageable) {
+//        return ResponseEntity.ok(livreurService.searchLivreurs(keyword, pageable));
+//    }
+//
+//    @GetMapping("/zone/{zoneId}")
+//    public ResponseEntity<List<LivreurDTO>> getLivreursByZone(@PathVariable String zoneId) {
+//        return ResponseEntity.ok(livreurService.getLivreursByZone(zoneId));
+//    }
+//
+//    @GetMapping("/{id}/stats")
+//    public ResponseEntity<Map<String, Object>> getLivreurStats(@PathVariable String id) {
+//        return ResponseEntity.ok(livreurService.getLivreurStats(id));
+//    }
 }
