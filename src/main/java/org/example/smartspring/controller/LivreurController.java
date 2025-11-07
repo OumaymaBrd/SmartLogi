@@ -2,10 +2,8 @@ package org.example.smartspring.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.example.smartspring.dto.livreur.AddLivreurDTO;
-import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
-import org.example.smartspring.dto.livreur.UpdateLivreurDTO;
-import org.example.smartspring.dto.livreur.LivreurDTO;
+import org.example.smartspring.dto.livreur.*;
+import org.example.smartspring.entities.Colis;
 import org.example.smartspring.service.ColisService;
 import org.example.smartspring.service.LivreurService;
 import org.springframework.data.domain.Page;
@@ -24,9 +22,19 @@ public class LivreurController {
 
     private final ColisService service;
 
-    @GetMapping("/{id}/colis")
+    @GetMapping("/{id}")
     public List<ConsulterColisAffecterDTO> getColisAffectes(@PathVariable String id) {
         return service.getColisByLivreurId(id);
     }
+
+    @PutMapping("/colis/{colisId}")
+    public ResponseEntity<?> updateStatut(@PathVariable String colisId,
+                              @RequestBody UpdateColisStatutDTO dto) {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Colis Avec Succes avec Statut Collecte ");
+    }
+
 
 }

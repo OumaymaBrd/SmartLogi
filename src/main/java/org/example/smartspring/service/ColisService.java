@@ -3,6 +3,7 @@ package org.example.smartspring.service;
 import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
+import org.example.smartspring.dto.livreur.UpdateColisStatutDTO;
 import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
@@ -203,6 +204,16 @@ public class ColisService {
         return colisList.stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+
+    public Colis updateStatutColis(String colisId, UpdateColisStatutDTO dto) {
+        Colis colis = colisRepo.findById(colisId)
+                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
+
+        mapper.updateColisFromDto(dto, colis);
+
+        return colisRepo.save(colis);
     }
 
 }
