@@ -8,6 +8,26 @@
 ![Presnetation](images/architecture.png)
 
 
+## Diagramme du Classe 
+
+![Diagramme Classe](images/diagrammeClasse.png)
+
+## Présentation des interfaces Grafana
+- **Statistiques** - Cette partie présente la vue statique de tous les logs générés
+
+![Partie 1 Grafana ](images/Grafana-interface-1.png)
+
+- **Graphiques** - Cette section est dédiée aux graphiques
+
+
+![Partie 2 Grafana ](images/Grafana-interface-2.png)
+
+- **Details Logs** - Cette section affiche la traçabilité détaillée de chaque log
+
+
+![Partie 3 Grafana ](images/Grafana-interface-3.png)
+
+
 ## Fonctionnalités
 
 ### Gestion des Entités
@@ -25,52 +45,6 @@
 - Recherche par mots-clés
 - Filtrage par statut, priorité, zone, ville
 - Statistiques par livreur et zone
-
-## Installation
-
-1. **Cloner le projet**
-   \`\`\`bash
-   git clone <repository-url>
-   cd smart-spring
-   \`\`\`
-
-2. **Configurer la base de données**
-   Créer une base de données MySQL:
-   \`\`\`sql
-   CREATE DATABASE smartSpring CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   \`\`\`
-
-3. **Configurer application.yml**
-   Modifier les paramètres de connexion dans `src/main/resources/application.yml`
-
-4. **Compiler le projet**
-   \`\`\`bash
-   mvn clean install
-   \`\`\`
-
-5. **Lancer l'application**
-   \`\`\`bash
-   mvn spring-boot:run
-   \`\`\`
-
-L'application sera accessible sur `http://localhost:8080`
-
-## Liquibase
-
-Les migrations de base de données sont gérées automatiquement par Liquibase au démarrage de l'application.
-
-### Commandes Maven Liquibase
-
-\`\`\`bash
-# Mettre à jour la base de données
-mvn liquibase:update
-
-# Générer un diff
-mvn liquibase:diff
-
-# Rollback
-mvn liquibase:rollback
-\`\`\`
 
 ## Endpoints API
 
@@ -94,14 +68,6 @@ mvn liquibase:rollback
 - `GET /api/colis/livreur/{livreurId}/stats` - Statistiques livreur
 - `GET /api/colis/zone/{zoneId}/stats` - Statistiques zone
 
-## Validation
-
-Toutes les DTOs utilisent les annotations de validation Jakarta:
-- `@NotBlank` - Champs obligatoires
-- `@Email` - Validation email
-- `@Size` - Taille min/max
-- `@DecimalMin` - Valeur minimale
-- `@Min` - Valeur minimale entière
 
 ## Logs
 
@@ -109,16 +75,5 @@ L'application utilise SLF4J avec Logback pour les logs:
 - **DEBUG** - Opérations de lecture
 - **INFO** - Opérations de création/modification/suppression
 - **ERROR** - Erreurs
+- **EMAIL** - Suivi des emails envoyés
 
-## Auteur
-
-SmartLogi Development Team
-
-
-# La partie Du Logging 
-
-
---> Installation du Loki localement :  https://github.com/grafana/loki/releases
-
---> : Installer Promtail (pour lire ton fichier log et l’envoyer à Loki)
-    
