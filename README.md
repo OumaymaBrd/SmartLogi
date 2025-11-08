@@ -17,20 +17,7 @@ Voici un aperçu des principaux composants de cette architecture de logging et d
 ---
 ## Presentation Du interction project 
 ![Presnetation](images/architecture.png)
-## Architecture
 
-\`\`\`
-src/main/java/org/example/smartspring/
-├── config/          # Configuration Spring
-├── controller/      # Contrôleurs REST
-├── dto/            # Data Transfer Objects
-├── entities/       # Entités JPA
-├── enums/          # Énumérations
-├── exception/      # Gestion des exceptions
-├── mapper/         # MapStruct mappers
-├── repository/     # Repositories JPA
-└── service/        # Logique métier
-\`\`\`
 
 ## Fonctionnalités
 
