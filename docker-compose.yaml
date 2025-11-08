@@ -1,68 +1,52 @@
-version: '3.8'
-
 services:
-  # ----------------------------------------------------
-  # 1. Spring Boot Application
-  # ----------------------------------------------------
-  spring-app:
-    image: spring-app:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: spring-app
-    ports:
-      - "8080:8080"
-    volumes:
-      # Montage du répertoire logs pour que Promtail puisse le lire
-      - ./logs:/app/logs
-    environment:
-      - JAVA_OPTS=-Dspring.profiles.active=dev
-    depends_on:
-      - loki # Démarrer Loki avant l'application pour la dépendance de la stack
-
-  # ----------------------------------------------------
-  # 2. Loki (Log Aggregation)
-  # ----------------------------------------------------
   loki:
-    image: grafana/loki:3.5.7
+    image: grafana/loki:2.8.2
     container_name: loki
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
-      # Monter le fichier de configuration Loki
-      - ./loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./loki-config.yaml:/etc/loki/local-config.yaml
+      - loki-data:/loki
+    networks:
+      - monitoring
 
-  # ----------------------------------------------------
-  # 3. Promtail (Log Collector)
-  # ----------------------------------------------------
   promtail:
-    image: grafana/promtail:3.5.7
+    image: grafana/promtail:2.8.2
     container_name: promtail
     volumes:
-      # Lire les logs de l'application depuis le volume partagé
-      - ./logs:/logs
-      # Monter le fichier de configuration Promtail
-      - ./promtail/promtail-config.yaml:/etc/promtail/config.yaml:ro
+      - ./promtail-config.yaml:/etc/promtail/config.yaml
+      - ./logs:/var/log/springboot:ro
     command: -config.file=/etc/promtail/config.yaml
     depends_on:
-      - loki # Dépend de Loki pour l'envoi des logs
+      - loki
+    networks:
+      - monitoring
 
-  # ----------------------------------------------------
-  # 4. Grafana (Visualization & Dashboards)
-  # ----------------------------------------------------
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:10.1.2
     container_name: grafana
+    depends_on:
+      - loki
     ports:
       - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/var/lib/grafana/dashboards/springboot-logs.json
+      - GF_AUTH_ANONYMOUS_ENABLED=false
     volumes:
-      # Provisionnement des sources de données (Loki)
-      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
-      # Provisionnement des tableaux de bord (Spring Logs)
-      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-    depends_on:
-      - loki
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  grafana-data:
+  loki-data:
