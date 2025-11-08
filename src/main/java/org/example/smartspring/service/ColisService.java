@@ -8,9 +8,11 @@ import org.example.smartspring.dto.livreur.UpdateColisStatutDTO;
 import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
+import org.example.smartspring.events.ColisStatusChangeEvent;
 import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.mapper.ColisMapper;
 import org.example.smartspring.repository.*;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,7 @@ public class ColisService {
     private final ColisProduitRepository colisProduitRepo;
     private final ColisMapper mapper;
     private final LivreurRepository livreurRepo;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public Colis creerColisPourNouveauClient(ColisDTO dto) {
@@ -265,6 +268,20 @@ public class ColisService {
 
         // Sauvegarde déclenche @PreUpdate → insertion automatique dans HistoriqueLivraison
         return colisRepo.save(colis);
+    }
+
+    @Transactional
+    public Colis modifierStatut(String colisId, StatutColis nouveauStatut) {
+        Colis colis = colisRepo.findById(colisId)
+                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
+
+        colis.setStatut(nouveauStatut);
+        Colis saved = colisRepo.save(colis);
+
+        // publier événement (utiliser la valeur de l'enum)
+        eventPublisher.publishEvent(new ColisStatusChangeEvent(saved.getId(), saved.getStatut().name()));
+
+        return saved;
     }
 
 

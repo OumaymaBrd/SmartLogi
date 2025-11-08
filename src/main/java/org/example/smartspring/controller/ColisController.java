@@ -84,11 +84,10 @@ public class ColisController {
     }
 
     @PutMapping("/{colisId}/statut")
-    public ResponseEntity<String> updateStatut(@PathVariable String colisId,
-                                               @RequestParam StatutColis statut) {
-
-        colisService.updateStatut(colisId, statut);
-        return ResponseEntity.ok("Statut du colis mis à jour et historique créé automatiquement");
+    public ResponseEntity<?> updateStatut(@PathVariable String colisId,
+                                          @RequestParam StatutColis statut) {
+        Colis colis = colisService.modifierStatut(colisId, statut);
+        return ResponseEntity.ok("Statut mis à jour et e-mails déclenchés si applicable.");
     }
 
 }
