@@ -4,14 +4,19 @@ Application de gestion logistique pour SmartLogi - Système complet de gestion d
 
 ## Technologies
 
-- **Java 17**
-- **Spring Boot 3.5.7**
-- **Liquibase 4.28.0** - Gestion des migrations de base de données
-- **MapStruct 1.5.5** - Mapping DTO/Entity
-- **Lombok 1.18.30** - Réduction du code boilerplate
-- **MySQL** - Base de données
-- **Maven** - Gestion des dépendances
+# Architecture de Logging et de Développement Backend
 
+Ce projet décrit une architecture de logging robuste et scalable, ainsi que les outils clés utilisés pour le développement de l'application backend Spring Boot.
+
+## Technologies Clés
+
+Voici un aperçu des principaux composants de cette architecture de logging et de développement :
+
+![Docker Logo](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Loki Logo](https://img.shields.io/badge/Loki-A500FF?style=for-the-badge&logo=grafanaloki&logoColor=white) ![SLF4j Logo](https://img.shields.io/badge/SLF4J-000?style=for-the-badge&logo=slf4j&logoColor=white) ![Spring Boot Logo](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) ![Grafana Logo](https://img.shields.io/badge/Grafana-F46800?style=for-the-badge&logo=grafana&logoColor=white) ![Promtail Logo](https://img.shields.io/badge/Promtail-A500FF?style=for-the-badge&logo=grafanaloki&logoColor=white) ![Lombok Logo](https://img.shields.io/badge/Lombok-FF338D?style=for-the-badge&logo=lombok&logoColor=white) ![Liquibase Logo](https://img.shields.io/badge/Liquibase-383838?style=for-the-badge&logo=liquibase&logoColor=white) ![MapStruct Logo](https://img.shields.io/badge/MapStruct-383838?style=for-the-badge&logo=mapstruct&logoColor=white) ![Maven Logo](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+
+---
+## Presentation Du interction project 
+![Presnetation](images/architecture.png)
 ## Architecture
 
 \`\`\`
