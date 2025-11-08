@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.dto.response.ColisCreationResponseDTO;
 import org.example.smartspring.entities.Colis;
+import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.exception.ResourceNotFoundException;
 import org.example.smartspring.service.ColisService;
 import org.springframework.http.HttpStatus;
@@ -80,6 +81,14 @@ public class ColisController {
     public ResponseEntity<Void> deleteColis(@PathVariable String colisId) {
         colisService.deleteColis(colisId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{colisId}/statut")
+    public ResponseEntity<String> updateStatut(@PathVariable String colisId,
+                                               @RequestParam StatutColis statut) {
+
+        colisService.updateStatut(colisId, statut);
+        return ResponseEntity.ok("Statut du colis mis à jour et historique créé automatiquement");
     }
 
 }

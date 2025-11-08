@@ -255,6 +255,18 @@ public class ColisService {
         return colisRepo.save(colis);
     }
 
+    @Transactional
+    public Colis updateStatut(String colisId, StatutColis nouveauStatut) {
+        Colis colis = colisRepo.findById(colisId)
+                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
+
+        // On met à jour le statut
+        colis.setStatut(nouveauStatut);
+
+        // Sauvegarde déclenche @PreUpdate → insertion automatique dans HistoriqueLivraison
+        return colisRepo.save(colis);
+    }
+
 
 
 

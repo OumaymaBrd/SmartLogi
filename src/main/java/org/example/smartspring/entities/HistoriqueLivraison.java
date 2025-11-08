@@ -1,6 +1,10 @@
 package org.example.smartspring.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +14,6 @@ import org.example.smartspring.enums.StatutColis;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "historique_livraison")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,20 +21,17 @@ import java.time.LocalDateTime;
 public class HistoriqueLivraison {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = jakarta.persistence.GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "colis_id", nullable = false)
-    private Colis colis;
+    private String colisId;
+
+    private String livreurId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
     private StatutColis statut;
 
-    @Column(nullable = false)
     private LocalDateTime dateChangement;
 
-    @Column(length = 500)
     private String commentaire;
 }

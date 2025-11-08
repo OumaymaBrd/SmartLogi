@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@EntityListeners(org.example.smartspring.entities.listeners.ColisListener.class)
 @Table(name = "colis")
 @Data
 @NoArgsConstructor
