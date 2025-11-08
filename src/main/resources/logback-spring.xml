@@ -3,55 +3,33 @@
 
     <!-- Répertoires logs -->
     <property name="LOG_PATH" value="logs" />
-    <property name="MAIN_LOG_FILE" value="${LOG_PATH}/application.log" />
     <property name="EMAIL_LOG_FILE" value="${LOG_PATH}/debug-email.log" />
 
-
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${MAIN_LOG_FILE}</file>
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/application-%d{yyyy-MM-dd}.log</fileNamePattern>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
-
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-
-    <!-- Console -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%highlight(%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n)</pattern>
-        </encoder>
-    </appender>
-
-
-
-    <!-- Email (logs SMTP séparés) -->
-
-    <appender name="EMAIL_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- Appender spécifique pour emails -->
+    <appender name="EMAIL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${EMAIL_LOG_FILE}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_PATH}/debug-email-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%date %-5level [%thread] %logger{36} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Logger uniquement pour debug email -->
-    <logger name="javax.mail" level="DEBUG" additivity="false">
-        <appender-ref ref="EMAIL_DEBUG"/>
+    <!-- Logger uniquement pour EmailService -->
+    <logger name="org.example.smartspring.service.EmailService" level="DEBUG" additivity="false">
+        <appender-ref ref="EMAIL_FILE"/>
     </logger>
 
-    <!--  Root logger -->
+    <!-- Logger JavaMail (pour debug smtp) -->
+    <logger name="javax.mail" level="DEBUG" additivity="false">
+        <appender-ref ref="EMAIL_FILE"/>
+    </logger>
 
+    <!-- Root logger (console normale pour le reste) -->
     <root level="INFO">
         <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
     </root>
 
 </configuration>

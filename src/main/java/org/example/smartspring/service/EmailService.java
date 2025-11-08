@@ -1,66 +1,39 @@
 package org.example.smartspring.service;
 
 import lombok.RequiredArgsConstructor;
-import org.example.smartspring.entities.HistoriqueEmail;
-import org.example.smartspring.repository.HistoriqueEmailRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
     private final JavaMailSender mailSender;
-    private final HistoriqueEmailRepository historiqueEmailRepository;
+    private static final Logger emailLogger = LoggerFactory.getLogger(EmailService.class);
 
+    public void sendSimpleEmailAndLog(String to, String subject, String body, String colisId, String statut) {
+        if (to == null || to.isEmpty()) return; // si l'email est null, on ne fait rien
 
-    @Async
-    public void sendSimpleEmailAndLog(String to, String subject, String text, String colisId, String statut) {
-        HistoriqueEmail log = HistoriqueEmail.builder()
-                .destinataire(to)
-                .sujet(subject)
-                .contenu(text)
-                .dateEnvoi(LocalDateTime.now())
-                .colisId(colisId)
-                .statutColis(statut)
-                .build();
+        // Création du message
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
 
         try {
-            if (to == null || to.isBlank()) {
-                log.setSuccess(false);
-                log.setErreur("Missing recipient");
-                historiqueEmailRepository.save(log);
-                return;
-            }
-
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(to);
-            message.setSubject(subject);
-            message.setText(text);
-
+            // Envoi email
             mailSender.send(message);
 
-            log.setSuccess(true);
-            historiqueEmailRepository.save(log);
-        } catch (Exception ex) {
-            log.setSuccess(false);
-            log.setErreur(ex.getMessage());
-            historiqueEmailRepository.save(log);
+            // Log dans le logger spécifique email
+            emailLogger.debug(" Email envoyé à {} | Colis={} | Statut={} | Sujet='{}'", to, colisId, statut, subject);
+
+        } catch (Exception e) {
+            // Log d'erreur
+            emailLogger.error(" Erreur en envoyant l'email à {} | Colis={} | Statut={} | Sujet='{}' | Erreur={}",
+                    to, colisId, statut, subject, e.getMessage(), e);
         }
-    }
-
-    public void testSendEmail() {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("oumaymabramid@gmail.com");
-        message.setSubject("Test Email Spring Boot");
-        message.setText("Ceci est un email de test");
-        message.setFrom("oumaymabramid@gmail.com");
-
-        mailSender.send(message);
-        System.out.println("Email de test envoyé !");
     }
 }

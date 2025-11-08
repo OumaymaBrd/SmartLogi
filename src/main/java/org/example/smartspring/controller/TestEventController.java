@@ -21,10 +21,5 @@ public class TestEventController {
         return " Event envoyé pour colis = " + colisId + " avec statut = " + statut;
     }
 
-    // tester l'envoi direct d'email
-    @GetMapping("/send")
-    public String testSendEmail() {
-        emailService.testSendEmail();
-        return " Email de test envoyé";
-    }
+
 }
