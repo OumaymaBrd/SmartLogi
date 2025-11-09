@@ -5,6 +5,8 @@ import org.example.smartspring.dto.colis.ColisDetails.ColisDetailsDTO;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.service.ColisDetailsService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,21 +29,30 @@ public class ColisDetailsController {
     private final ColisDetailsService service;
     @GetMapping
     public ResponseEntity<?> getAllColisDetails(
+            @RequestParam(required = false) String id,
             @RequestParam(required = false) PrioriteColis prioriteColis,
             @RequestParam(required = false)StatutColis statutColis,
             @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime dateCreation,
-            @RequestParam(required = false) String ville_destination
+            @RequestParam(required = false) String ville_destination,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "2") int size
             ) {
-
-        List<ColisDetailsDTO>liste=service.getAll(prioriteColis,statutColis,ville_destination,dateCreation);
-
-        if(liste.isEmpty()){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ColisDetailsDTO> pageResult = service.getAll(
+                id,
+                prioriteColis,
+                statutColis,
+                ville_destination,
+                dateCreation,
+                pageable
+        );
+        if(pageResult.isEmpty()){
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
                     .body("Votre Colis est vide");
         }
 
-        return ResponseEntity.ok(liste);
+        return ResponseEntity.ok(pageResult);
 
 
 

@@ -8,37 +8,44 @@ import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.mapper.ColisDeatilsMapper.*;
 import org.example.smartspring.repository.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class ColisDetailsService {
+
     private final ColisDeatilsRepository colisDeatilsRepository;
-    private  final LivreurLivreeMapper livreurLivreeMapper;
+    private final LivreurLivreeMapper livreurLivreeMapper;
     private final LivreurCollecteMapper livreurCollecteMapper;
-    private final ColisDetailsMapper  colisDetailsMapper;
+    private final ColisDetailsMapper colisDetailsMapper;
     private final LivreurRepository livreurRepository;
     private final ColisProduitRepository colisProduitRepository;
-    private final DestinataireRepository  destinataireRepository;
+    private final DestinataireRepository destinataireRepository;
     private final ZoneRepository zoneRepository;
     private final ZoneDeatailsMapper zoneDeatailsMapper;
-    private final DestinataireDetailsMapper  destinataireDetailsMapper;
+    private final DestinataireDetailsMapper destinataireDetailsMapper;
 
-    public List<ColisDetailsDTO> getAll(PrioriteColis prioriteColis,
-                                        StatutColis statutColis,
-                                        String ville_destination,
-                                        LocalDateTime date_creation) {
+    public Page<ColisDetailsDTO> getAll(
+            String id,
+            PrioriteColis prioriteColis,
+            StatutColis statutColis,
+            String ville_destination,
+            LocalDateTime date_creation,
+            Pageable pageable) {
 
         List<Colis> colisList = colisDeatilsRepository.findAll();
 
-        return colisList.stream()
+        // Transformation et filtrage
+        List<ColisDetailsDTO> dtoList = colisList.stream()
+                .filter(colis -> id == null || colis.getId().equals(id))
                 .filter(colis -> prioriteColis == null || colis.getPriorite() == prioriteColis)
                 .filter(colis -> statutColis == null || colis.getStatut() == statutColis)
                 .filter(colis -> ville_destination == null || colis.getVilleDestination().equalsIgnoreCase(ville_destination))
@@ -88,7 +95,12 @@ public class ColisDetailsService {
                     return dto;
                 })
                 .collect(Collectors.toList());
+
+        // Pagination simple via PageImpl
+        int start = (int) Math.min(pageable.getOffset(), dtoList.size());
+        int end = (int) Math.min(start + pageable.getPageSize(), dtoList.size());
+        List<ColisDetailsDTO> pageContent = dtoList.subList(start, end);
+
+        return new PageImpl<>(pageContent, pageable, dtoList.size());
     }
-
-
 }
