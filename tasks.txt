@@ -1,0 +1,42 @@
+Epic: Gestion des clients et destinataires | Priority: Haute | Duration: 2j | Status: Termine
+Epic: Gestion des clients et destinataires | User Story: Creation de demande de livraison | Sub-task: Creer formulaire web pour client expediteur | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des clients et destinataires | User Story: Creation de demande de livraison | Sub-task: Validation cote serveur et base de donnees | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des clients et destinataires | User Story: Consultation des colis envoyes | Sub-task: Creer page liste colis client | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des clients et destinataires | User Story: Consultation des colis envoyes | Sub-task: Ajouter filtres par statut et date | Priority: Moyenne | Duration: 0.5j | Status: Termine
+Epic: Gestion des clients et destinataires | User Story: Recherche client destinataire | Sub-task: Implementer recherche par mot cle | Priority: Haute | Duration: 0.5j | Status: Termine
+
+Epic: Gestion des colis | Priority: Tres Haute | Duration: 3j | Status: Termine
+Epic: Gestion des colis | User Story: Consultation liste colis pour livreur | Sub-task: Creer dashboard livreur | Priority: Tres Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des colis | User Story: Mise a jour statut colis | Sub-task: Ajouter boutons collecte livraison | Priority: Tres Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des colis | User Story: Correction suppression info colis | Sub-task: Interface admin pour gestion des erreurs | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des colis | User Story: Filtrage et pagination | Sub-task: Implementer filtres par statut zone ville priorite date | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des colis | User Story: Regroupement colis | Sub-task: Vue synthetique par zone statut priorite | Priority: Moyenne | Duration: 0.5j | Status: Termine
+Epic: Gestion des colis | User Story: Historique complet colis | Sub-task: Creer table historique et API | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des colis | User Story: Colis multi produits | Sub-task: Interface ajout produits au colis | Priority: Moyenne | Duration: 0.5j | Status: Termine
+
+Epic: Notifications et alertes | Priority: Moyenne | Duration: 1j | Status: Termine
+Epic: Notifications et alertes | User Story: Notification email client | Sub-task: Envoi email collecte livraison | Priority: Moyenne | Duration: 0.5j | Status: Termine
+Epic: Notifications et alertes | User Story: Alertes gestionnaire | Sub-task: Identifier colis en retard prioritaires | Priority: Moyenne | Duration: 0.5j | Status: Termine
+
+Epic: Planification et optimisation des tournees | Priority: Tres Haute | Duration: 2.5j | Status: Termine
+Epic: Planification et optimisation des tournees | User Story: Assignation colis aux livreurs | Sub-task: Interface planification tournees | Priority: Tres Haute | Duration: 0.5j | Status: Termine
+Epic: Planification et optimisation des tournees | User Story: Calcul poids nombre colis par zone | Sub-task: Implementer calcul automatique pour equilibrage | Priority: Tres Haute | Duration: 1j | Status: Termine
+Epic: Planification et optimisation des tournees | User Story: Optimisation organisation tournees | Sub-task: Algorithme d optimisation itineraires | Priority: Tres Haute | Duration: 1j | Status: Termine
+
+Epic: Gestion des entrepots et stockage | Priority: Haute | Duration: 1.5j | Status: Termine
+Epic: Gestion des entrepots et stockage | User Story: Suivi flux colis | Sub-task: Creer modele stockage temporaire | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Gestion des entrepots et stockage | User Story: Suivi flux colis | Sub-task: Dashboard suivi stockage | Priority: Moyenne | Duration: 1j | Status: Termine
+
+Epic: Recherche et tracabilite | Priority: Haute | Duration: 1.5j | Status: Termine
+Epic: Recherche et tracabilite | User Story: Recherche colis client livreur | Sub-task: Implementer moteur recherche multi criteres | Priority: Haute | Duration: 0.5j | Status: Termine
+Epic: Recherche et tracabilite | User Story: Historique complet colis | Sub-task: API et affichage historique | Priority: Haute | Duration: 1j | Status: Termine
+
+Epic: Gestion des produits et colis multi produits | Priority: Moyenne | Duration: 1j | Status: Termine
+Epic: Gestion des produits et colis multi produits | User Story: Association produits a colis | Sub-task: Interface ajout produits | Priority: Moyenne | Duration: 0.5j | Status: Termine
+Epic: Gestion des produits et colis multi produits | User Story: Association produits a colis | Sub-task: Enregistrement base de donnees | Priority: Moyenne | Duration: 0.5j | Status: Termine
+
+Epic: Monitoring and Logs | Priority: Moyenne | Duration: 1.5j | Status: Termine
+Epic: Monitoring and Logs | User Story: Configuration Grafana | Sub-task: Installer et configurer dashboards Grafana | Priority: Moyenne | Duration: 0.5j | Status: Termine
+Epic: Monitoring and Logs | User Story: Collecte logs avec Loki | Sub-task: Installer Loki et configurer sources | Priority: Moyenne | Duration: 0.5j | Status: Termine
+Epic: Monitoring and Logs | User Story: Integration Promtail | Sub-task: Configurer Promtail pour collecte logs applicatifs | Priority: Moyenne | Duration: 0.25j | Status: Termine
+Epic: Monitoring and Logs | User Story: Logging application SLF4J | Sub-task: Ajouter logs applicatifs et tests | Priority: Moyenne | Duration: 0.25j | Status: Termine
