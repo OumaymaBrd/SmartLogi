@@ -17,7 +17,7 @@ public class ColisDetailsDTO {
     private StatutColis statut;
     private PrioriteColis priorite;
     private String ville_destination;
-
+//
     private LivreurCollecteDTO livreurCollecte;
     private LivreurLivreeDTO livreurLivree;
 
