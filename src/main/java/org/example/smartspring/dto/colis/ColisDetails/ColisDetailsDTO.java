@@ -20,7 +20,7 @@ public class ColisDetailsDTO {
 
     private LivreurCollecteDTO livreurCollecte;
     private LivreurLivreeDTO livreurLivree;
-//tst g22gh shw2
+
     private String nom_complet;
 
     private List<ProduitDetailsDTO> produits;
