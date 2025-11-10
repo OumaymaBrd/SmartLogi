@@ -42,3 +42,18 @@ logs;C/
 loki/
 
 src/main/resources
+
+mvnw
+mvnw.cmd
+.mvn
+tasks.txt
+tasks_clean.txt
+import_jira.sh
+Command
+grafana
+scripts
+promtail-config.yaml
+promtail
+README.Docker.md
+normalize_tasks.py
+
