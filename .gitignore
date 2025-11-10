@@ -57,4 +57,5 @@ promtail
 README.Docker.md
 normalize_tasks.py
 bash
+local-config.yaml
 
