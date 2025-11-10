@@ -40,3 +40,5 @@ smart-spring-clean/
 logs/
 logs;C/
 loki/
+
+src/main/resources
