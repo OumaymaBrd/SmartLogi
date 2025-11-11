@@ -62,9 +62,5 @@ public class ProduitService {
         repository.deleteById(id);
     }
 
-//    @Transactional(readOnly = true)
-//    public Page<ProduitDTO> searchProduits(String keyword, Pageable pageable) {
-//        log.debug("Searching produits with keyword: {}", keyword);
-//        return repository.searchByKeyword(keyword, pageable).map(mapper::toDto);
-//    }
+
 }
