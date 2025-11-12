@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.smartspring.enums.PrioriteColis;
+import org.example.smartspring.enums.StatutColis;
 
 @Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class ConsulterColisAffecterDTO {
@@ -13,4 +14,5 @@ public class ConsulterColisAffecterDTO {
     private PrioriteColis priorite;
     private String client_expediteur_id;
     private String zone;
+    private StatutColis statut;
 }

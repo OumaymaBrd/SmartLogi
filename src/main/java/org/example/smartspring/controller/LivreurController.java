@@ -5,6 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.UpdateColisDTO;
 import org.example.smartspring.dto.livreur.*;
 import org.example.smartspring.entities.Colis;
+import org.example.smartspring.enums.StatutColis;
+import org.example.smartspring.mapper.ColisMapper;
+import org.example.smartspring.repository.ColisRepository;
 import org.example.smartspring.service.ColisService;
 import org.example.smartspring.service.EmailService;
 import org.example.smartspring.service.LivreurService;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/livreurs")
@@ -23,11 +27,25 @@ import java.util.Map;
 public class LivreurController {
 
     private final ColisService service;
+    private final ColisRepository repository;
+    private final ColisMapper mapper;
 
-    @GetMapping("/colis/livreur/{id}")
-    public List<ConsulterColisAffecterDTO> getColisAffectes(@PathVariable String id) {
-        return service.getColisByLivreurId(id);
+    @GetMapping("/colis/{id}")
+    public ResponseEntity<?> getColisAffectes(
+            @PathVariable String id,
+            @RequestParam(required = false) StatutColis statut) {
+
+        List<ConsulterColisAffecterDTO> liste = service.getColisByLivreurIdAndStatut(id, statut);
+
+        if (liste.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Aucune affectation Colis trouvée");
+        }
+
+        return ResponseEntity.ok(liste);
     }
+
 
     @PutMapping("/{colisId}")
     public ResponseEntity<String> updateColis(@PathVariable String colisId,

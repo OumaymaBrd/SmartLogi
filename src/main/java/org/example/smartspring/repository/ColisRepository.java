@@ -33,6 +33,8 @@ public interface ColisRepository extends JpaRepository<Colis, String> {
     @Query("SELECT c.livreur.id FROM Colis c WHERE c.numeroColis = :numeroColis")
     String findLivreurIdByNumeroColis(@Param("numeroColis") String numeroColis);
 
+    List<Colis> findByLivreur_Id(String livreurId);
+
 
 
 }

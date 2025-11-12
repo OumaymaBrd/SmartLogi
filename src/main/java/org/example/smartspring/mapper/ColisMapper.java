@@ -72,6 +72,7 @@ public interface ColisMapper {
     @Mapping(target = "priorite", source = "priorite")
     @Mapping(target = "client_expediteur_id", source = "clientExpediteur.id")
     @Mapping(target = "zone", source = "zone.nom")
+    @Mapping(target = "statut", source = "statut")
     ConsulterColisAffecterDTO toDto(Colis colis);
 
     @Mapping(target = "statut", source = "statut", qualifiedByName = "mapStatut")

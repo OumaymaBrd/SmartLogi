@@ -288,6 +288,14 @@ public class ColisService {
 //        return saved;
 //    }
 
+    public List<ConsulterColisAffecterDTO> getColisByLivreurIdAndStatut(String livreurId, StatutColis statut) {
+        return colisRepo.findByLivreur_Id(livreurId)
+                .stream()
+                .map(mapper::toDto)
+                .filter(dto -> statut == null || statut.equals(dto.getStatut()))
+                .toList();
+    }
+
     @Transactional
     public Colis modifierStatut(String colisId, StatutColis nouveauStatut) {
         Colis colis = colisRepo.findById(colisId)
@@ -296,7 +304,6 @@ public class ColisService {
         colis.setStatut(nouveauStatut);
         Colis saved = colisRepo.save(colis);
 
-        // Publier événement → listener enverra les emails
         eventPublisher.publishEvent(new ColisStatusChangeEvent(saved.getId(), saved.getStatut().name()));
 
         return saved;
