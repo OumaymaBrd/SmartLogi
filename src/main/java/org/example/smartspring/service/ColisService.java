@@ -191,6 +191,8 @@ public class ColisService {
         return colisRepo.save(colis);
     }
 
+
+
     @Transactional
     public void deleteColis(String colisId) {
         Colis colis = colisRepo.findById(colisId)
@@ -217,7 +219,7 @@ public class ColisService {
 
 
     @Transactional
-    public Colis updateColis(String colisId, UpdateColisDTO dto) {
+    public Colis updateColis(UpdateColisDTO dto, String colisId) {
         Colis colis = colisRepo.findById(colisId)
                 .orElseThrow(() -> new ResourceNotFoundException("Colis non trouvé"));
 
@@ -225,13 +227,15 @@ public class ColisService {
         if (dto.getStatut() != null) {
             colis.setStatut(dto.getStatut());
 
-            // Si le colis est livré, mettre à jour la date réelle de livraison
             if (dto.getStatut() == StatutColis.LIVRE) {
                 colis.setDateLivraisonReelle(LocalDateTime.now());
             }
+
+            // Publier l'événement pour envoyer email
+            eventPublisher.publishEvent(new ColisStatusChangeEvent(colis.getId(), dto.getStatut().name()));
         }
 
-        // Affecter le livreur collecteur si fourni
+        // Affecter le livreur collecteur
         if (dto.getLivreurId() != null) {
             if (colis.getLivreur() != null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
@@ -243,7 +247,7 @@ public class ColisService {
             colis.setLivreur(livreur);
         }
 
-        // Affecter le livreur livré si fourni
+        // Affecter le livreur livré
         if (dto.getLivreur_id_livree() != null) {
             if (colis.getLivreurLivree() != null) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
