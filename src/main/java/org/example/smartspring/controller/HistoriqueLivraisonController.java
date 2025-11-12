@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.historique.AjouterCommentaireDTO;
 import org.example.smartspring.entities.HistoriqueLivraison;
 import org.example.smartspring.service.HistoriqueLivraisonService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,9 @@ public class HistoriqueLivraisonController {
 
         HistoriqueLivraison updated = service.updateDernierCommentaire(colisId, commentaire);
 
-        return ResponseEntity.ok(updated);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body("Merci Pour Votre Commentaire");
     }
 }
 

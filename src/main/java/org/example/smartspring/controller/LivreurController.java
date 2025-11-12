@@ -47,7 +47,7 @@ public class LivreurController {
     }
 
 
-    @PutMapping("/{colisId}")
+    @PutMapping("/updateStatutColis/{colisId}")
     public ResponseEntity<String> updateColis(@PathVariable String colisId,
                                               @RequestBody UpdateColisDTO dto) {
         Colis updatedColis = service.updateColis(dto, colisId);
