@@ -223,7 +223,6 @@ public class ColisService {
         Colis colis = colisRepo.findById(colisId)
                 .orElseThrow(() -> new ResourceNotFoundException("Colis non trouvé"));
 
-        // Mettre à jour le statut si fourni
         if (dto.getStatut() != null) {
             colis.setStatut(dto.getStatut());
 
@@ -231,7 +230,6 @@ public class ColisService {
                 colis.setDateLivraisonReelle(LocalDateTime.now());
             }
 
-            // Publier l'événement pour envoyer email
             eventPublisher.publishEvent(new ColisStatusChangeEvent(colis.getId(), dto.getStatut().name()));
         }
 
@@ -267,26 +265,11 @@ public class ColisService {
         Colis colis = colisRepo.findById(colisId)
                 .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
 
-        // On met à jour le statut
         colis.setStatut(nouveauStatut);
 
-        // Sauvegarde déclenche @PreUpdate → insertion automatique dans HistoriqueLivraison
         return colisRepo.save(colis);
     }
 
-//    @Transactional
-//    public Colis modifierStatut(String colisId, StatutColis nouveauStatut) {
-//        Colis colis = colisRepo.findById(colisId)
-//                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
-//
-//        colis.setStatut(nouveauStatut);
-//        Colis saved = colisRepo.save(colis);
-//
-//        // publier événement (utiliser la valeur de l'enum)
-//        eventPublisher.publishEvent(new ColisStatusChangeEvent(saved.getId(), saved.getStatut().name()));
-//
-//        return saved;
-//    }
 
     public List<ConsulterColisAffecterDTO> getColisByLivreurIdAndStatut(String livreurId, StatutColis statut) {
         return colisRepo.findByLivreur_Id(livreurId)
@@ -308,9 +291,6 @@ public class ColisService {
 
         return saved;
     }
-
-
-
 
 
 }

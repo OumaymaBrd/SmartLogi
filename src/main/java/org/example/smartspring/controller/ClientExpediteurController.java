@@ -47,9 +47,12 @@ public class ClientExpediteurController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClientExpediteur(@PathVariable String id) {
+    public ResponseEntity<?> deleteClientExpediteur(@PathVariable String id) {
         clientExpediteurService.deleteClientExpediteur(id);
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body("Suppression Avec Succes");
     }
 
     @GetMapping("/search")
