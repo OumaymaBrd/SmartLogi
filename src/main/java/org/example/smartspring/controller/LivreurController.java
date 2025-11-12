@@ -29,18 +29,6 @@ public class LivreurController {
         return service.getColisByLivreurId(id);
     }
 
-    private final EmailService emailService;
-
-    // Endpoint pour tester l'envoi d'email
-    @GetMapping("/email")
-    public ResponseEntity<String> sendTestEmail(@RequestParam String to) {
-        String subject = "Test Email";
-        String body = "Bonjour, ceci est un test d'envoi d'email depuis Spring Boot.";
-        emailService.sendSimpleEmailAndLog(to, subject, body, "TEST", "TEST");
-        return ResponseEntity.ok("Email de test envoyé à " + to);
-    }
-
-
     @PutMapping("/{colisId}")
     public ResponseEntity<String> updateColis(@PathVariable String colisId,
                                               @RequestBody UpdateColisDTO dto) {

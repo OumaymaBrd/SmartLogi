@@ -274,6 +274,20 @@ public class ColisService {
         return colisRepo.save(colis);
     }
 
+//    @Transactional
+//    public Colis modifierStatut(String colisId, StatutColis nouveauStatut) {
+//        Colis colis = colisRepo.findById(colisId)
+//                .orElseThrow(() -> new RuntimeException("Colis non trouvé"));
+//
+//        colis.setStatut(nouveauStatut);
+//        Colis saved = colisRepo.save(colis);
+//
+//        // publier événement (utiliser la valeur de l'enum)
+//        eventPublisher.publishEvent(new ColisStatusChangeEvent(saved.getId(), saved.getStatut().name()));
+//
+//        return saved;
+//    }
+
     @Transactional
     public Colis modifierStatut(String colisId, StatutColis nouveauStatut) {
         Colis colis = colisRepo.findById(colisId)
@@ -282,11 +296,12 @@ public class ColisService {
         colis.setStatut(nouveauStatut);
         Colis saved = colisRepo.save(colis);
 
-        // publier événement (utiliser la valeur de l'enum)
+        // Publier événement → listener enverra les emails
         eventPublisher.publishEvent(new ColisStatusChangeEvent(saved.getId(), saved.getStatut().name()));
 
         return saved;
     }
+
 
 
 

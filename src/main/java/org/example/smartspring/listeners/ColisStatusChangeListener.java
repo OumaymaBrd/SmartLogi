@@ -32,71 +32,61 @@ public class ColisStatusChangeListener {
         String emailExpediteur = colis.getClientExpediteur() != null ? colis.getClientExpediteur().getEmail() : null;
         String emailDestinataire = colis.getDestinataire() != null ? colis.getDestinataire().getEmail() : null;
 
+        // Définir le sujet et le corps du mail selon le statut
+        String subject = "";
+        String bodyExpediteur = "";
+        String bodyDestinataire = "";
+
         switch (statut) {
-
-            case "TRAITER", "TRAITÉ", "TRAITE": {
-                String subject = "Votre colis est en cours de traitement";
-                String body = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " est maintenant en cours de traitement.\n\nCordialement.";
-                emailService.sendSimpleEmailAndLog(emailExpediteur, subject, body, colisId, statut);
+            case "TRAITER", "TRAITÉ", "TRAITE":
+                subject = "Votre colis est en cours de traitement";
+                bodyExpediteur = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " est maintenant en cours de traitement.\n\nCordialement.";
+                bodyDestinataire = bodyExpediteur;
                 break;
-            }
 
-            case "COLLECTE": {
-                String subject = "Votre colis a été collecté";
-                String body;
-
+            case "COLLECTE":
+                subject = "Votre colis a été collecté";
                 if (colis.getLivreur() != null) {
                     Livreur l = colis.getLivreur();
-                    body = String.format("""
-                            Bonjour,
-
-                            Votre colis %s a été collecté par :
-                            - Nom : %s %s
-                            - Téléphone : %s
-
-                            Cordialement.""",
+                    bodyExpediteur = String.format(
+                            "Bonjour,\n\nVotre colis %s a été collecté par :\n- Nom : %s %s\n- Téléphone : %s\n\nCordialement.",
                             colis.getNumeroColis(), l.getNom(), l.getPrenom(), l.getTelephone());
                 } else {
-                    body = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " a été collecté.\n\nCordialement.";
+                    bodyExpediteur = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " a été collecté.\n\nCordialement.";
                 }
-
-                emailService.sendSimpleEmailAndLog(emailExpediteur, subject, body, colisId, statut);
+                bodyDestinataire = bodyExpediteur;
                 break;
-            }
 
-            case "EN_STOCK": {
-                String subject = "Votre colis est en stock";
-                String body = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " est actuellement en stock.\n\nCordialement.";
-                emailService.sendSimpleEmailAndLog(emailExpediteur, subject, body, colisId, statut);
+            case "EN_STOCK":
+                subject = "Votre colis est en stock";
+                bodyExpediteur = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " est actuellement en stock.\n\nCordialement.";
+                bodyDestinataire = bodyExpediteur;
                 break;
-            }
 
-            case "EN_TRANSIT": {
-                String subjectExp = "Votre colis est en transit";
-                String bodyExp = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " est en transit vers le destinataire.\n\nCordialement.";
-                emailService.sendSimpleEmailAndLog(emailExpediteur, subjectExp, bodyExp, colisId, statut);
-
-                // envoyer aussi au destinataire
-                String subjectDest = "Votre colis est en route";
-                String bodyDest = "Bonjour,\n\nUn colis (numéro : " + colis.getNumeroColis() + ") est en route vers vous.\n\nCordialement.";
-                emailService.sendSimpleEmailAndLog(emailDestinataire, subjectDest, bodyDest, colisId, statut);
+            case "EN_TRANSIT":
+                subject = "Votre colis est en transit";
+                bodyExpediteur = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " est en transit vers le destinataire.\n\nCordialement.";
+                bodyDestinataire = "Bonjour,\n\nUn colis (numéro : " + colis.getNumeroColis() + ") est en route vers vous.\n\nCordialement.";
                 break;
-            }
 
-            case "LIVRE": {
-                String subject = "Votre colis a été livré";
-                String body = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " a été livré avec succès.\n\nCordialement.";
-                emailService.sendSimpleEmailAndLog(emailExpediteur, subject, body, colisId, statut);
-
-                String subjectDest = "Colis livré";
-                String bodyDest = "Bonjour,\n\nLe colis " + colis.getNumeroColis() + " a été livré. Merci pour votre confiance.";
-                emailService.sendSimpleEmailAndLog(emailDestinataire, subjectDest, bodyDest, colisId, statut);
+            case "LIVRE":
+                subject = "Votre colis a été livré";
+                bodyExpediteur = "Bonjour,\n\nVotre colis " + colis.getNumeroColis() + " a été livré avec succès.\n\nCordialement.";
+                bodyDestinataire = "Bonjour,\n\nLe colis " + colis.getNumeroColis() + " a été livré. Merci pour votre confiance.\n\nCordialement.";
                 break;
-            }
 
             default:
-                // Aucun envoi mail si statut non concerné
-                break;
+                return; // Aucun email si statut non géré
+        }
+
+        // Envoi email à l'expéditeur si présent
+        if (emailExpediteur != null && !emailExpediteur.isEmpty()) {
+            emailService.sendSimpleEmailAndLog(emailExpediteur, subject, bodyExpediteur, colisId, statut);
+        }
+
+        // Envoi email au destinataire si présent
+        if (emailDestinataire != null && !emailDestinataire.isEmpty()) {
+            emailService.sendSimpleEmailAndLog(emailDestinataire, subject, bodyDestinataire, colisId, statut);
         }
     }
 }

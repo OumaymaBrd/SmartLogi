@@ -77,6 +77,8 @@ public class ColisController {
     }
 
 
+
+
     @DeleteMapping("/{colisId}")
     public ResponseEntity<Void> deleteColis(@PathVariable String colisId) {
         colisService.deleteColis(colisId);
@@ -84,10 +86,11 @@ public class ColisController {
     }
 
     @PutMapping("/{colisId}/statut")
-    public ResponseEntity<?> updateStatut(@PathVariable String colisId,
-                                          @RequestParam StatutColis statut) {
+    public ResponseEntity<String> updateStatut(@PathVariable String colisId,
+                                               @RequestParam StatutColis statut) {
         Colis colis = colisService.modifierStatut(colisId, statut);
-        return ResponseEntity.ok("Statut mis à jour et e-mails déclenchés si applicable.");
+        return ResponseEntity.ok("Statut mis à jour et e-mails envoyés à l'expéditeur et au destinataire.");
     }
+
 
 }
