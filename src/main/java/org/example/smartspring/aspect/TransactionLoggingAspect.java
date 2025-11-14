@@ -19,12 +19,12 @@ public class TransactionLoggingAspect {
     @Before("transactionalMethods()")
     public void logTransactionStart(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
-        log.debug("🗄️ Transaction started for: {}", methodName);
+        log.debug("Transaction started for: {}", methodName);
     }
 
     @AfterReturning("transactionalMethods()")
     public void logTransactionComplete(JoinPoint joinPoint) {
         String methodName = joinPoint.getSignature().getName();
-        log.debug("🗄️ Transaction completed for: {}", methodName);
+        log.debug("Transaction completed for: {}", methodName);
     }
 }

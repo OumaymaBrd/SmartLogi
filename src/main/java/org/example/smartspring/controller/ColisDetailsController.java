@@ -2,6 +2,7 @@ package org.example.smartspring.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.smartspring.dto.colis.ColisDetails.ColisDetailsDTO;
+import org.example.smartspring.dto.colis.ColisDetails.UpdateStatutLivreurColis;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.service.ColisDetailsService;
@@ -10,10 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
@@ -54,7 +52,15 @@ public class ColisDetailsController {
 
         return ResponseEntity.ok(pageResult);
 
-
-
     }
+
+    @PutMapping("/livreur/{livreurId}/update-statut")
+    public ResponseEntity<List<ColisDetailsDTO>> updateStatutColisLivreur(
+            @PathVariable String livreurId,
+            @RequestBody UpdateStatutLivreurColis updateDto) {
+
+        List<ColisDetailsDTO> updated = service.updateStatutColisLivreur(livreurId, updateDto);
+        return ResponseEntity.ok(updated);
+    }
+
 }

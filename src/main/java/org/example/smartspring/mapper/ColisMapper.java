@@ -3,6 +3,7 @@ package org.example.smartspring.mapper;
 import org.example.smartspring.dto.clientexpediteur.ClientExpediteurDTO;
 import org.example.smartspring.dto.colis.ColisDTO;
 import org.example.smartspring.dto.colis.ColisDetails.ColisDetailsDTO;
+import org.example.smartspring.dto.colis.ColisDetails.UpdateStatutLivreurColis;
 import org.example.smartspring.dto.destinataire.DestinataireDTO;
 import org.example.smartspring.dto.livreur.ConsulterColisAffecterDTO;
 import org.example.smartspring.dto.livreur.UpdateColisStatutDTO;
@@ -11,10 +12,7 @@ import org.example.smartspring.dto.zone.ZoneDTO;
 import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.StatutColis;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,11 +76,16 @@ public interface ColisMapper {
     @Mapping(target = "statut", source = "statut", qualifiedByName = "mapStatut")
     void updateColisFromDto(UpdateColisStatutDTO dto, @MappingTarget Colis colis);
 
-    @Mapping(target = "statut", source = "statut", qualifiedByName = "mapStatut")
-    void updateStatutFromDto(UpdateColisStatutDTO dto, @MappingTarget Colis colis);
+//    @Mapping(target = "statut", source = "statut", qualifiedByName = "mapStatut")
+//    void updateStatutFromDto(UpdateColisStatutDTO dto, @MappingTarget Colis colis);
 
 
 
+
+    List<ColisDetailsDTO> toDTOList(List<Colis> colisList);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateColisFromDto(UpdateStatutLivreurColis dto, @MappingTarget Colis colis);
 
 
 

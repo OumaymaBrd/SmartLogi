@@ -11,5 +11,6 @@ public interface ColisDetailsMapper {
         @Mapping(source = "livreur", target = "livreurCollecte")
         @Mapping(source = "livreurLivree", target = "livreurLivree")
         @Mapping(source = "colisProduits", target = "produits")
+        @Mapping(source = "villeDestination", target = "ville_destination")
         ColisDetailsDTO maptoDTO(Colis colis);
 }

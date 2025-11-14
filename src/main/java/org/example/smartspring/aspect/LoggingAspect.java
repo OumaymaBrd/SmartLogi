@@ -49,7 +49,7 @@ public class LoggingAspect {
         long executionTime = System.currentTimeMillis() - start;
 
         if (executionTime > 3000) {
-            log.warn("⚡ SLOW METHOD: {}.{} took {}ms - Consider optimization",
+            log.warn(" SLOW METHOD: {}.{} took {}ms - Consider optimization",
                     joinPoint.getSignature().getDeclaringTypeName().substring(
                             joinPoint.getSignature().getDeclaringTypeName().lastIndexOf('.') + 1),
                     joinPoint.getSignature().getName(),

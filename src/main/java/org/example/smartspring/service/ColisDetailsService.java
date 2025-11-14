@@ -7,6 +7,7 @@ import org.example.smartspring.entities.*;
 import org.example.smartspring.enums.PrioriteColis;
 import org.example.smartspring.enums.StatutColis;
 import org.example.smartspring.mapper.ColisDeatilsMapper.*;
+import org.example.smartspring.mapper.ColisMapper;
 import org.example.smartspring.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -32,6 +33,8 @@ public class ColisDetailsService {
     private final ZoneRepository zoneRepository;
     private final ZoneDeatailsMapper zoneDeatailsMapper;
     private final DestinataireDetailsMapper destinataireDetailsMapper;
+    private final ColisDetailsMapper colismapper;
+    private final ColisMapper mapper;
 
     public Page<ColisDetailsDTO> getAll(
             String id,
@@ -43,7 +46,6 @@ public class ColisDetailsService {
 
         List<Colis> colisList = colisDeatilsRepository.findAll();
 
-        // Transformation et filtrage
         List<ColisDetailsDTO> dtoList = colisList.stream()
                 .filter(colis -> id == null || colis.getId().equals(id))
                 .filter(colis -> prioriteColis == null || colis.getPriorite() == prioriteColis)
@@ -96,11 +98,24 @@ public class ColisDetailsService {
                 })
                 .collect(Collectors.toList());
 
-        // Pagination simple via PageImpl
         int start = (int) Math.min(pageable.getOffset(), dtoList.size());
         int end = (int) Math.min(start + pageable.getPageSize(), dtoList.size());
         List<ColisDetailsDTO> pageContent = dtoList.subList(start, end);
 
         return new PageImpl<>(pageContent, pageable, dtoList.size());
     }
+
+
+    public List<ColisDetailsDTO> updateStatutColisLivreur(String livreurId, UpdateStatutLivreurColis updateDto) {
+
+        StatutColis nouveauStatut = updateDto.getStatut();
+        List<Colis> colisList = colisDeatilsRepository.findByLivreur_Id(livreurId);
+
+        colisList.forEach(colis -> colis.setStatut(nouveauStatut));
+
+        colisDeatilsRepository.saveAll(colisList);
+
+        return mapper.toDTOList(colisList);
+    }
+
 }
