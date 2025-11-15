@@ -152,7 +152,7 @@ class GestionnaireLogistiqueServiceTest {
     void affecterLivreur_shouldThrow_whenLivreurCollecteurAlreadyAssigned() {
         GestionnaireLogistique g = new GestionnaireLogistique();
         Colis colis = new Colis();
-        colis.setLivreur(new Livreur()); // déjà affecté
+        colis.setLivreur(new Livreur());
         Livreur livreur = new Livreur();
         livreur.setId("livreur1");
 
