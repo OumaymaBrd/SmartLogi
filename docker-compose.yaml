@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   loki:
     image: grafana/loki:2.8.2
@@ -43,6 +45,18 @@ services:
     networks:
       - monitoring
 
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    user: root
+    ports:
+      - "8081:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - monitoring
+
 networks:
   monitoring:
     driver: bridge
@@ -50,3 +64,4 @@ networks:
 volumes:
   grafana-data:
   loki-data:
+  jenkins_home:

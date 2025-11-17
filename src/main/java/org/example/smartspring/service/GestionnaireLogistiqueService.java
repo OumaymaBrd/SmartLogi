@@ -39,25 +39,25 @@ public class GestionnaireLogistiqueService {
     public String affecterLivreur(
             String numeroColis,
             String idGestionnaire,
-            String livreurId,         // correspond à la colonne livreur_id en BDD
-            String livreurIdLivree    // correspond à la colonne livreur_id_livree en BDD
+            String livreurId,
+            String livreurIdLivree
     ) {
 
-        // 1. Vérifier le gestionnaire
+        //  Vérifier le gestionnaire
         GestionnaireLogistique gestionnaire = repository.findById(idGestionnaire)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Aucun gestionnaire trouvé avec l'id : " + idGestionnaire
                 ));
 
-        // 2. Vérifier le colis
+        //  Vérifier le colis
         Colis colis = colisRepository.findByNumeroColis(numeroColis)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Aucun colis trouvé avec numéro : " + numeroColis
                 ));
 
-        // 3. Déterminer quel livreur utiliser
+        //  Déterminer quel livreur utiliser
         String livreurIdFinal = livreurId != null ? livreurId : livreurIdLivree;
         boolean isLivree = livreurId == null;
 
@@ -68,39 +68,39 @@ public class GestionnaireLogistiqueService {
             );
         }
 
-        // 4. Vérifier le livreur
+        //  Vérifier le livreur
         Livreur livreur = LivreurRepository.findById(livreurIdFinal)
                 .orElseThrow(() -> new ResponseStatusException(
                         HttpStatus.NOT_FOUND,
                         "Aucun livreur trouvé avec l'id : " + livreurIdFinal
                 ));
 
-        // 5. Vérifier si le livreur est déjà affecté
-        if (!isLivree && colis.getLivreur() != null) {  // livreur_id
+        //  Vérifier si le livreur est déjà affecté
+        if (!isLivree && colis.getLivreur() != null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Le livreur collecteur est déjà affecté à ce colis"
             );
         }
 
-        if (isLivree && colis.getLivreurLivree() != null) {  // livreur_id_livree
+        if (isLivree && colis.getLivreurLivree() != null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Le livreur livré est déjà affecté à ce colis"
             );
         }
 
-        // 6. Affecter le livreur
+        //  Affecter le livreur
         if (isLivree) {
-            colis.setLivreurLivree(livreur);  // colonne livreur_id_livree
+            colis.setLivreurLivree(livreur);
         } else {
-            colis.setLivreur(livreur);        // colonne livreur_id
+            colis.setLivreur(livreur);
         }
 
         colis.setStatut(StatutColis.TRAITER);
         colisRepository.save(colis);
 
-        // 7. Retourner message selon le type
+        // Retourner message selon le type
         return isLivree
                 ? "Le colis avec le numéro " + numeroColis + " a été affecté au livreur livré : " + livreurIdFinal
                 : "Le colis avec le numéro " + numeroColis + " a été affecté au livreur collecteur : " + livreurIdFinal;

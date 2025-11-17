@@ -13,5 +13,7 @@ public class SmartSpringApplication {
         System.setProperty("GMAIL_APP_PASSWORD", dotenv.get("GMAIL_APP_PASSWORD"));
 
         SpringApplication.run(SmartSpringApplication.class, args);
+
+
     }
 }
